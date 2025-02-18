@@ -49,6 +49,7 @@
             guestNameLabel = new Label();
             ownerNameLabel = new Label();
             label2 = new Label();
+            button1 = new Button();
             ReadyButton = new Button();
             StartGameButton = new Button();
             label6 = new Label();
@@ -304,6 +305,16 @@
             label5.TabIndex = 0;
             label5.Text = "Player 1 (Owner) :";
             // 
+            // button1
+            // 
+            button1.Location = new Point(29, 188);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 8;
+            button1.Text = "Play";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // ClientForm
             // 
             ClientSize = new Size(832, 518);
@@ -311,6 +322,7 @@
             Controls.Add(roomCreationPanel);
             Controls.Add(loginPanel);
             Controls.Add(lobbyPanel);
+            Controls.Add(button1);
             Name = "ClientForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Guess";
@@ -354,5 +366,6 @@
         private ComboBox tryCategoriesComboBox;
         private Button confirmCreationButton;
         private Panel panel1;
+        private Button button1;
     }
 }
