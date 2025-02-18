@@ -1,3 +1,4 @@
+using ClientApp.Views;
 using Shared;
 using System.Data;
 using System.Net.Sockets;
@@ -57,9 +58,31 @@ namespace ClientApp
         }
         private void HandleDisconnect()
         {
-            connectButton.Enabled = true;
-            userNameTextBox.Enabled = true;
-            connectedCheckBox.Checked = false;
+            //Application.Exit();
+            try
+            {
+                connectButton.Invoke(() =>
+                {
+                    MessageBox.Show("You're Disconnected. Try to reconnect again");
+                    connectButton.Enabled = true;
+                    userNameTextBox.Enabled = true;
+                    connectedCheckBox.Checked = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            GameForm frm = new GameForm();
+            frm.Show();
+            frm.Focus();
+            frm.FormClosed += (s, args) => this.Close();
+
         }
     }
 }

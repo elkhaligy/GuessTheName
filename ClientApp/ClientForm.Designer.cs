@@ -36,6 +36,7 @@
             connectedCheckBox = new CheckBox();
             receivedDataTextBox = new TextBox();
             label2 = new Label();
+            button1 = new Button();
             SuspendLayout();
             // 
             // connectButton
@@ -92,9 +93,20 @@
             label2.TabIndex = 7;
             label2.Text = "Data Received";
             // 
+            // button1
+            // 
+            button1.Location = new Point(29, 188);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 8;
+            button1.Text = "Play";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // ClientForm
             // 
             ClientSize = new Size(646, 379);
+            Controls.Add(button1);
             Controls.Add(label2);
             Controls.Add(receivedDataTextBox);
             Controls.Add(connectedCheckBox);
@@ -105,7 +117,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             ResumeLayout(false);
             PerformLayout();
-
         }
 
         #endregion
@@ -116,5 +127,6 @@
         private CheckBox connectedCheckBox;
         private TextBox receivedDataTextBox;
         private Label label2;
+        private Button button1;
     }
 }
