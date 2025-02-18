@@ -22,8 +22,8 @@ project.lock.json
 package-lock.json
 
 # Ignore auto-generated files
-GeneratedFiles/
-*.Designer.cs
+# GeneratedFiles/
+# *.Designer.cs
 
 # Ignore log files and temporary files
 *.log
