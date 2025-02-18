@@ -1,0 +1,51 @@
+# Ignore Visual Studio-specific files
+.vs/
+*.user
+*.suo
+*.cache
+*.csproj.user
+
+# Ignore build output directories
+bin/
+obj/
+TestResults/
+
+# Ignore compiled files
+*.exe
+*.dll
+*.pdb
+
+# Ignore NuGet packages and lock files
+packages/
+*.nupkg
+project.lock.json
+package-lock.json
+
+# Ignore auto-generated files
+GeneratedFiles/
+*.Designer.cs
+
+# Ignore log files and temporary files
+*.log
+*.tlog
+*.tmp
+
+# Ignore Resharper and Rider files
+.idea/
+*.DotSettings.user
+
+# Ignore database and configuration files
+appsettings.json
+appsettings.*.json
+*.mdf
+*.ldb
+
+# Ignore Rider / JetBrains settings
+*.sln.iml
+
+# Ignore publish outputs
+publish/
+*.publish.xml
+
+# Ignore local environment settings
+.env
