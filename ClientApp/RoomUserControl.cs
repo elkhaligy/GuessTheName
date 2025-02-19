@@ -12,10 +12,11 @@ namespace ClientApp
 {
     public partial class RoomUserControl : UserControl
     {
-
-        public RoomUserControl(string roomOwner, string roomName, string roomCategory)
+        private ClientForm clientForm;
+        public RoomUserControl(ClientForm clientForm, string roomOwner, string roomName, string roomCategory)
         {
             InitializeComponent();
+            this.clientForm = clientForm;
             roomNameLabel.Text = roomName;
             roomCategoryLabel.Text = roomCategory;
             roomOwnerLabel.Text = roomOwner;
@@ -23,7 +24,7 @@ namespace ClientApp
 
         private void joinRoomButton_Click(object sender, EventArgs e)
         {
-
+            clientForm.JoinRoomButton_Click();
         }
     }
 }

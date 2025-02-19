@@ -11,7 +11,9 @@ namespace Shared
         RoomsList,  // Server sends this command to the client to send the list of rooms
         CreateRoom, // Client sends this command to the server to create a room
         JoinRoom,   // Client sends this command to the server to join a room
-        RoomCreated, 
+        RoomCreated,
+        StartGame,
+        RoomUpdated,
         Quit
     }
     public class Command

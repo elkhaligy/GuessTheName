@@ -99,11 +99,26 @@ namespace ClientApp
             {
                 case CommandTypes.RoomCreated:
                     GameRoom receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
-                    MessageBox.Show("Room Created Successfully!");
+                    Player.CurrentRoom = receivedRoom.RoomId;
+                    Player.IsRoomOwner = true;
+                    //MessageBox.Show("Room Created Successfully!")
+                    roomsListPanel.Hide();
+                    roomCreationPanel.Hide();
+                    lobbyPanel.Show();
+                    updateLobbyRoomGUI();
                     break;
                 case CommandTypes.RoomsList:
                     roomsListFromServerToDisplay = JsonSerializer.Deserialize<List<GameRoom>>(command.Payload.ToString());
                     updateRoomsListGUI();
+                    break;
+                case CommandTypes.RoomUpdated:
+                    break;
+                case CommandTypes.StartGame:
+                    /*
+                     * 
+                     * 
+                     * 
+                     */
                     break;
                 default:
                     break;
@@ -115,31 +130,67 @@ namespace ClientApp
             roomsListFlowLayout.Controls.Clear();
             foreach (var receivedRoom in roomsListFromServerToDisplay)
             {
-                RoomUserControl roomControl = new RoomUserControl(receivedRoom.Owner, receivedRoom.RoomId, receivedRoom.Category);
+                RoomUserControl roomControl = new RoomUserControl(this, receivedRoom.Owner, receivedRoom.RoomId, receivedRoom.Category);
                 roomsListFlowLayout.Controls.Add(roomControl);
             }
         }
 
+        public void updateLobbyRoomGUI()
+        {
+            if (Player.IsRoomOwner)
+            {
+                ownerNameLabel.Text = Player.Name;
+            }
+            else
+            {
+                guestNameLabel.Text = Player.Name;
+            }
+        }
+        public void JoinRoomButton_Click()
+        {
+            MessageBox.Show("Show");
+            // What I need about this?
+            // I only need room name
+            //string roomNameToJoin = 
+        }
         private void CreateRoomButton_Click(object sender, EventArgs e)
         {
             string roomName;
             string roomCategory;
 
-            RoomCreationForm roomCreationForm = new RoomCreationForm();
-            if (roomCreationForm.ShowDialog() == DialogResult.OK)
-            {
-                roomName = roomCreationForm.RoomName;
-                roomCategory = roomCreationForm.RoomCategory;
-                GameRoom gameRoom = new GameRoom { RoomId = roomName, Owner = Player.Name, Category = roomCategory };
-                Command command = new Command(CommandTypes.CreateRoom, gameRoom);
-                sendCommand(command);
-            }
+            roomsListPanel.Hide();
+
+            tryCategoriesComboBox.Items.Add("Countries");
+            tryCategoriesComboBox.Items.Add("Banana");
+            tryCategoriesComboBox.Items.Add("Orange");
+            tryCategoriesComboBox.SelectedIndex = 0;
+            roomCreationPanel.Show();
         }
 
         private void refreshRoomsButton_Click(object sender, EventArgs e)
         {
             Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
             sendCommand(command);
+        }
+
+        private void userNameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                loginButton_Click(sender, e);
+
+            }
+        }
+
+        private void confirmCreationButton_Click(object sender, EventArgs e)
+        {
+            string takenRoomName = tryRoomNameTextBox.Text;
+            string takenRoomCat = tryCategoriesComboBox.Text;
+            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Category = takenRoomCat };
+            Command createRoomRequest = new Command(CommandTypes.CreateRoom, gameRoom);
+            sendCommand(createRoomRequest);
+
         }
     }
 
