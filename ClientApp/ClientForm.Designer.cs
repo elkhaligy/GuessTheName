@@ -30,20 +30,16 @@
 
         private void InitializeComponent()
         {
-
             connectButton = new Button();
             userNameTextBox = new TextBox();
             label1 = new Label();
-            connectedCheckBox = new CheckBox();
-            receivedDataTextBox = new TextBox();
-            label2 = new Label();
             SuspendLayout();
             // 
             // connectButton
             // 
-            connectButton.Location = new Point(209, 172);
+            connectButton.Location = new Point(170, 135);
             connectButton.Name = "connectButton";
-            connectButton.Size = new Size(188, 86);
+            connectButton.Size = new Size(73, 27);
             connectButton.TabIndex = 0;
             connectButton.Text = "Login";
             connectButton.UseVisualStyleBackColor = true;
@@ -51,54 +47,23 @@
             // 
             // userNameTextBox
             // 
-            userNameTextBox.Location = new Point(209, 124);
+            userNameTextBox.Location = new Point(55, 96);
             userNameTextBox.Name = "userNameTextBox";
-            userNameTextBox.Size = new Size(188, 31);
+            userNameTextBox.Size = new Size(188, 23);
             userNameTextBox.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(249, 96);
+            label1.Location = new Point(55, 78);
             label1.Name = "label1";
-            label1.Size = new Size(99, 25);
+            label1.Size = new Size(65, 15);
             label1.TabIndex = 4;
             label1.Text = "User Name";
             // 
-            // connectedCheckBox
-            // 
-            connectedCheckBox.AutoSize = true;
-            connectedCheckBox.Enabled = false;
-            connectedCheckBox.Location = new Point(249, 280);
-            connectedCheckBox.Name = "connectedCheckBox";
-            connectedCheckBox.Size = new Size(123, 29);
-            connectedCheckBox.TabIndex = 5;
-            connectedCheckBox.Text = "Connected";
-            connectedCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // receivedDataTextBox
-            // 
-            receivedDataTextBox.Location = new Point(445, 74);
-            receivedDataTextBox.Multiline = true;
-            receivedDataTextBox.Name = "receivedDataTextBox";
-            receivedDataTextBox.Size = new Size(171, 235);
-            receivedDataTextBox.TabIndex = 6;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(445, 46);
-            label2.Name = "label2";
-            label2.Size = new Size(123, 25);
-            label2.TabIndex = 7;
-            label2.Text = "Data Received";
-            // 
             // ClientForm
             // 
-            ClientSize = new Size(646, 379);
-            Controls.Add(label2);
-            Controls.Add(receivedDataTextBox);
-            Controls.Add(connectedCheckBox);
+            ClientSize = new Size(289, 227);
             Controls.Add(label1);
             Controls.Add(userNameTextBox);
             Controls.Add(connectButton);
@@ -116,8 +81,5 @@
         private Button connectButton;
         private TextBox userNameTextBox;
         private Label label1;
-        private CheckBox connectedCheckBox;
-        private TextBox receivedDataTextBox;
-        private Label label2;
     }
 }

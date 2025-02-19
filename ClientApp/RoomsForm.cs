@@ -18,13 +18,15 @@ namespace ClientApp
         private Player player;
         private List<GameRoom> rooms = new List<GameRoom>();
         private Dictionary<GameRoom, Room> roomMap = new Dictionary<GameRoom, Room>();
-        public List<GameRoom> Rooms { get { return rooms; } }
+        public List<GameRoom> Rooms { get { return rooms; } set { rooms = value; } }
 
         public RoomsForm(Player player)
         {
             InitializeComponent();
             DoubleBuffered = true;
             this.player = player;
+
+            // Request rooms from the server
             Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
             sendCommand(player, command);
         }
@@ -52,7 +54,9 @@ namespace ClientApp
             {
                 roomName = roomCreationForm.RoomName;
                 roomCategory = roomCreationForm.RoomCategory;
-                Command command = new Command(CommandTypes.CreateRoom, new CreateRoomCommandPayload(player.Name, roomName, roomCategory));
+                GameRoom gameRoom = new GameRoom { RoomId = roomName, Owner = player.Name, Category = roomCategory};
+                //Command command = new Command(CommandTypes.CreateRoom, new CreateRoomCommandPayload(player.Name, roomName, roomCategory));
+                Command command = new Command(CommandTypes.CreateRoom, gameRoom);
                 sendCommand(player, command);
             }
         }

@@ -18,8 +18,10 @@ namespace ServerApp
         public event Action? OnUpdate;      // Event that can be subscribed to
         private bool isRunning = false;
         private List<Player> players = new List<Player>();
-        public List<GameRoom> rooms = new List<GameRoom>();
+        public List<GameRoom> roomsList = new List<GameRoom>();
         public List<Player> Players { get { return players; } }
+
+        public Dictionary<TcpClient, Player> tcpPlayerMap = new Dictionary<TcpClient, Player>();
 
         public Server(IPAddress ip, int port)
         {
@@ -61,48 +63,50 @@ namespace ServerApp
             }
         }
 
-        private void HandleClient(TcpClient client)
+        private void HandleClient(TcpClient tcpClient)
         {
-            OnLog?.Invoke($"Client connected: {client.Client.RemoteEndPoint}");
-            NetworkStream stream = client.GetStream();
+            OnLog?.Invoke($"Client connected: {tcpClient.Client.RemoteEndPoint}");
+            NetworkStream stream = tcpClient.GetStream();
             StreamReader reader = new StreamReader(stream, Encoding.UTF8);
             StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
 
 
-            while (isRunning && client.Connected)
+            while (isRunning && tcpClient.Connected)
             {
                 try
                 {
                     string? message = reader.ReadLine();
+                    string jsonMessage;
                     if (message == null) break;
-                    OnLog?.Invoke($"Received: {message} from {client.Client.RemoteEndPoint}");
-
+                    OnLog?.Invoke($"Received: {message} from {tcpClient.Client.RemoteEndPoint}");
                     Command? command = JsonSerializer.Deserialize<Command>(message);
+
                     switch (command.CommandType)
                     {
                         case CommandTypes.Login:
-                            LoginCommandPayLoad? loginPayload = JsonSerializer.Deserialize<LoginCommandPayLoad>(command.Payload.ToString());
-                            Player player = new Player();
-                            player.tcpClient = client;
-                            player.Name = loginPayload.UserName;
-                            player.Score = 0;
-                            players.Add(player);
+                            Player receivedPlayerFromJson = JsonSerializer.Deserialize<Player>(command.Payload.ToString());
+                            receivedPlayerFromJson.tcpClient = tcpClient;
+                            players.Add(receivedPlayerFromJson);
+                            tcpPlayerMap.Add(tcpClient, receivedPlayerFromJson);
                             OnUpdate?.Invoke();
-                            //players[client] = loginPayload.UserName;
                             break;
                         case CommandTypes.CreateRoom:
                             CreateRoomCommandPayload createRoomPayload = JsonSerializer.Deserialize<CreateRoomCommandPayload>(command.Payload.ToString());
-                            GameRoom room = new GameRoom();
-                            room.Owner = createRoomPayload.RoomOwner;
-                            room.RoomId = createRoomPayload.RoomName;
-                            room.Category = createRoomPayload.RoomCategory;
-                            
-                            Command roomCreated = new Command(CommandTypes.RoomCreated, room);
-                            string jsonMessage = JsonSerializer.Serialize(roomCreated);
+                            GameRoom receivedRoomFromJson = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                            receivedRoomFromJson.Players = new List<Player>();
+                            receivedRoomFromJson.Players.Add(tcpPlayerMap[tcpClient]);
+                            roomsList.Add(receivedRoomFromJson);
+                            // Send the created room
+                            Command roomCreated = new Command(CommandTypes.RoomCreated, receivedRoomFromJson);
+                            jsonMessage = JsonSerializer.Serialize(roomCreated);
+
                             writer?.WriteLine(jsonMessage);
-
-
-                            OnLog?.Invoke($"Created room: {room.RoomId} with owner name {room.Owner}  by {client.Client.RemoteEndPoint}");
+                            OnLog?.Invoke($"Created room: {receivedRoomFromJson.RoomId} with owner name {receivedRoomFromJson.Owner}  by {tcpClient.Client.RemoteEndPoint}");
+                            break;
+                        case CommandTypes.GetRooms:
+                            Command getRooms = new Command(CommandTypes.RoomsList, roomsList);
+                            jsonMessage = JsonSerializer.Serialize(getRooms);
+                            writer?.WriteLine(jsonMessage);
                             break;
                         default:
                             break;
@@ -115,16 +119,16 @@ namespace ServerApp
             {
                 foreach (Player player in players)
                 {
-                    if (player.tcpClient == client)
+                    if (player.tcpClient == tcpClient)
                     {
                         players.Remove(player);
                         break;
                     }
                 }
-                OnLog?.Invoke($"Client disconnected: {client.Client.RemoteEndPoint}");
+                OnLog?.Invoke($"Client disconnected: {tcpClient.Client.RemoteEndPoint}");
                 OnUpdate?.Invoke(); // Notify the subscribers
             }
-            client.Close();
+            tcpClient.Close();
         }
 
 
