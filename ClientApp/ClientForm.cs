@@ -11,8 +11,7 @@ namespace ClientApp
         private TcpClient testClient = new TcpClient();
         private Thread clientMessageListeningThread;
         private Player player = new Player();
-        private RoomsForm roomsForm;
-
+        private List<GameRoom> roomsListFromServerToDisplay = new List<GameRoom>();
         public ClientForm()
         {
             InitializeComponent();
@@ -27,15 +26,16 @@ namespace ClientApp
             player.Score = 0;
             clientMessageListeningThread = new Thread(() => listenForMessages()) { IsBackground = true };
             clientMessageListeningThread.Start();
-
-            // Send the server a request to login
             Command loggingRequest = new Command(CommandTypes.Login, player);
             sendCommand(loggingRequest);
+            loginPanel.Hide(); // Hide login panel after logging in
 
-            roomsForm = new RoomsForm(player);
-            roomsForm.Show();
-            GameRoom testRoom = new GameRoom();
-            this.Hide();
+
+            // Request rooms from the server
+            Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
+            sendCommand(command);
+
+            roomsListPanel.Show();
         }
 
         private void sendCommand(Command command)
@@ -61,14 +61,12 @@ namespace ClientApp
                 {
                     case CommandTypes.RoomCreated:
                         GameRoom receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
-                        updatetest(receivedRoom);
+                        MessageBox.Show("Room Created Successfully!");
+   
                         break;
                     case CommandTypes.RoomsList:
-                        List<GameRoom> receivedRoomsList = JsonSerializer.Deserialize<List<GameRoom>>(command.Payload.ToString());
-                        //roomsForm.Rooms = receivedRoomsList;
-                        updateRoomsOnUIAfterLogin(receivedRoomsList);
-                        //roomsForm.UpdateRoomsOnUI();
-
+                        List<GameRoom> roomsListFromServerToDisplay = JsonSerializer.Deserialize<List<GameRoom>>(command.Payload.ToString());
+                        updateRoomsListGUI(roomsListFromServerToDisplay);
                         break;
                     default:
                         break;
@@ -77,26 +75,35 @@ namespace ClientApp
             }
         }
 
-        public void updatetest(GameRoom gameRoom)
+        public void updateRoomsListGUI(List<GameRoom> receivedRoomList)
         {
-            if (InvokeRequired)
+            if(InvokeRequired)
             {
-                Invoke(new Action<GameRoom>(updatetest), gameRoom);
+                Invoke(new Action<List<GameRoom>>(updateRoomsListGUI), receivedRoomList);
                 return;
             }
-            roomsForm.Rooms.Add(gameRoom);
-            roomsForm.UpdateRoomsOnUI();
+            testFlowLayout.Controls.Clear();
+            foreach (var receivedRoom in receivedRoomList)
+            {
+                RoomUserControl roomControl = new RoomUserControl(receivedRoom.Owner, receivedRoom.RoomId, receivedRoom.Category);
+                testFlowLayout.Controls.Add(roomControl);
+            }
         }
 
-        public void updateRoomsOnUIAfterLogin(List<GameRoom> gameRoomList)
+        private void testCreateRoomButton_Click(object sender, EventArgs e)
         {
-            if (InvokeRequired)
+            string roomName;
+            string roomCategory;
+
+            RoomCreationForm roomCreationForm = new RoomCreationForm();
+            if (roomCreationForm.ShowDialog() == DialogResult.OK)
             {
-                Invoke(new Action<List<GameRoom>>(updateRoomsOnUIAfterLogin), gameRoomList);
-                return;
+                roomName = roomCreationForm.RoomName;
+                roomCategory = roomCreationForm.RoomCategory;
+                GameRoom gameRoom = new GameRoom { RoomId = roomName, Owner = player.Name, Category = roomCategory };
+                Command command = new Command(CommandTypes.CreateRoom, gameRoom);
+                sendCommand(command);
             }
-            roomsForm.Rooms = gameRoomList;
-            roomsForm.UpdateRoomsOnUI();
         }
     }
 }

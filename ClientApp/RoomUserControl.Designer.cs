@@ -1,6 +1,6 @@
 ﻿namespace ClientApp
 {
-    partial class Room
+    partial class RoomUserControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -53,7 +53,7 @@
             // 
             // joinRoomButton
             // 
-            joinRoomButton.Location = new Point(551, 52);
+            joinRoomButton.Location = new Point(492, 51);
             joinRoomButton.Name = "joinRoomButton";
             joinRoomButton.Size = new Size(105, 35);
             joinRoomButton.TabIndex = 1;
@@ -63,7 +63,7 @@
             // 
             // spectateRoomButton
             // 
-            spectateRoomButton.Location = new Point(662, 52);
+            spectateRoomButton.Location = new Point(603, 52);
             spectateRoomButton.Name = "spectateRoomButton";
             spectateRoomButton.Size = new Size(105, 34);
             spectateRoomButton.TabIndex = 2;
@@ -143,7 +143,7 @@
             Controls.Add(joinRoomButton);
             Controls.Add(roomNameLabel);
             Name = "Room";
-            Size = new Size(770, 94);
+            Size = new Size(724, 94);
             ResumeLayout(false);
             PerformLayout();
         }

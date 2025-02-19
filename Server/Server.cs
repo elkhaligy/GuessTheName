@@ -22,6 +22,8 @@ namespace ServerApp
         public List<Player> Players { get { return players; } }
 
         public Dictionary<TcpClient, Player> tcpPlayerMap = new Dictionary<TcpClient, Player>();
+        public Dictionary<string, TcpClient> nameToClientMap = new Dictionary<string, TcpClient>();
+
 
         public Server(IPAddress ip, int port)
         {
@@ -43,11 +45,13 @@ namespace ServerApp
             serverThread.Start();
             OnLog?.Invoke($"Server started on port {Port}...");
         }
+
         private void StartListening()
         {
             tcpListener = new TcpListener(IpAddress, Port);
             tcpListener.Start();
         }
+
         private void StartAcceptingClients()
         {
             while (isRunning)
@@ -88,6 +92,7 @@ namespace ServerApp
                             receivedPlayerFromJson.tcpClient = tcpClient;
                             players.Add(receivedPlayerFromJson);
                             tcpPlayerMap.Add(tcpClient, receivedPlayerFromJson);
+                            nameToClientMap.Add(receivedPlayerFromJson.Name, tcpClient);
                             OnUpdate?.Invoke();
                             break;
 
@@ -108,6 +113,29 @@ namespace ServerApp
                             writer?.WriteLine(jsonMessage);
                             break;
 
+                        case CommandTypes.JoinRoom:
+                            // To join a room a player need to send the room name he wants  ONLY
+                            // You will use the room name to search for the required room in the list of rooms
+                            // When the required room is picked add the name of the player to the guest field
+                            // Now obtain the tcp client of the player that sent the request and prepare a message for him
+                            // In this message send him the room he joined with SuccessfulJoin command
+                            // The client then should act on this by creating a lobby
+                            // The client has the full details it needs, like who is the owner of the room and the room details
+                            //string receivedRoomName = "dummy";
+                            //GameRoom neededRoom;
+                            //foreach (GameRoom room in roomsList)
+                            //{
+                            //    if (room.RoomId == receivedRoomName) 
+                            //    {
+                            //        neededRoom = room;
+                            //        break;
+                            //    }
+                            //}
+                            //neededRoom.Guest = tcpPlayerMap[tcpClient].Name;
+
+                            // After you handled this you need to notify both the owner and the guest
+
+                            break;
                         default:
                             break;
                     }
