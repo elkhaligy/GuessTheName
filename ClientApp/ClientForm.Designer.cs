@@ -30,26 +30,26 @@
 
         private void InitializeComponent()
         {
-            connectButton = new Button();
+            loginButton = new Button();
             userNameTextBox = new TextBox();
             label1 = new Label();
             loginPanel = new Panel();
             roomsListPanel = new Panel();
-            testCreateRoomButton = new Button();
-            testFlowLayout = new FlowLayoutPanel();
+            roomsListFlowLayout = new FlowLayoutPanel();
+            createRoomButton = new Button();
             loginPanel.SuspendLayout();
             roomsListPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // connectButton
+            // loginButton
             // 
-            connectButton.Location = new Point(419, 273);
-            connectButton.Name = "connectButton";
-            connectButton.Size = new Size(73, 27);
-            connectButton.TabIndex = 0;
-            connectButton.Text = "Login";
-            connectButton.UseVisualStyleBackColor = true;
-            connectButton.Click += connectButtonClick;
+            loginButton.Location = new Point(419, 273);
+            loginButton.Name = "loginButton";
+            loginButton.Size = new Size(73, 27);
+            loginButton.TabIndex = 0;
+            loginButton.Text = "Login";
+            loginButton.UseVisualStyleBackColor = true;
+            loginButton.Click += loginButton_Click;
             // 
             // userNameTextBox
             // 
@@ -70,7 +70,7 @@
             // loginPanel
             // 
             loginPanel.Controls.Add(userNameTextBox);
-            loginPanel.Controls.Add(connectButton);
+            loginPanel.Controls.Add(loginButton);
             loginPanel.Controls.Add(label1);
             loginPanel.Location = new Point(12, 12);
             loginPanel.Name = "loginPanel";
@@ -79,30 +79,30 @@
             // 
             // roomsListPanel
             // 
-            roomsListPanel.Controls.Add(testCreateRoomButton);
-            roomsListPanel.Controls.Add(testFlowLayout);
+            roomsListPanel.Controls.Add(roomsListFlowLayout);
+            roomsListPanel.Controls.Add(createRoomButton);
             roomsListPanel.Location = new Point(12, 12);
             roomsListPanel.Name = "roomsListPanel";
             roomsListPanel.Size = new Size(808, 494);
             roomsListPanel.TabIndex = 5;
             roomsListPanel.Visible = false;
             // 
-            // testCreateRoomButton
+            // roomsListFlowLayout
             // 
-            testCreateRoomButton.Location = new Point(681, 454);
-            testCreateRoomButton.Name = "testCreateRoomButton";
-            testCreateRoomButton.Size = new Size(90, 23);
-            testCreateRoomButton.TabIndex = 1;
-            testCreateRoomButton.Text = "Create Room";
-            testCreateRoomButton.UseVisualStyleBackColor = true;
-            testCreateRoomButton.Click += testCreateRoomButton_Click;
+            roomsListFlowLayout.Location = new Point(33, 18);
+            roomsListFlowLayout.Name = "roomsListFlowLayout";
+            roomsListFlowLayout.Size = new Size(738, 398);
+            roomsListFlowLayout.TabIndex = 0;
             // 
-            // testFlowLayout
+            // createRoomButton
             // 
-            testFlowLayout.Location = new Point(33, 18);
-            testFlowLayout.Name = "testFlowLayout";
-            testFlowLayout.Size = new Size(738, 398);
-            testFlowLayout.TabIndex = 0;
+            createRoomButton.Location = new Point(681, 454);
+            createRoomButton.Name = "createRoomButton";
+            createRoomButton.Size = new Size(90, 23);
+            createRoomButton.TabIndex = 1;
+            createRoomButton.Text = "Create Room";
+            createRoomButton.UseVisualStyleBackColor = true;
+            createRoomButton.Click += testCreateRoomButton_Click;
             // 
             // ClientForm
             // 
@@ -122,12 +122,12 @@
 
         #endregion
 
-        private Button connectButton;
+        private Button loginButton;
         private TextBox userNameTextBox;
         private Label label1;
         private Panel loginPanel;
         private Panel roomsListPanel;
-        private Button testCreateRoomButton;
-        private FlowLayoutPanel testFlowLayout;
+        private Button createRoomButton;
+        private FlowLayoutPanel roomsListFlowLayout;
     }
 }
