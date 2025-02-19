@@ -37,6 +37,7 @@
             roomsListPanel = new Panel();
             roomsListFlowLayout = new FlowLayoutPanel();
             createRoomButton = new Button();
+            refreshRoomsButton = new Button();
             loginPanel.SuspendLayout();
             roomsListPanel.SuspendLayout();
             SuspendLayout();
@@ -79,6 +80,7 @@
             // 
             // roomsListPanel
             // 
+            roomsListPanel.Controls.Add(refreshRoomsButton);
             roomsListPanel.Controls.Add(roomsListFlowLayout);
             roomsListPanel.Controls.Add(createRoomButton);
             roomsListPanel.Location = new Point(12, 12);
@@ -89,9 +91,9 @@
             // 
             // roomsListFlowLayout
             // 
-            roomsListFlowLayout.Location = new Point(33, 18);
+            roomsListFlowLayout.Location = new Point(33, 48);
             roomsListFlowLayout.Name = "roomsListFlowLayout";
-            roomsListFlowLayout.Size = new Size(738, 398);
+            roomsListFlowLayout.Size = new Size(738, 400);
             roomsListFlowLayout.TabIndex = 0;
             // 
             // createRoomButton
@@ -103,6 +105,16 @@
             createRoomButton.Text = "Create Room";
             createRoomButton.UseVisualStyleBackColor = true;
             createRoomButton.Click += CreateRoomButton_Click;
+            // 
+            // refreshRoomsButton
+            // 
+            refreshRoomsButton.Location = new Point(696, 19);
+            refreshRoomsButton.Name = "refreshRoomsButton";
+            refreshRoomsButton.Size = new Size(75, 23);
+            refreshRoomsButton.TabIndex = 2;
+            refreshRoomsButton.Text = "Refresh";
+            refreshRoomsButton.UseVisualStyleBackColor = true;
+            refreshRoomsButton.Click += refreshRoomsButton_Click;
             // 
             // ClientForm
             // 
@@ -129,5 +141,6 @@
         private Panel roomsListPanel;
         private Button createRoomButton;
         private FlowLayoutPanel roomsListFlowLayout;
+        private Button refreshRoomsButton;
     }
 }

@@ -136,7 +136,11 @@ namespace ClientApp
             }
         }
 
-
+        private void refreshRoomsButton_Click(object sender, EventArgs e)
+        {
+            Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
+            sendCommand(command);
+        }
     }
 
 }
