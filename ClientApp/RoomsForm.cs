@@ -18,29 +18,17 @@ namespace ClientApp
         private Player player;
         private List<GameRoom> rooms = new List<GameRoom>();
         private Dictionary<GameRoom, Room> roomMap = new Dictionary<GameRoom, Room>();
-        
-        // Create getters and setters for rooms
         public List<GameRoom> Rooms { get { return rooms; } }
-
 
         public RoomsForm(Player player)
         {
             InitializeComponent();
-            //Room room1 = new Room();
-            //Room room2 = new Room();
-            //Room room3 = new Room();
-            //Room room4 = new Room();
-
-            //roomsContainer.Controls.Add(room1);
-            //roomsContainer.Controls.Add(room2);
-            //roomsContainer.Controls.Add(room3);
-            //roomsContainer.Controls.Add(room4);
-
+            DoubleBuffered = true;
             this.player = player;
             Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
             sendCommand(player, command);
-
         }
+
         private void sendCommand(Player player, Command command)
         {
             var stream = player.tcpClient.GetStream();
@@ -48,6 +36,7 @@ namespace ClientApp
             var json = JsonSerializer.Serialize(command);
             streamWriter.WriteLine(json);
         }
+
         private void RoomsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
@@ -66,7 +55,6 @@ namespace ClientApp
                 Command command = new Command(CommandTypes.CreateRoom, new CreateRoomCommandPayload(player.Name, roomName, roomCategory));
                 sendCommand(player, command);
             }
-
         }
 
         public void UpdateRoomsOnUI()

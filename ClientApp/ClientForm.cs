@@ -12,15 +12,11 @@ namespace ClientApp
         private Thread clientMessageListeningThread;
         private Player player = new Player();
         private RoomsForm roomsForm;
-        //private Client client = new Client();
         public ClientForm()
         {
             InitializeComponent();
-            //client.OnMessageReceived += Log;
-            //client.onDisconnect += HandleDisconnect;
-
+            DoubleBuffered = true;
         }
-
 
         private void connectButtonClick(object sender, EventArgs e)
         {
@@ -34,42 +30,9 @@ namespace ClientApp
             roomsForm = new RoomsForm(player);
             roomsForm.Show();
             GameRoom testRoom = new GameRoom();
-            //testRoom.Owner = "Shehab";
-            //testRoom.Category = "Animal";
-            //roomsForm.Rooms.Add(testRoom);
-            //roomsForm.UpdateRoomsOnUI();
             this.Hide();
-            //try
-            //{
-            //    if (String.IsNullOrWhiteSpace(userNameTextBox.Text))
-            //    {
-            //        MessageBox.Show("Please enter a username");
-            //        return;
-            //    }
-            //    if (client.isConnected)
-            //    {
-            //        MessageBox.Show("Already connected");
-            //        return;
-            //    }
-            //    client.Connect("127.0.0.1", 50000);
-            //    connectButton.Enabled = false;
-            //    connectedCheckBox.Checked = true;
-            //    userNameTextBox.Enabled = false;
-
-            //    // Construct the command that will be sent to the server as a json
-            //    var loginCommand = new Command(CommandTypes.Login, new LoginCommandPayLoad(userNameTextBox.Text));
-            //    client.SendCommand(loginCommand);
-
-            //    Form roomForm = new RoomsForm(client);
-            //    roomForm.Show();
-            //    this.Hide();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show($"Error: {ex.Message} {ex}");
-
-            //}
         }
+
         private void sendCommand(Player tcpClient, Command command)
         {
             var stream = player.tcpClient.GetStream();
@@ -77,6 +40,7 @@ namespace ClientApp
             var json = JsonSerializer.Serialize(command);
             streamWriter.WriteLine(json);
         }
+
         private void listenForMessages(Player tcpClient)
         {
             var stream = player.tcpClient.GetStream();
@@ -85,7 +49,6 @@ namespace ClientApp
             while (true)
             {
                 string? message = streamReader.ReadLine();
-
                 receivedDataTextBox.Text += message + "\r\n";
                 Command? command = JsonSerializer.Deserialize<Command>(message);
 
@@ -110,24 +73,6 @@ namespace ClientApp
             roomsForm.Rooms.Add(gameRoom);
             roomsForm.UpdateRoomsOnUI();
         }
-        //private void UpdateUI()
-        //{
-        //    if (InvokeRequired) // Check if we are on the UI thread
-        //    {
-        //        Invoke(new Action(UpdateUI));
-        //        return;
-        //    }
-        //    UpdateConnectedClientsList();
-        //}
-        //private void Log(string message)
-        //{
-        //    receivedDataTextBox.Text += message + "\r\n";
-        //}
-        //private void HandleDisconnect()
-        //{
-        //    connectButton.Enabled = true;
-        //    userNameTextBox.Enabled = true;
-        //    connectedCheckBox.Checked = false;
-        //}
+
     }
 }

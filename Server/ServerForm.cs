@@ -11,6 +11,7 @@ namespace ServerApp
             InitializeComponent();
             server.OnLog += Log;            // Subscribe to the OnLog event
             server.OnUpdate += UpdateUI;    // Subscribe to the OnUpdate event
+            DoubleBuffered = true;
         }
         private void startServerButton_Click(object sender, EventArgs e)
         {

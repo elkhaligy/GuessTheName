@@ -19,7 +19,6 @@ namespace ServerApp
         private bool isRunning = false;
         private List<Player> players = new List<Player>();
         public List<GameRoom> rooms = new List<GameRoom>();
-
         public List<Player> Players { get { return players; } }
 
         public Server(IPAddress ip, int port)
