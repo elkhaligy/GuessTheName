@@ -60,9 +60,10 @@ namespace ClientApp.Views
             // 
             // pBtn
             // 
-            pBtn.Location = new Point(708, 256);
+            pBtn.Location = new Point(1150, 410);
+            pBtn.Margin = new Padding(5, 5, 5, 5);
             pBtn.Name = "pBtn";
-            pBtn.Size = new Size(62, 29);
+            pBtn.Size = new Size(101, 46);
             pBtn.TabIndex = 75;
             pBtn.Text = "P";
             pBtn.UseVisualStyleBackColor = true;
@@ -70,9 +71,10 @@ namespace ClientApp.Views
             // 
             // eBtn
             // 
-            eBtn.Location = new Point(176, 256);
+            eBtn.Location = new Point(286, 410);
+            eBtn.Margin = new Padding(5, 5, 5, 5);
             eBtn.Name = "eBtn";
-            eBtn.Size = new Size(62, 29);
+            eBtn.Size = new Size(101, 46);
             eBtn.TabIndex = 74;
             eBtn.Text = "E";
             eBtn.UseVisualStyleBackColor = true;
@@ -80,9 +82,10 @@ namespace ClientApp.Views
             // 
             // rBtn
             // 
-            rBtn.Location = new Point(252, 256);
+            rBtn.Location = new Point(410, 410);
+            rBtn.Margin = new Padding(5, 5, 5, 5);
             rBtn.Name = "rBtn";
-            rBtn.Size = new Size(62, 29);
+            rBtn.Size = new Size(101, 46);
             rBtn.TabIndex = 73;
             rBtn.Text = "R";
             rBtn.UseVisualStyleBackColor = true;
@@ -90,9 +93,10 @@ namespace ClientApp.Views
             // 
             // tBtn
             // 
-            tBtn.Location = new Point(328, 256);
+            tBtn.Location = new Point(533, 410);
+            tBtn.Margin = new Padding(5, 5, 5, 5);
             tBtn.Name = "tBtn";
-            tBtn.Size = new Size(62, 29);
+            tBtn.Size = new Size(101, 46);
             tBtn.TabIndex = 72;
             tBtn.Text = "T";
             tBtn.UseVisualStyleBackColor = true;
@@ -100,9 +104,10 @@ namespace ClientApp.Views
             // 
             // yBtn
             // 
-            yBtn.Location = new Point(404, 256);
+            yBtn.Location = new Point(656, 410);
+            yBtn.Margin = new Padding(5, 5, 5, 5);
             yBtn.Name = "yBtn";
-            yBtn.Size = new Size(62, 29);
+            yBtn.Size = new Size(101, 46);
             yBtn.TabIndex = 71;
             yBtn.Text = "Y";
             yBtn.UseVisualStyleBackColor = true;
@@ -110,9 +115,10 @@ namespace ClientApp.Views
             // 
             // uBtn
             // 
-            uBtn.Location = new Point(480, 256);
+            uBtn.Location = new Point(780, 410);
+            uBtn.Margin = new Padding(5, 5, 5, 5);
             uBtn.Name = "uBtn";
-            uBtn.Size = new Size(62, 29);
+            uBtn.Size = new Size(101, 46);
             uBtn.TabIndex = 70;
             uBtn.Text = "U";
             uBtn.UseVisualStyleBackColor = true;
@@ -120,9 +126,10 @@ namespace ClientApp.Views
             // 
             // iBtn
             // 
-            iBtn.Location = new Point(556, 256);
+            iBtn.Location = new Point(904, 410);
+            iBtn.Margin = new Padding(5, 5, 5, 5);
             iBtn.Name = "iBtn";
-            iBtn.Size = new Size(62, 29);
+            iBtn.Size = new Size(101, 46);
             iBtn.TabIndex = 69;
             iBtn.Text = "I";
             iBtn.UseVisualStyleBackColor = true;
@@ -130,9 +137,10 @@ namespace ClientApp.Views
             // 
             // dBtn
             // 
-            dBtn.Location = new Point(214, 304);
+            dBtn.Location = new Point(348, 486);
+            dBtn.Margin = new Padding(5, 5, 5, 5);
             dBtn.Name = "dBtn";
-            dBtn.Size = new Size(62, 29);
+            dBtn.Size = new Size(101, 46);
             dBtn.TabIndex = 68;
             dBtn.Text = "D";
             dBtn.UseVisualStyleBackColor = true;
@@ -140,9 +148,10 @@ namespace ClientApp.Views
             // 
             // fBtn
             // 
-            fBtn.Location = new Point(292, 304);
+            fBtn.Location = new Point(474, 486);
+            fBtn.Margin = new Padding(5, 5, 5, 5);
             fBtn.Name = "fBtn";
-            fBtn.Size = new Size(62, 29);
+            fBtn.Size = new Size(101, 46);
             fBtn.TabIndex = 67;
             fBtn.Text = "F";
             fBtn.UseVisualStyleBackColor = true;
@@ -150,9 +159,10 @@ namespace ClientApp.Views
             // 
             // gBtn
             // 
-            gBtn.Location = new Point(370, 304);
+            gBtn.Location = new Point(601, 486);
+            gBtn.Margin = new Padding(5, 5, 5, 5);
             gBtn.Name = "gBtn";
-            gBtn.Size = new Size(62, 29);
+            gBtn.Size = new Size(101, 46);
             gBtn.TabIndex = 66;
             gBtn.Text = "G";
             gBtn.UseVisualStyleBackColor = true;
@@ -160,9 +170,10 @@ namespace ClientApp.Views
             // 
             // hBtn
             // 
-            hBtn.Location = new Point(448, 304);
+            hBtn.Location = new Point(728, 486);
+            hBtn.Margin = new Padding(5, 5, 5, 5);
             hBtn.Name = "hBtn";
-            hBtn.Size = new Size(62, 29);
+            hBtn.Size = new Size(101, 46);
             hBtn.TabIndex = 65;
             hBtn.Text = "H";
             hBtn.UseVisualStyleBackColor = true;
@@ -170,9 +181,10 @@ namespace ClientApp.Views
             // 
             // qBtn
             // 
-            qBtn.Location = new Point(24, 256);
+            qBtn.Location = new Point(39, 410);
+            qBtn.Margin = new Padding(5, 5, 5, 5);
             qBtn.Name = "qBtn";
-            qBtn.Size = new Size(62, 29);
+            qBtn.Size = new Size(101, 46);
             qBtn.TabIndex = 64;
             qBtn.Text = "Q";
             qBtn.UseVisualStyleBackColor = true;
@@ -180,9 +192,10 @@ namespace ClientApp.Views
             // 
             // kBtn
             // 
-            kBtn.Location = new Point(604, 304);
+            kBtn.Location = new Point(982, 486);
+            kBtn.Margin = new Padding(5, 5, 5, 5);
             kBtn.Name = "kBtn";
-            kBtn.Size = new Size(62, 29);
+            kBtn.Size = new Size(101, 46);
             kBtn.TabIndex = 63;
             kBtn.Text = "K";
             kBtn.UseVisualStyleBackColor = true;
@@ -190,9 +203,10 @@ namespace ClientApp.Views
             // 
             // lBtn
             // 
-            lBtn.Location = new Point(682, 304);
+            lBtn.Location = new Point(1108, 486);
+            lBtn.Margin = new Padding(5, 5, 5, 5);
             lBtn.Name = "lBtn";
-            lBtn.Size = new Size(62, 29);
+            lBtn.Size = new Size(101, 46);
             lBtn.TabIndex = 62;
             lBtn.Text = "L";
             lBtn.UseVisualStyleBackColor = true;
@@ -200,9 +214,10 @@ namespace ClientApp.Views
             // 
             // jBtn
             // 
-            jBtn.Location = new Point(526, 304);
+            jBtn.Location = new Point(855, 486);
+            jBtn.Margin = new Padding(5, 5, 5, 5);
             jBtn.Name = "jBtn";
-            jBtn.Size = new Size(62, 29);
+            jBtn.Size = new Size(101, 46);
             jBtn.TabIndex = 61;
             jBtn.Text = "J";
             jBtn.UseVisualStyleBackColor = true;
@@ -210,9 +225,10 @@ namespace ClientApp.Views
             // 
             // wBtn
             // 
-            wBtn.Location = new Point(100, 256);
+            wBtn.Location = new Point(162, 410);
+            wBtn.Margin = new Padding(5, 5, 5, 5);
             wBtn.Name = "wBtn";
-            wBtn.Size = new Size(62, 29);
+            wBtn.Size = new Size(101, 46);
             wBtn.TabIndex = 60;
             wBtn.Text = "W";
             wBtn.UseVisualStyleBackColor = true;
@@ -220,9 +236,10 @@ namespace ClientApp.Views
             // 
             // sBtn
             // 
-            sBtn.Location = new Point(136, 304);
+            sBtn.Location = new Point(221, 486);
+            sBtn.Margin = new Padding(5, 5, 5, 5);
             sBtn.Name = "sBtn";
-            sBtn.Size = new Size(62, 29);
+            sBtn.Size = new Size(101, 46);
             sBtn.TabIndex = 59;
             sBtn.Text = "S";
             sBtn.UseVisualStyleBackColor = true;
@@ -230,9 +247,10 @@ namespace ClientApp.Views
             // 
             // xBtn
             // 
-            xBtn.Location = new Point(204, 357);
+            xBtn.Location = new Point(332, 571);
+            xBtn.Margin = new Padding(5, 5, 5, 5);
             xBtn.Name = "xBtn";
-            xBtn.Size = new Size(62, 29);
+            xBtn.Size = new Size(101, 46);
             xBtn.TabIndex = 58;
             xBtn.Text = "X";
             xBtn.UseVisualStyleBackColor = true;
@@ -240,9 +258,10 @@ namespace ClientApp.Views
             // 
             // zBtn
             // 
-            zBtn.Location = new Point(116, 357);
+            zBtn.Location = new Point(188, 571);
+            zBtn.Margin = new Padding(5, 5, 5, 5);
             zBtn.Name = "zBtn";
-            zBtn.Size = new Size(62, 29);
+            zBtn.Size = new Size(101, 46);
             zBtn.TabIndex = 57;
             zBtn.Text = "Z";
             zBtn.UseVisualStyleBackColor = true;
@@ -250,9 +269,10 @@ namespace ClientApp.Views
             // 
             // aBtn
             // 
-            aBtn.Location = new Point(58, 304);
+            aBtn.Location = new Point(94, 486);
+            aBtn.Margin = new Padding(5, 5, 5, 5);
             aBtn.Name = "aBtn";
-            aBtn.Size = new Size(62, 29);
+            aBtn.Size = new Size(101, 46);
             aBtn.TabIndex = 56;
             aBtn.Text = "A";
             aBtn.UseVisualStyleBackColor = true;
@@ -260,9 +280,10 @@ namespace ClientApp.Views
             // 
             // bBtn
             // 
-            bBtn.Location = new Point(468, 357);
+            bBtn.Location = new Point(760, 571);
+            bBtn.Margin = new Padding(5, 5, 5, 5);
             bBtn.Name = "bBtn";
-            bBtn.Size = new Size(62, 29);
+            bBtn.Size = new Size(101, 46);
             bBtn.TabIndex = 55;
             bBtn.Text = "B";
             bBtn.UseVisualStyleBackColor = true;
@@ -270,9 +291,10 @@ namespace ClientApp.Views
             // 
             // vBtn
             // 
-            vBtn.Location = new Point(380, 357);
+            vBtn.Location = new Point(618, 571);
+            vBtn.Margin = new Padding(5, 5, 5, 5);
             vBtn.Name = "vBtn";
-            vBtn.Size = new Size(62, 29);
+            vBtn.Size = new Size(101, 46);
             vBtn.TabIndex = 54;
             vBtn.Text = "V";
             vBtn.UseVisualStyleBackColor = true;
@@ -280,9 +302,10 @@ namespace ClientApp.Views
             // 
             // cBtn
             // 
-            cBtn.Location = new Point(292, 357);
+            cBtn.Location = new Point(474, 571);
+            cBtn.Margin = new Padding(5, 5, 5, 5);
             cBtn.Name = "cBtn";
-            cBtn.Size = new Size(62, 29);
+            cBtn.Size = new Size(101, 46);
             cBtn.TabIndex = 53;
             cBtn.Text = "C";
             cBtn.UseVisualStyleBackColor = true;
@@ -290,9 +313,10 @@ namespace ClientApp.Views
             // 
             // nBtn
             // 
-            nBtn.Location = new Point(556, 357);
+            nBtn.Location = new Point(904, 571);
+            nBtn.Margin = new Padding(5, 5, 5, 5);
             nBtn.Name = "nBtn";
-            nBtn.Size = new Size(62, 29);
+            nBtn.Size = new Size(101, 46);
             nBtn.TabIndex = 52;
             nBtn.Text = "N";
             nBtn.UseVisualStyleBackColor = true;
@@ -300,9 +324,10 @@ namespace ClientApp.Views
             // 
             // mBtn
             // 
-            mBtn.Location = new Point(644, 357);
+            mBtn.Location = new Point(1046, 571);
+            mBtn.Margin = new Padding(5, 5, 5, 5);
             mBtn.Name = "mBtn";
-            mBtn.Size = new Size(62, 29);
+            mBtn.Size = new Size(101, 46);
             mBtn.TabIndex = 51;
             mBtn.Text = "M";
             mBtn.UseVisualStyleBackColor = true;
@@ -313,26 +338,45 @@ namespace ClientApp.Views
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "Animals", "Food", "Celebrity" });
             comboBox1.Location = new Point(0, 0);
+            comboBox1.Margin = new Padding(5, 5, 5, 5);
             comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(151, 28);
+            comboBox1.Size = new Size(243, 40);
             comboBox1.TabIndex = 76;
             comboBox1.DropDownClosed += comboBox1_DropDownClosed;
             // 
             // oBtn
             // 
-            oBtn.Location = new Point(632, 256);
+            oBtn.Location = new Point(1027, 410);
+            oBtn.Margin = new Padding(5, 5, 5, 5);
             oBtn.Name = "oBtn";
-            oBtn.Size = new Size(62, 29);
+            oBtn.Size = new Size(101, 46);
             oBtn.TabIndex = 77;
             oBtn.Text = "O";
             oBtn.UseVisualStyleBackColor = true;
             oBtn.Click += letterClicked;
+
+
+            // Labell
+            Label lblSecretWord = new Label
+            {
+                Name = "lblSecretWord",
+                Text = "_ _ _ _ _ _",
+                Font = new Font("Arial", 20),
+                AutoSize = false,
+                Size = new Size(300, 40),
+                Location = new Point(500, 300),
+               
+                BackColor = Color.White, 
+                ForeColor = Color.Black 
+            };
+
             // 
             // GameForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+           
+            AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1300, 720);
             Controls.Add(oBtn);
             Controls.Add(comboBox1);
             Controls.Add(pBtn);
@@ -360,6 +404,8 @@ namespace ClientApp.Views
             Controls.Add(cBtn);
             Controls.Add(nBtn);
             Controls.Add(mBtn);
+            Controls.Add(lblSecretWord);
+            Margin = new Padding(5, 5, 5, 5);
             Name = "GameForm";
             Text = "Game";
             ResumeLayout(false);
@@ -393,5 +439,7 @@ namespace ClientApp.Views
         private Button mBtn;
         private ComboBox comboBox1;
         private Button oBtn;
+        private Label lblSecretWord;
+
     }
 }

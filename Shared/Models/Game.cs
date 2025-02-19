@@ -20,21 +20,25 @@ namespace Shared.Models
             Id = Guid.NewGuid();
         }
 
+
+
+
         public string StartGame()
         {
-            string filePath = $"D:/ITI/Visual C#/Project/GuessTheName/Shared/Data/{category}.txt";
+         
+            string filePath = $"C:/Game/GuessTheName/Shared/Data/{category}.txt";
             Random random = new Random();
             if (File.Exists(filePath))
             {
-                List<string> randomNames = File.ReadLines(filePath).ToList();
-                using (BinaryReader br = new BinaryReader(File.Open(filePath,
-                                         FileMode.Open), Encoding.UTF8))
+             
+                List<string> randomNames = File.ReadAllLines(filePath).ToList();
+                if (randomNames.Count > 0)
                 {
-                    //Reads the data to the stream
-                    int r = random.Next(randomNames.Count()) ;
-                    return randomNames[r];
+                    int randomIndex = random.Next(randomNames.Count);
+                    return randomNames[randomIndex]; 
                 }
             }
+
             return null;
         }
     }
