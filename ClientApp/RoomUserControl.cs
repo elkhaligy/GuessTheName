@@ -10,10 +10,10 @@ using System.Windows.Forms;
 
 namespace ClientApp
 {
-    public partial class Room : UserControl
+    public partial class RoomUserControl : UserControl
     {
 
-        public Room(string roomOwner, string roomName, string roomCategory)
+        public RoomUserControl(string roomOwner, string roomName, string roomCategory)
         {
             InitializeComponent();
             roomNameLabel.Text = roomName;
