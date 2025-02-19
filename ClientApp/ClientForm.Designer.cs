@@ -102,7 +102,7 @@
             createRoomButton.TabIndex = 1;
             createRoomButton.Text = "Create Room";
             createRoomButton.UseVisualStyleBackColor = true;
-            createRoomButton.Click += testCreateRoomButton_Click;
+            createRoomButton.Click += CreateRoomButton_Click;
             // 
             // ClientForm
             // 

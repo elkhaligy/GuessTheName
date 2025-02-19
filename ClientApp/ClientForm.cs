@@ -11,7 +11,6 @@ namespace ClientApp
 {
     public partial class ClientForm : Form
     {
-        private Thread clientMessageListeningThread;
         public Player Player { get; set; }
         private List<GameRoom> roomsListFromServerToDisplay = new List<GameRoom>();
 
@@ -54,8 +53,7 @@ namespace ClientApp
 
             TcpClient tcpClient = new TcpClient();
             tcpClient.Connect("127.0.0.1", 50000);
-            clientMessageListeningThread = new Thread(() => listenForMessages()) { IsBackground = true };
-            clientMessageListeningThread.Start();
+            new Thread(() => listenForMessages()) { IsBackground = true }.Start();
 
             Player = new Player { tcpClient = tcpClient, Name = userNameTextBox.Text, Score = 0 };
 
@@ -122,7 +120,7 @@ namespace ClientApp
             }
         }
 
-        private void testCreateRoomButton_Click(object sender, EventArgs e)
+        private void CreateRoomButton_Click(object sender, EventArgs e)
         {
             string roomName;
             string roomCategory;
