@@ -30,6 +30,7 @@
 
         private void InitializeComponent()
         {
+
             connectButton = new Button();
             userNameTextBox = new TextBox();
             label1 = new Label();
@@ -105,6 +106,8 @@
             StartPosition = FormStartPosition.CenterScreen;
             ResumeLayout(false);
             PerformLayout();
+
+
 
         }
 
