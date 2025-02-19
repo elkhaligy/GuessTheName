@@ -25,8 +25,9 @@ namespace Shared.Models
 
         public string StartGame()
         {
-         
-            string filePath = $"C:/Game/GuessTheName/Shared/Data/{category}.txt";
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sFile = System.IO.Path.Combine(currentDirectory, @$"..\..\..\..\Shared\Data\{category}.txt");
+            string filePath = Path.GetFullPath(sFile);
             Random random = new Random();
             if (File.Exists(filePath))
             {

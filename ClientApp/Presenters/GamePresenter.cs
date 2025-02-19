@@ -35,7 +35,7 @@ namespace ClientApp.Presenters
             StringBuilder revealedWord = new StringBuilder();
             foreach (char letter in secretWord)
             {
-                if (guessedLetters.Contains(char.ToUpper(letter)))
+                if (guessedLetters.Contains(char.ToLower(letter)))
                 {
                     revealedWord.Append(letter + " ");
                 }

@@ -18,6 +18,7 @@ namespace ClientApp.Views
         public GameForm()
         {
             InitializeComponent();
+            lblSecretWord.Visible = false;
             this.KeyPress += keyPressed;
         }
 
@@ -63,7 +64,8 @@ namespace ClientApp.Views
 
                 if (selectedWord != null)
                 {
-                    lblSecretWord.Text = new string('_', selectedWord.Length).Replace("", " ").Trim();
+                    lblSecretWord.Visible = true;
+                    lblSecretWord.Text = new string('_', selectedWord.Length).Replace("_", "\u2500  ");
                 }
                 else
                 {
