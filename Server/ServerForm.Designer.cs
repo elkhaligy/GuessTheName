@@ -41,9 +41,10 @@
             // 
             // startServerButton
             // 
-            startServerButton.Location = new Point(718, 472);
+            startServerButton.Location = new Point(503, 283);
+            startServerButton.Margin = new Padding(2, 2, 2, 2);
             startServerButton.Name = "startServerButton";
-            startServerButton.Size = new Size(164, 76);
+            startServerButton.Size = new Size(115, 46);
             startServerButton.TabIndex = 0;
             startServerButton.Text = "Start";
             startServerButton.UseVisualStyleBackColor = true;
@@ -51,16 +52,18 @@
             // 
             // messageTextBox
             // 
-            messageTextBox.Location = new Point(248, 517);
+            messageTextBox.Location = new Point(174, 310);
+            messageTextBox.Margin = new Padding(2, 2, 2, 2);
             messageTextBox.Name = "messageTextBox";
-            messageTextBox.Size = new Size(295, 31);
+            messageTextBox.Size = new Size(208, 23);
             messageTextBox.TabIndex = 1;
             // 
             // sendButton
             // 
-            sendButton.Location = new Point(568, 517);
+            sendButton.Location = new Point(398, 310);
+            sendButton.Margin = new Padding(2, 2, 2, 2);
             sendButton.Name = "sendButton";
-            sendButton.Size = new Size(112, 34);
+            sendButton.Size = new Size(78, 20);
             sendButton.TabIndex = 2;
             sendButton.Text = "Broadcast";
             sendButton.UseVisualStyleBackColor = true;
@@ -69,9 +72,10 @@
             // connectedClientsLabel
             // 
             connectedClientsLabel.AutoSize = true;
-            connectedClientsLabel.Location = new Point(16, 391);
+            connectedClientsLabel.Location = new Point(11, 235);
+            connectedClientsLabel.Margin = new Padding(2, 0, 2, 0);
             connectedClientsLabel.Name = "connectedClientsLabel";
-            connectedClientsLabel.Size = new Size(163, 25);
+            connectedClientsLabel.Size = new Size(110, 15);
             connectedClientsLabel.TabIndex = 4;
             connectedClientsLabel.Text = "Connected Clients :";
             // 
@@ -79,9 +83,10 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(16, 42);
+            label1.Location = new Point(11, 25);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(67, 32);
+            label1.Size = new Size(45, 21);
             label1.TabIndex = 5;
             label1.Text = "Logs";
             // 
@@ -89,26 +94,29 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Trebuchet MS", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(238, 5);
+            label2.Location = new Point(167, 3);
+            label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(314, 44);
+            label2.Size = new Size(210, 29);
             label2.TabIndex = 6;
             label2.Text = "Server Dashboard";
             // 
             // clientMessagesTextBox
             // 
-            clientMessagesTextBox.Location = new Point(16, 77);
+            clientMessagesTextBox.Location = new Point(11, 46);
+            clientMessagesTextBox.Margin = new Padding(2, 2, 2, 2);
             clientMessagesTextBox.Multiline = true;
             clientMessagesTextBox.Name = "clientMessagesTextBox";
-            clientMessagesTextBox.Size = new Size(866, 286);
+            clientMessagesTextBox.Size = new Size(607, 173);
             clientMessagesTextBox.TabIndex = 7;
             // 
             // stopServerButton
             // 
             stopServerButton.Enabled = false;
-            stopServerButton.Location = new Point(718, 390);
+            stopServerButton.Location = new Point(503, 234);
+            stopServerButton.Margin = new Padding(2, 2, 2, 2);
             stopServerButton.Name = "stopServerButton";
-            stopServerButton.Size = new Size(164, 76);
+            stopServerButton.Size = new Size(115, 46);
             stopServerButton.TabIndex = 8;
             stopServerButton.Text = "Stop";
             stopServerButton.UseVisualStyleBackColor = true;
@@ -116,17 +124,18 @@
             // 
             // connectedClientsListBox
             // 
-            connectedClientsListBox.Location = new Point(16, 428);
+            connectedClientsListBox.Location = new Point(11, 257);
+            connectedClientsListBox.Margin = new Padding(2, 2, 2, 2);
             connectedClientsListBox.Multiline = true;
             connectedClientsListBox.Name = "connectedClientsListBox";
-            connectedClientsListBox.Size = new Size(207, 120);
+            connectedClientsListBox.Size = new Size(146, 74);
             connectedClientsListBox.TabIndex = 9;
             // 
             // ServerForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(903, 573);
+            ClientSize = new Size(632, 344);
             Controls.Add(connectedClientsListBox);
             Controls.Add(stopServerButton);
             Controls.Add(clientMessagesTextBox);
@@ -136,6 +145,7 @@
             Controls.Add(sendButton);
             Controls.Add(messageTextBox);
             Controls.Add(startServerButton);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "ServerForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Server Dashboard";

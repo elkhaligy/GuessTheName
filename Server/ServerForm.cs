@@ -1,3 +1,4 @@
+using Shared;
 using System.Net;
 
 namespace ServerApp
@@ -40,16 +41,16 @@ namespace ServerApp
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            server.BroadcastMessage("Hello");
+            //server.BroadcastMessage("Hello");
         }
 
 
         private void UpdateConnectedClientsList()
         {
             connectedClientsListBox.Clear();
-            foreach (String player in server.Players.Values)
+            foreach (Player player in  server.Players)
             {
-                connectedClientsListBox.Text += player + "\r\n";
+                connectedClientsListBox.Text += player.Name + "\r\n";
             }
         }
 

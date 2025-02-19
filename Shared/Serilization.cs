@@ -1,4 +1,7 @@
-﻿namespace Shared
+﻿using System.Net.Sockets;
+using System.Text.Json.Serialization;
+
+namespace Shared
 {
     public enum CommandTypes
     {
@@ -8,6 +11,7 @@
         RoomsList,  // Server sends this command to the client to send the list of rooms
         CreateRoom, // Client sends this command to the server to create a room
         JoinRoom,   // Client sends this command to the server to join a room
+        RoomCreated, 
         Quit
     }
     public class Command
@@ -22,7 +26,21 @@
         }
 
     }
-    
+    public class Payload
+    {
+        public string UserName { get; set; }
+        public char? Symbol { get; set; }
+
+        public Payload(string UserName)
+        {
+            this.UserName = UserName;
+        }
+
+        public Payload(char Symbol)
+        {
+            this.Symbol = Symbol;
+        }
+    }
     public class LoginCommandPayLoad
     {
         public string UserName { get; set; }
@@ -58,4 +76,22 @@
     {
 
     }
+
+    public class CreateRoomCommandPayload
+    {
+        public string RoomOwner { get; set; }
+
+        public string RoomName { get; set; }
+
+        public string RoomCategory { get; set; }
+
+        public CreateRoomCommandPayload(string roomOwner, string roomName, string roomCategory)
+        {
+            RoomOwner = roomOwner;
+            RoomName = roomName;
+            RoomCategory = roomCategory;
+        }
+    }
+
+ 
 }
