@@ -17,7 +17,6 @@ namespace ClientApp
     {
         private Player player;
         private List<GameRoom> rooms = new List<GameRoom>();
-        private Dictionary<GameRoom, Room> roomMap = new Dictionary<GameRoom, Room>();
         public List<GameRoom> Rooms { get { return rooms; } set { rooms = value; } }
 
         public RoomsForm(Player player)

@@ -8,8 +8,6 @@ namespace Shared
 {
     public class GameRoom
     {
-        public List<Player> Players { get; set; }
-
         public string RoomId { get; set; }
         public string Owner { get; set; }
         public string Guest { get; set; }

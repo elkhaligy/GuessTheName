@@ -10,7 +10,7 @@ namespace ServerApp
 {
     public class Server
     {
-        private TcpListener? tcpListener;
+        private TcpListener? tcpListener; 
         private int Port { get; set; }
         private IPAddress IpAddress { get; set; }
         private Thread? serverThread;
@@ -90,24 +90,24 @@ namespace ServerApp
                             tcpPlayerMap.Add(tcpClient, receivedPlayerFromJson);
                             OnUpdate?.Invoke();
                             break;
+
                         case CommandTypes.CreateRoom:
                             CreateRoomCommandPayload createRoomPayload = JsonSerializer.Deserialize<CreateRoomCommandPayload>(command.Payload.ToString());
                             GameRoom receivedRoomFromJson = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
-                            receivedRoomFromJson.Players = new List<Player>();
-                            receivedRoomFromJson.Players.Add(tcpPlayerMap[tcpClient]);
                             roomsList.Add(receivedRoomFromJson);
                             // Send the created room
                             Command roomCreated = new Command(CommandTypes.RoomCreated, receivedRoomFromJson);
                             jsonMessage = JsonSerializer.Serialize(roomCreated);
-
                             writer?.WriteLine(jsonMessage);
                             OnLog?.Invoke($"Created room: {receivedRoomFromJson.RoomId} with owner name {receivedRoomFromJson.Owner}  by {tcpClient.Client.RemoteEndPoint}");
                             break;
+
                         case CommandTypes.GetRooms:
                             Command getRooms = new Command(CommandTypes.RoomsList, roomsList);
                             jsonMessage = JsonSerializer.Serialize(getRooms);
                             writer?.WriteLine(jsonMessage);
                             break;
+
                         default:
                             break;
                     }
