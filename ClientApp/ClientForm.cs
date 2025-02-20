@@ -3,6 +3,7 @@ using System.Data;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using System.Windows.Forms;
 /*
  * Each request sent has a response back from server
  * This response is handled by resolveResponse() method
@@ -63,7 +64,10 @@ namespace ClientApp
 
             Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
             sendCommand(command); // Request sent, Response handling is done on resolveResponse() method
-            roomsListPanel.Show();
+
+
+
+
         }
 
         private void sendCommand(Command command)
@@ -109,7 +113,9 @@ namespace ClientApp
                     break;
                 case CommandTypes.RoomsList:
                     roomsListFromServerToDisplay = JsonSerializer.Deserialize<List<GameRoom>>(command.Payload.ToString());
+                    roomsListPanel.Show();
                     updateRoomsListGUI();
+                   
                     break;
                 case CommandTypes.RoomUpdated:
                     break;
@@ -130,8 +136,9 @@ namespace ClientApp
             roomsListFlowLayout.Controls.Clear();
             foreach (var receivedRoom in roomsListFromServerToDisplay)
             {
-                RoomUserControl roomControl = new RoomUserControl(this, receivedRoom.Owner, receivedRoom.RoomId, receivedRoom.Category);
-                roomsListFlowLayout.Controls.Add(roomControl);
+                //RoomUserControl roomControl = new RoomUserControl(this, receivedRoom.Owner, receivedRoom.RoomId, receivedRoom.Category);
+                //roomsListFlowLayout.Controls.Add(roomControl);
+                AddRoomPanel(roomName: receivedRoom.RoomId, creator: receivedRoom.Owner, status: receivedRoom.State.ToString());
             }
         }
 
@@ -179,7 +186,6 @@ namespace ClientApp
             {
                 e.SuppressKeyPress = true;
                 loginButton_Click(sender, e);
-
             }
         }
 
@@ -191,6 +197,68 @@ namespace ClientApp
             Command createRoomRequest = new Command(CommandTypes.CreateRoom, gameRoom);
             sendCommand(createRoomRequest);
 
+        }
+
+
+        private void AddRoomPanel(string roomName, string creator, string status)
+        {
+            // Create the panel
+            Panel roomPanel = new Panel
+            {
+                Size = new Size(250, 130),
+                BackColor = Color.GhostWhite,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            // Room Name Label
+            Label nameLabel = new Label
+            {
+                Text = $"Room: {roomName}",
+                Location = new Point(10, 10),
+                AutoSize = true
+            };
+            roomPanel.Controls.Add(nameLabel);
+
+            // Room Creator Label
+            Label creatorLabel = new Label
+            {
+                Text = $"Creator: {creator}",
+                Location = new Point(10, 35),
+                AutoSize = true
+            };
+            roomPanel.Controls.Add(creatorLabel);
+
+            // Room Status Label
+            Label statusLabel = new Label
+            {
+                Text = $"Status: {status}",
+                Location = new Point(10, 60),
+                AutoSize = true
+            };
+            roomPanel.Controls.Add(statusLabel);
+
+            // Join Button
+            Button joinButton = new Button
+            {
+                Text = "Join",
+                Size = new Size(100, 30),
+                Location = new Point(10, 90)
+            };
+            joinButton.Click += (s, e) => MessageBox.Show($"Joining {roomName}...");
+            roomPanel.Controls.Add(joinButton);
+
+            // Spectate Button
+            Button spectateButton = new Button
+            {
+                Text = "Spectate",
+                Size = new Size(100, 30),
+                Location = new Point(130, 90)
+            };
+            spectateButton.Click += (s, e) => MessageBox.Show($"Spectating {roomName}...");
+            roomPanel.Controls.Add(spectateButton);
+
+            // Add the panel to FlowLayoutPanel (Assuming you have one)
+            roomsListFlowLayout.Controls.Add(roomPanel);
         }
     }
 

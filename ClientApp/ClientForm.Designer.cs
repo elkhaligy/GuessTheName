@@ -33,12 +33,13 @@
             loginButton = new Button();
             userNameTextBox = new TextBox();
             loginPanel = new Panel();
+            label8 = new Label();
             roomCreationPanel = new Panel();
             confirmCreationButton = new Button();
             tryCategoriesComboBox = new ComboBox();
             tryRoomNameTextBox = new TextBox();
             label1 = new Label();
-            label8 = new Label();
+            panel1 = new Panel();
             roomsListPanel = new Panel();
             label4 = new Label();
             refreshRoomsButton = new Button();
@@ -53,7 +54,6 @@
             label6 = new Label();
             label3 = new Label();
             label5 = new Label();
-            panel1 = new Panel();
             loginPanel.SuspendLayout();
             roomCreationPanel.SuspendLayout();
             roomsListPanel.SuspendLayout();
@@ -92,6 +92,16 @@
             loginPanel.Name = "loginPanel";
             loginPanel.Size = new Size(808, 494);
             loginPanel.TabIndex = 5;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Lucida Fax", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label8.Location = new Point(248, 19);
+            label8.Name = "label8";
+            label8.Size = new Size(321, 42);
+            label8.TabIndex = 5;
+            label8.Text = "Guess the Name";
             // 
             // roomCreationPanel
             // 
@@ -143,15 +153,13 @@
             label1.Text = "Please Enter Room Details";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label8
+            // panel1
             // 
-            label8.AutoSize = true;
-            label8.Font = new Font("Lucida Fax", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label8.Location = new Point(248, 19);
-            label8.Name = "label8";
-            label8.Size = new Size(321, 42);
-            label8.TabIndex = 5;
-            label8.Text = "Guess the Name";
+            panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Location = new Point(248, 156);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(292, 169);
+            panel1.TabIndex = 4;
             // 
             // roomsListPanel
             // 
@@ -179,7 +187,7 @@
             // 
             refreshRoomsButton.BackColor = Color.LightCyan;
             refreshRoomsButton.Font = new Font("Lucida Fax", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            refreshRoomsButton.Location = new Point(672, 19);
+            refreshRoomsButton.Location = new Point(693, 19);
             refreshRoomsButton.Name = "refreshRoomsButton";
             refreshRoomsButton.Size = new Size(90, 23);
             refreshRoomsButton.TabIndex = 2;
@@ -191,7 +199,7 @@
             // 
             createRoomButton.BackColor = Color.LightCyan;
             createRoomButton.Font = new Font("Lucida Fax", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            createRoomButton.Location = new Point(672, 454);
+            createRoomButton.Location = new Point(693, 454);
             createRoomButton.Name = "createRoomButton";
             createRoomButton.Size = new Size(90, 23);
             createRoomButton.TabIndex = 1;
@@ -203,9 +211,9 @@
             // 
             roomsListFlowLayout.AutoScroll = true;
             roomsListFlowLayout.BackColor = SystemColors.Control;
-            roomsListFlowLayout.Location = new Point(26, 48);
+            roomsListFlowLayout.Location = new Point(17, 48);
             roomsListFlowLayout.Name = "roomsListFlowLayout";
-            roomsListFlowLayout.Size = new Size(761, 400);
+            roomsListFlowLayout.Size = new Size(770, 400);
             roomsListFlowLayout.TabIndex = 0;
             // 
             // lobbyPanel
@@ -296,21 +304,13 @@
             label5.TabIndex = 0;
             label5.Text = "Player 1 (Owner) :";
             // 
-            // panel1
-            // 
-            panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Location = new Point(248, 156);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(292, 169);
-            panel1.TabIndex = 4;
-            // 
             // ClientForm
             // 
             ClientSize = new Size(832, 518);
+            Controls.Add(roomsListPanel);
             Controls.Add(roomCreationPanel);
             Controls.Add(loginPanel);
             Controls.Add(lobbyPanel);
-            Controls.Add(roomsListPanel);
             Name = "ClientForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Guess";
