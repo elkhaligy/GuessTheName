@@ -136,6 +136,14 @@ namespace ServerApp
 
                             jsonMessage = JsonSerializer.Serialize(new Command(CommandTypes.JoinRoom, currentJoinedRoom));
                             writer?.WriteLine(jsonMessage);
+
+                            // Send to the owner of the room an update with the guest name
+                            Command roomUpdated = new Command(CommandTypes.RoomUpdated, currentJoinedRoom);
+                            jsonMessage = JsonSerializer.Serialize(roomUpdated);
+                            TcpClient ownerTcpClient = nameToClientMap[currentJoinedRoom.Owner];
+                            StreamWriter ownerWriter = new StreamWriter(ownerTcpClient.GetStream()) { AutoFlush = true };
+                            ownerWriter?.WriteLine(jsonMessage);
+
                             //string receivedRoomName = "dummy";
                             //GameRoom neededRoom;
                             //foreach (GameRoom room in roomsList)
@@ -149,8 +157,34 @@ namespace ServerApp
                             //neededRoom.Guest = tcpPlayerMap[tcpClient].Name;
 
                             // After you handled this you need to notify both the owner and the guest
-
                             break;
+                        case CommandTypes.RequestReady:
+                            GameRoom receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                            GameRoom currentRoom = roomsList.Find(room => room.RoomId == receivedRoom.RoomId);
+                            string currentPlayerName = tcpPlayerMap[tcpClient].Name;
+                            if (currentPlayerName == currentRoom.Owner)
+                            {
+                                currentRoom.IsOwnerReady = true;
+                            }
+                            else
+                            {
+                                currentRoom.IsGuestReady = true;
+                            }
+                            Command roomUpdatedCommand = new Command(CommandTypes.RoomUpdated, currentRoom);
+                            jsonMessage = JsonSerializer.Serialize(roomUpdatedCommand);
+
+                            var roomOwnerTcpClient = nameToClientMap[currentRoom.Owner];
+                            StreamWriter roomOwnerWriter = new StreamWriter(roomOwnerTcpClient.GetStream()) { AutoFlush = true };
+                            roomOwnerWriter?.WriteLine(jsonMessage);
+
+                            if (currentRoom.Guest.Length > 0)
+                            {
+                                var roomGuestTcpClient = nameToClientMap[currentRoom.Guest];
+                                StreamWriter roomGuestWriter = new StreamWriter(roomGuestTcpClient.GetStream()) { AutoFlush = true };
+                                roomGuestWriter?.WriteLine(jsonMessage);
+                            }
+
+                             break;
                         default:
                             break;
                     }

@@ -12,6 +12,9 @@ namespace Shared
         public string Owner { get; set; }
         public string Guest { get; set; }
 
+        public bool IsOwnerReady { get; set; }
+
+        public bool IsGuestReady { get; set; }
         public List<Player> Spectators { get; set; }
 
         public string Category { get; set; }

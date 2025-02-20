@@ -14,11 +14,15 @@ namespace ClientApp
     {
         public Player Player { get; set; }
         private List<GameRoom> roomsListFromServerToDisplay = new List<GameRoom>();
+        private GameRoom currentRoom;
 
         public ClientForm()
         {
             InitializeComponent();
             DoubleBuffered = true;
+            StartGameButton.Enabled = false;
+            guestNameLabel.Text = "";
+            ownerNameLabel.Text = "";
         }
 
         private void loginButton_Click(object sender, EventArgs e)
@@ -61,6 +65,7 @@ namespace ClientApp
             Command loggingRequest = new Command(CommandTypes.Login, Player);
             sendCommand(loggingRequest);
             loginPanel.Hide();
+            this.Text = $"Guess the Name Game (Playing as {Player.Name})";
 
             Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
             sendCommand(command); // Request sent, Response handling is done on resolveResponse() method
@@ -95,15 +100,19 @@ namespace ClientApp
             }
 
             Command command = JsonSerializer.Deserialize<Command>(response);
+            GameRoom receivedRoom;
+
             switch (command.CommandType)
             {
                 case CommandTypes.RoomCreated:
-                    GameRoom receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    currentRoom = receivedRoom;
                     Player.CurrentRoom = receivedRoom.RoomId;
                     Player.IsRoomOwner = true;
                     roomsListPanel.Hide();
                     roomCreationPanel.Hide();
                     lobbyPanel.Show();
+                    guestReadyCheckbox.Enabled = false;
                     ownerNameLabel.Text = Player.Name + " (Me)";
                     break;
 
@@ -114,10 +123,21 @@ namespace ClientApp
                     break;
 
                 case CommandTypes.RoomUpdated:
+                    receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    currentRoom = receivedRoom;
+                    if (Player.IsRoomOwner)
+                        guestNameLabel.Text = receivedRoom.Guest;
+                    guestReadyCheckbox.Checked = receivedRoom.IsGuestReady;
+                    ownerReadyCheckbox.Checked = receivedRoom.IsOwnerReady;
+                    if (Player.IsRoomOwner && receivedRoom.IsGuestReady && receivedRoom.IsOwnerReady)
+                    {
+                        StartGameButton.Enabled = true;
+                    }
                     break;
 
                 case CommandTypes.JoinRoom:
                     GameRoom joinedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    currentRoom = joinedRoom;
                     //MessageBox.Show(command.Payload.ToString());
                     GameRoom gameRoom = roomsListFromServerToDisplay.Find(room => room.RoomId == joinedRoom.RoomId);
                     gameRoom.Guest = joinedRoom.Guest;
@@ -127,6 +147,8 @@ namespace ClientApp
                     lobbyPanel.Show();
                     ownerNameLabel.Text = joinedRoom.Owner;
                     guestNameLabel.Text = Player.Name + " (Me)";
+                    ownerReadyCheckbox.Enabled = false;
+                    StartGameButton.Hide();
                     break;
                 case CommandTypes.StartGame:
                     /*
@@ -178,7 +200,7 @@ namespace ClientApp
         {
             string takenRoomName = tryRoomNameTextBox.Text;
             string takenRoomCat = tryCategoriesComboBox.Text;
-            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Category = takenRoomCat };
+            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Guest = "", IsOwnerReady = false, IsGuestReady = false , Category = takenRoomCat, };
             Command createRoomRequest = new Command(CommandTypes.CreateRoom, gameRoom);
             sendCommand(createRoomRequest);
         }
@@ -191,6 +213,12 @@ namespace ClientApp
             sendCommand(joinRoomRequest);
             roomsListPanel.Hide();
             lobbyPanel.Show();
+        }
+
+
+        private void readyButton_Click(string roomName)
+        {
+
         }
 
         private void AddRoomPanel(string roomName, string creator, string otherPlayer, string status)
@@ -270,5 +298,16 @@ namespace ClientApp
             roomPanel.Controls.Add(joinButton);
         }
 
+        private void ReadyButton_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show($"{roomName}");
+            Command readyRequest = new Command(CommandTypes.RequestReady, currentRoom);
+            sendCommand(readyRequest);
+        }
+
+        private void StartGameButton_Click(object sender, EventArgs e)
+        {
+            Command command = new Command(CommandTypes.StartGame, currentRoom);
+        }
     }
 }

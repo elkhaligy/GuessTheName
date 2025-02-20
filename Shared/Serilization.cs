@@ -15,6 +15,7 @@ namespace Shared
         RoomCreated,
         StartGame,
         RoomUpdated,
+        RequestReady,
         Quit
     }
     public class Command

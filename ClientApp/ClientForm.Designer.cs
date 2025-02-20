@@ -46,10 +46,11 @@
             createRoomButton = new Button();
             roomsListFlowLayout = new FlowLayoutPanel();
             lobbyPanel = new Panel();
+            guestReadyCheckbox = new CheckBox();
+            ownerReadyCheckbox = new CheckBox();
             guestNameLabel = new Label();
             ownerNameLabel = new Label();
             label2 = new Label();
-            ReadyButton = new Button();
             StartGameButton = new Button();
             label6 = new Label();
             label3 = new Label();
@@ -218,10 +219,11 @@
             // 
             // lobbyPanel
             // 
+            lobbyPanel.Controls.Add(guestReadyCheckbox);
+            lobbyPanel.Controls.Add(ownerReadyCheckbox);
             lobbyPanel.Controls.Add(guestNameLabel);
             lobbyPanel.Controls.Add(ownerNameLabel);
             lobbyPanel.Controls.Add(label2);
-            lobbyPanel.Controls.Add(ReadyButton);
             lobbyPanel.Controls.Add(StartGameButton);
             lobbyPanel.Controls.Add(label6);
             lobbyPanel.Controls.Add(label3);
@@ -232,23 +234,45 @@
             lobbyPanel.TabIndex = 6;
             lobbyPanel.Visible = false;
             // 
+            // guestReadyCheckbox
+            // 
+            guestReadyCheckbox.AutoSize = true;
+            guestReadyCheckbox.Location = new Point(209, 157);
+            guestReadyCheckbox.Name = "guestReadyCheckbox";
+            guestReadyCheckbox.Size = new Size(58, 19);
+            guestReadyCheckbox.TabIndex = 9;
+            guestReadyCheckbox.Text = "Ready";
+            guestReadyCheckbox.UseVisualStyleBackColor = true;
+            guestReadyCheckbox.Click += ReadyButton_Click;
+            // 
+            // ownerReadyCheckbox
+            // 
+            ownerReadyCheckbox.AutoSize = true;
+            ownerReadyCheckbox.Location = new Point(209, 132);
+            ownerReadyCheckbox.Name = "ownerReadyCheckbox";
+            ownerReadyCheckbox.Size = new Size(58, 19);
+            ownerReadyCheckbox.TabIndex = 8;
+            ownerReadyCheckbox.Text = "Ready";
+            ownerReadyCheckbox.UseVisualStyleBackColor = true;
+            ownerReadyCheckbox.Click += ReadyButton_Click;
+            // 
             // guestNameLabel
             // 
             guestNameLabel.AutoSize = true;
             guestNameLabel.Location = new Point(126, 156);
             guestNameLabel.Name = "guestNameLabel";
-            guestNameLabel.Size = new Size(72, 15);
+            guestNameLabel.Size = new Size(78, 15);
             guestNameLabel.TabIndex = 7;
-            guestNameLabel.Text = "Guest Name";
+            guestNameLabel.Text = "Not Available";
             // 
             // ownerNameLabel
             // 
             ownerNameLabel.AutoSize = true;
             ownerNameLabel.Location = new Point(126, 132);
             ownerNameLabel.Name = "ownerNameLabel";
-            ownerNameLabel.Size = new Size(77, 15);
+            ownerNameLabel.Size = new Size(78, 15);
             ownerNameLabel.TabIndex = 6;
-            ownerNameLabel.Text = "Owner Name";
+            ownerNameLabel.Text = "Not Available";
             // 
             // label2
             // 
@@ -260,15 +284,6 @@
             label2.TabIndex = 5;
             label2.Text = "Lobby Room";
             // 
-            // ReadyButton
-            // 
-            ReadyButton.Location = new Point(599, 412);
-            ReadyButton.Name = "ReadyButton";
-            ReadyButton.Size = new Size(91, 52);
-            ReadyButton.TabIndex = 4;
-            ReadyButton.Text = "Ready";
-            ReadyButton.UseVisualStyleBackColor = true;
-            // 
             // StartGameButton
             // 
             StartGameButton.Location = new Point(696, 412);
@@ -277,6 +292,7 @@
             StartGameButton.TabIndex = 3;
             StartGameButton.Text = "Start Game";
             StartGameButton.UseVisualStyleBackColor = true;
+            StartGameButton.Click += StartGameButton_Click;
             // 
             // label6
             // 
@@ -342,7 +358,6 @@
         private Label label3;
         private Label label5;
         private Button StartGameButton;
-        private Button ReadyButton;
         private Label guestNameLabel;
         private Label ownerNameLabel;
         private Label label2;
@@ -354,5 +369,7 @@
         private ComboBox tryCategoriesComboBox;
         private Button confirmCreationButton;
         private Panel panel1;
+        private CheckBox guestReadyCheckbox;
+        private CheckBox ownerReadyCheckbox;
     }
 }
