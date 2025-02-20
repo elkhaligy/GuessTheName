@@ -104,15 +104,29 @@ namespace ClientApp
                     roomsListPanel.Hide();
                     roomCreationPanel.Hide();
                     lobbyPanel.Show();
-                    ownerNameLabel.Text = Player.Name;
+                    ownerNameLabel.Text = Player.Name + " (Me)";
                     break;
+
                 case CommandTypes.RoomsList:
                     roomsListFromServerToDisplay = JsonSerializer.Deserialize<List<GameRoom>>(command.Payload.ToString());
                     roomsListPanel.Show();
                     updateRoomsListGUI();
-
                     break;
+
                 case CommandTypes.RoomUpdated:
+                    break;
+
+                case CommandTypes.JoinRoom:
+                    GameRoom joinedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    //MessageBox.Show(command.Payload.ToString());
+                    GameRoom gameRoom = roomsListFromServerToDisplay.Find(room => room.RoomId == joinedRoom.RoomId);
+                    gameRoom.Guest = joinedRoom.Guest;
+                    Player.CurrentRoom = joinedRoom.RoomId;
+                    Player.IsRoomOwner = false;
+                    roomsListPanel.Hide();
+                    lobbyPanel.Show();
+                    ownerNameLabel.Text = joinedRoom.Owner;
+                    guestNameLabel.Text = Player.Name + " (Me)";
                     break;
                 case CommandTypes.StartGame:
                     /*
@@ -169,6 +183,16 @@ namespace ClientApp
             sendCommand(createRoomRequest);
         }
 
+        private void joinRoomButton_Click(string roomName)
+        {
+            //MessageBox.Show($"{roomName}");
+            GameRoom gameRoom = new GameRoom { RoomId = roomName, Guest = Player.Name };
+            Command joinRoomRequest = new Command(CommandTypes.JoinRoom, gameRoom);
+            sendCommand(joinRoomRequest);
+            roomsListPanel.Hide();
+            lobbyPanel.Show();
+        }
+
         private void AddRoomPanel(string roomName, string creator, string otherPlayer, string status)
         {
             // Create the panel
@@ -223,7 +247,7 @@ namespace ClientApp
                 Size = new Size(100, 30),
                 Location = new Point(10, 90)
             };
-            joinButton.Click += (s, e) => MessageBox.Show($"Joining {roomName}...");
+            joinButton.Click += (s, e) => { joinRoomButton_Click(roomName); };
             roomPanel.Controls.Add(joinButton);
 
             // Spectate Button
@@ -238,7 +262,13 @@ namespace ClientApp
 
             // Add the panel to FlowLayoutPanel (Assuming you have one)
             roomsListFlowLayout.Controls.Add(roomPanel);
+            otherPlayer = otherPlayer ?? "";
+            if (creator.Length > 0 && otherPlayer.Length > 0)
+            {
+                joinButton.Enabled = false;
+            }
+            roomPanel.Controls.Add(joinButton);
         }
-    }
 
     }
+}
