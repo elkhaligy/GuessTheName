@@ -115,6 +115,7 @@ namespace ServerApp
                             break;
 
                         case CommandTypes.JoinRoom:
+
                             // To join a room a player need to send the room name he wants  ONLY
                             // You will use the room name to search for the required room in the list of rooms
                             // When the required room is picked add the name of the player to the guest field
@@ -122,6 +123,19 @@ namespace ServerApp
                             // In this message send him the room he joined with SuccessfulJoin command
                             // The client then should act on this by creating a lobby
                             // The client has the full details it needs, like who is the owner of the room and the room details
+                            //string joinedRoomName = JsonSerializer.Deserialize<string>(command.Payload.ToString());
+                            //MessageBox.Show("hello");
+                            //string joinedPlayerName = tcpPlayerMap[tcpClient].Name;
+                            //currentJoinedRoom.Guest = joinedPlayerName;
+                            //Command joinedRoomCommand = new Command(CommandTypes.JoinRoom, currentJoinedRoom);
+
+                            //MessageBox.Show($"{JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString()).RoomId}");
+                            string receivedRoomName = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString()).RoomId;
+                            GameRoom currentJoinedRoom = roomsList.Find(room => room.RoomId == receivedRoomName);
+                            currentJoinedRoom.Guest = tcpPlayerMap[tcpClient].Name;
+
+                            jsonMessage = JsonSerializer.Serialize(new Command(CommandTypes.JoinRoom, currentJoinedRoom));
+                            writer?.WriteLine(jsonMessage);
                             //string receivedRoomName = "dummy";
                             //GameRoom neededRoom;
                             //foreach (GameRoom room in roomsList)
@@ -146,6 +160,20 @@ namespace ServerApp
 
             lock (players)
             {
+
+                // Remove the rooms created by the disconnected client
+                // We have the tcp client and we have the player by that using the dictionary
+                // room owner is the player name, so ez
+                string leftPlayerName = tcpPlayerMap[tcpClient].Name;
+                foreach (GameRoom room in roomsList)
+                {
+                    if (room.Owner == leftPlayerName)
+                    {
+                        roomsList.Remove(room);
+                        break;
+                    }
+                }
+
                 foreach (Player player in players)
                 {
                     if (player.tcpClient == tcpClient)
@@ -159,6 +187,7 @@ namespace ServerApp
                 tcpPlayerMap.Remove(tcpClient);
                 OnLog?.Invoke($"Client disconnected: {tcpClient.Client.RemoteEndPoint}");
                 OnUpdate?.Invoke(); // Notify the subscribers
+
             }
             tcpClient.Close();
         }

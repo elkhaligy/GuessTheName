@@ -65,10 +65,6 @@ namespace ClientApp
 
             Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
             sendCommand(command); // Request sent, Response handling is done on resolveResponse() method
-
-
-
-
         }
 
         private void sendCommand(Command command)
@@ -106,19 +102,32 @@ namespace ClientApp
                     GameRoom receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                     Player.CurrentRoom = receivedRoom.RoomId;
                     Player.IsRoomOwner = true;
-                    //MessageBox.Show("Room Created Successfully!")
                     roomsListPanel.Hide();
                     roomCreationPanel.Hide();
                     lobbyPanel.Show();
-                    updateLobbyRoomGUI();
+                    ownerNameLabel.Text = Player.Name + " (Me)";
                     break;
+
                 case CommandTypes.RoomsList:
                     roomsListFromServerToDisplay = JsonSerializer.Deserialize<List<GameRoom>>(command.Payload.ToString());
                     roomsListPanel.Show();
                     updateRoomsListGUI();
-                   
                     break;
+
                 case CommandTypes.RoomUpdated:
+                    break;
+
+                case CommandTypes.JoinRoom:
+                    GameRoom joinedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    //MessageBox.Show(command.Payload.ToString());
+                    GameRoom gameRoom = roomsListFromServerToDisplay.Find(room => room.RoomId == joinedRoom.RoomId);
+                    gameRoom.Guest = joinedRoom.Guest;
+                    Player.CurrentRoom = joinedRoom.RoomId;
+                    Player.IsRoomOwner = false;
+                    roomsListPanel.Hide();
+                    lobbyPanel.Show();
+                    ownerNameLabel.Text = joinedRoom.Owner;
+                    guestNameLabel.Text = Player.Name + " (Me)";
                     break;
                 case CommandTypes.StartGame:
                     /*
@@ -137,42 +146,8 @@ namespace ClientApp
             roomsListFlowLayout.Controls.Clear();
             foreach (var receivedRoom in roomsListFromServerToDisplay)
             {
-                //RoomUserControl roomControl = new RoomUserControl(this, receivedRoom.Owner, receivedRoom.RoomId, receivedRoom.Category);
-                //roomsListFlowLayout.Controls.Add(roomControl);
-                AddRoomPanel(roomName: receivedRoom.RoomId, creator: receivedRoom.Owner, status: receivedRoom.State.ToString());
+                AddRoomPanel(roomName: receivedRoom.RoomId, creator: receivedRoom.Owner, receivedRoom.Guest, status: receivedRoom.State.ToString());
             }
-        }
-
-        public void updateLobbyRoomGUI()
-        {
-            if (Player.IsRoomOwner)
-            {
-                ownerNameLabel.Text = Player.Name;
-            }
-            else
-            {
-                guestNameLabel.Text = Player.Name;
-            }
-        }
-        public void JoinRoomButton_Click()
-        {
-            MessageBox.Show("Show");
-            // What I need about this?
-            // I only need room name
-            //string roomNameToJoin = 
-        }
-        private void CreateRoomButton_Click(object sender, EventArgs e)
-        {
-            string roomName;
-            string roomCategory;
-
-            roomsListPanel.Hide();
-
-            tryCategoriesComboBox.Items.Add("Countries");
-            tryCategoriesComboBox.Items.Add("Banana");
-            tryCategoriesComboBox.Items.Add("Orange");
-            tryCategoriesComboBox.SelectedIndex = 0;
-            roomCreationPanel.Show();
         }
 
         private void refreshRoomsButton_Click(object sender, EventArgs e)
@@ -190,6 +165,16 @@ namespace ClientApp
             }
         }
 
+        private void CreateRoomButton_Click(object sender, EventArgs e)
+        {
+            roomsListPanel.Hide();
+            tryCategoriesComboBox.Items.Add("Countries");
+            tryCategoriesComboBox.Items.Add("Banana");
+            tryCategoriesComboBox.Items.Add("Orange");
+            tryCategoriesComboBox.SelectedIndex = 0;
+            roomCreationPanel.Show();
+        }
+
         private void confirmCreationButton_Click(object sender, EventArgs e)
         {
             string takenRoomName = tryRoomNameTextBox.Text;
@@ -197,7 +182,6 @@ namespace ClientApp
             GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Category = takenRoomCat };
             Command createRoomRequest = new Command(CommandTypes.CreateRoom, gameRoom);
             sendCommand(createRoomRequest);
-
         }
         private void HandleDisconnect()
         {
@@ -227,14 +211,24 @@ namespace ClientApp
             frm.FormClosed += (s, args) => this.Close();
 
 
+        private void joinRoomButton_Click(string roomName)
+        {
+            //MessageBox.Show($"{roomName}");
+            GameRoom gameRoom = new GameRoom { RoomId = roomName, Guest = Player.Name };
+            Command joinRoomRequest = new Command(CommandTypes.JoinRoom, gameRoom);
+            sendCommand(joinRoomRequest);
+            roomsListPanel.Hide();
+            lobbyPanel.Show();
+        }
 
-        private void AddRoomPanel(string roomName, string creator, string status)
+        private void AddRoomPanel(string roomName, string creator, string otherPlayer, string status)
         {
             // Create the panel
             Panel roomPanel = new Panel
             {
                 Size = new Size(250, 130),
                 BackColor = Color.GhostWhite,
+
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -251,16 +245,25 @@ namespace ClientApp
             Label creatorLabel = new Label
             {
                 Text = $"Creator: {creator}",
-                Location = new Point(10, 35),
+                Location = new Point(10, 30),
                 AutoSize = true
             };
             roomPanel.Controls.Add(creatorLabel);
+
+            // Other Player Label
+            Label playerLabel = new Label
+            {
+                Text = $"Other Player: {otherPlayer}",
+                Location = new Point(10, 50),
+                AutoSize = true
+            };
+            roomPanel.Controls.Add(playerLabel);
 
             // Room Status Label
             Label statusLabel = new Label
             {
                 Text = $"Status: {status}",
-                Location = new Point(10, 60),
+                Location = new Point(10, 70),
                 AutoSize = true
             };
             roomPanel.Controls.Add(statusLabel);
@@ -272,7 +275,7 @@ namespace ClientApp
                 Size = new Size(100, 30),
                 Location = new Point(10, 90)
             };
-            joinButton.Click += (s, e) => MessageBox.Show($"Joining {roomName}...");
+            joinButton.Click += (s, e) => { joinRoomButton_Click(roomName); };
             roomPanel.Controls.Add(joinButton);
 
             // Spectate Button
@@ -287,7 +290,13 @@ namespace ClientApp
 
             // Add the panel to FlowLayoutPanel (Assuming you have one)
             roomsListFlowLayout.Controls.Add(roomPanel);
+            otherPlayer = otherPlayer ?? "";
+            if (creator.Length > 0 && otherPlayer.Length > 0)
+            {
+                joinButton.Enabled = false;
+            }
+            roomPanel.Controls.Add(joinButton);
         }
-    }
 
+    }
 }
