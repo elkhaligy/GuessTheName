@@ -85,7 +85,13 @@ namespace ServerApp
                     if (message == null) break;
                     OnLog?.Invoke($"Received: {message} from {tcpClient.Client.RemoteEndPoint}");
                     Command? command = JsonSerializer.Deserialize<Command>(message);
+                    GameRoom receivedRoom;
+                    GameRoom currentRoom;
+                    TcpClient roomOwnerTcp;
+                    TcpClient roomGuestTcp;
 
+                    StreamWriter roomOwnerWriter;
+                    StreamWriter roomGuestWriter;
                     switch (command.CommandType)
                     {
                         case CommandTypes.Login:
@@ -159,8 +165,8 @@ namespace ServerApp
                             // After you handled this you need to notify both the owner and the guest
                             break;
                         case CommandTypes.RequestReady:
-                            GameRoom receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
-                            GameRoom currentRoom = roomsList.Find(room => room.RoomId == receivedRoom.RoomId);
+                            receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                            currentRoom = roomsList.Find(room => room.RoomId == receivedRoom.RoomId);
                             string currentPlayerName = tcpPlayerMap[tcpClient].Name;
                             if (currentPlayerName == currentRoom.Owner)
                             {
@@ -174,17 +180,35 @@ namespace ServerApp
                             jsonMessage = JsonSerializer.Serialize(roomUpdatedCommand);
 
                             var roomOwnerTcpClient = nameToClientMap[currentRoom.Owner];
-                            StreamWriter roomOwnerWriter = new StreamWriter(roomOwnerTcpClient.GetStream()) { AutoFlush = true };
+                             roomOwnerWriter = new StreamWriter(roomOwnerTcpClient.GetStream()) { AutoFlush = true };
                             roomOwnerWriter?.WriteLine(jsonMessage);
 
                             if (currentRoom.Guest.Length > 0)
                             {
                                 var roomGuestTcpClient = nameToClientMap[currentRoom.Guest];
-                                StreamWriter roomGuestWriter = new StreamWriter(roomGuestTcpClient.GetStream()) { AutoFlush = true };
+                                 roomGuestWriter = new StreamWriter(roomGuestTcpClient.GetStream()) { AutoFlush = true };
                                 roomGuestWriter?.WriteLine(jsonMessage);
                             }
 
                              break;
+                        case CommandTypes.StartGame:
+                            receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                            if (receivedRoom.IsOwnerReady && receivedRoom.IsGuestReady)
+                            {
+                                currentRoom = roomsList.Find(room => room.RoomId == receivedRoom.RoomId);
+                                currentRoom.State = GameState.InProgress;
+                                Command startGameCommand = new Command(CommandTypes.StartGame, currentRoom);
+                                jsonMessage = JsonSerializer.Serialize(startGameCommand);
+                                roomOwnerTcpClient = nameToClientMap[receivedRoom.Owner];
+                                roomOwnerWriter = new StreamWriter(roomOwnerTcpClient.GetStream()) { AutoFlush = true };
+                                roomOwnerWriter?.WriteLine(jsonMessage);
+
+                                roomGuestTcp = nameToClientMap[receivedRoom.Guest];
+                                roomGuestWriter = new StreamWriter(roomGuestTcp.GetStream()) { AutoFlush = true };
+                                roomGuestWriter?.WriteLine(jsonMessage);
+                            }
+
+                            break;
                         default:
                             break;
                     }

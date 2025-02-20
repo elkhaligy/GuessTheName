@@ -156,6 +156,15 @@ namespace ClientApp
                      * 
                      * 
                      */
+                    currentRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    if (Player.IsRoomOwner)
+                    {
+                        MessageBox.Show($"Game Started Me {Player.Name} vs {currentRoom.Guest}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Game Started Me {currentRoom.Owner} vs {Player.Name}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
+                    }
                     break;
                 default:
                     break;
@@ -200,7 +209,7 @@ namespace ClientApp
         {
             string takenRoomName = tryRoomNameTextBox.Text;
             string takenRoomCat = tryCategoriesComboBox.Text;
-            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Guest = "", IsOwnerReady = false, IsGuestReady = false , Category = takenRoomCat, };
+            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Guest = "", IsOwnerReady = false, IsGuestReady = false , Category = takenRoomCat, State = GameState.Waiting };
             Command createRoomRequest = new Command(CommandTypes.CreateRoom, gameRoom);
             sendCommand(createRoomRequest);
         }
@@ -308,6 +317,7 @@ namespace ClientApp
         private void StartGameButton_Click(object sender, EventArgs e)
         {
             Command command = new Command(CommandTypes.StartGame, currentRoom);
+            sendCommand(command);
         }
     }
 }
