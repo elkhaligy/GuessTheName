@@ -10,6 +10,22 @@ namespace Shared.Enums
     {
         Animals,
         Food,
-        Celebrity
+        Countries
+    }
+    public static class ExtendedCategory
+    {
+        public static Category GetCategory(this string categoryName)
+        {
+            switch (categoryName)
+            {
+                case "Animals":
+                    return Category.Animals;
+                case "Food":
+                    return Category.Food;
+                case "Countries":
+                    return Category.Countries;
+            }
+            return new Category();
+        }
     }
 }

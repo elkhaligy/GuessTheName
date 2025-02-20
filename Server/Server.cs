@@ -1,4 +1,5 @@
-﻿using Shared;
+﻿using ClientApp.Presenters;
+using Shared;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -21,6 +22,7 @@ namespace ServerApp
         private List<Player> players = new List<Player>();
         public List<GameRoom> roomsList = new List<GameRoom>();
         public List<Player> Players { get { return players; } }
+        GamePresenter presenter;
 
         public Dictionary<TcpClient, Player> tcpPlayerMap = new Dictionary<TcpClient, Player>();
         public Dictionary<string, TcpClient> nameToClientMap = new Dictionary<string, TcpClient>();
@@ -104,6 +106,7 @@ namespace ServerApp
                             // Send the created room
                             Command roomCreated = new Command(CommandTypes.RoomCreated, receivedRoomFromJson);
                             jsonMessage = JsonSerializer.Serialize(roomCreated);
+                            presenter = new GamePresenter(receivedRoomFromJson.Category);
                             writer?.WriteLine(jsonMessage);
                             OnLog?.Invoke($"Created room: {receivedRoomFromJson.RoomId} with owner name {receivedRoomFromJson.Owner}  by {tcpClient.Client.RemoteEndPoint}");
                             break;
@@ -150,6 +153,20 @@ namespace ServerApp
 
                             // After you handled this you need to notify both the owner and the guest
 
+                            break;
+                        case CommandTypes.StartGame:
+                            GameRoom currentRoom = roomsList.Find(room => room.Owner == tcpPlayerMap[tcpClient].Name || room.Guest == tcpPlayerMap[tcpClient].Name);
+                            if(currentRoom.Guest != null)
+                            {
+                                presenter.Start();
+                                Command gameStarted = new Command(CommandTypes.GameStarted, presenter); 
+                                jsonMessage = JsonSerializer.Serialize<Command>(gameStarted);
+                                writer?.WriteLine(jsonMessage);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Wait till another play join the room");
+                            }
                             break;
                         default:
                             break;

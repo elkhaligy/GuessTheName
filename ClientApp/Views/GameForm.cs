@@ -1,16 +1,22 @@
-﻿using ClientApp.Presenters;
+﻿
+
+using ClientApp.Presenters;
 
 namespace ClientApp.Views
 {
     public partial class GameForm : Form
     {
         private GamePresenter presenter;
+        private string selectedWord;
 
-        public GameForm()
+        public GameForm(GamePresenter _presenter)
         {
             InitializeComponent();
             this.KeyPreview = true;
-            lblSecretWord.Visible = false;
+            presenter = _presenter;
+            //lblSecretWord.Visible = false;
+            selectedWord = presenter.secretWord;
+            lblSecretWord.Text = new string('_', selectedWord.Length).Replace("_", "\u2500  ");
             this.KeyPress += keyPressed;
         }
 
@@ -60,7 +66,7 @@ namespace ClientApp.Views
             if (sender is DomainUpDown b)
             {
 
-                presenter = new GamePresenter(b.SelectedIndex);
+                //presenter = new GamePresenter(b.SelectedIndex);
                 lblSecretWord.Text = presenter.update();
             }
         }
@@ -69,8 +75,7 @@ namespace ClientApp.Views
         {
             if (sender is ComboBox c)
             {
-                presenter = new GamePresenter(c.SelectedIndex);
-                string selectedWord = presenter.Start();
+                //presenter = new GamePresenter(c.SelectedIndex);
 
                 if (selectedWord != null)
                 {

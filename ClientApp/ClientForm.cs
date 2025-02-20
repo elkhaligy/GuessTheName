@@ -1,9 +1,11 @@
+using ClientApp.Presenters;
 using ClientApp.Views;
 using Shared;
 using System.Data;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using System.Windows.Forms;
 /*
  * Each request sent has a response back from server
@@ -130,15 +132,39 @@ namespace ClientApp
                     guestNameLabel.Text = Player.Name + " (Me)";
                     break;
                 case CommandTypes.StartGame:
+                    Command startGame = new Command(CommandTypes.StartGame, null);
                     /*
                      * 
                      * 
                      * 
                      */
                     break;
+                case CommandTypes.GameStarted:
+                    GamePresenter presenter = JsonSerializer.Deserialize<GamePresenter>(command.Payload.ToString());
+                    Thread gameThread = new Thread(()=> OnGameStart(presenter));
+                    gameThread.Start();
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void OnGameStart(GamePresenter presenter)
+        {
+            GameForm frm = new GameForm(presenter);
+            frm.Size = this.Size;
+            frm.Location = this.Location;
+            if (InvokeRequired)
+            {
+                Invoke(() =>
+                {
+                    this.Hide();
+                    frm.Show();
+                    frm.FormClosed += (args, e) => this.Close();
+                });
+                return;
+            }
+
         }
 
         public void updateRoomsListGUI()
@@ -168,9 +194,9 @@ namespace ClientApp
         private void CreateRoomButton_Click(object sender, EventArgs e)
         {
             roomsListPanel.Hide();
+            tryCategoriesComboBox.Items.Add("Animals");
             tryCategoriesComboBox.Items.Add("Countries");
-            tryCategoriesComboBox.Items.Add("Banana");
-            tryCategoriesComboBox.Items.Add("Orange");
+            tryCategoriesComboBox.Items.Add("Food");
             tryCategoriesComboBox.SelectedIndex = 0;
             roomCreationPanel.Show();
         }
@@ -183,34 +209,6 @@ namespace ClientApp
             Command createRoomRequest = new Command(CommandTypes.CreateRoom, gameRoom);
             sendCommand(createRoomRequest);
         }
-        private void HandleDisconnect()
-        {
-            //Application.Exit();
-            try
-            {
-                connectButton.Invoke(() =>
-                {
-                    MessageBox.Show("You're Disconnected. Try to reconnect again");
-                    connectButton.Enabled = true;
-                    userNameTextBox.Enabled = true;
-                    connectedCheckBox.Checked = false;
-                });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            GameForm frm = new GameForm();
-            frm.Show();
-            frm.Focus();
-            frm.FormClosed += (s, args) => this.Close();
-
-
         private void joinRoomButton_Click(string roomName)
         {
             //MessageBox.Show($"{roomName}");
@@ -298,5 +296,11 @@ namespace ClientApp
             roomPanel.Controls.Add(joinButton);
         }
 
+        private void StartGameButton_Click(object sender, EventArgs e)
+        {
+
+            Command command = new Command(CommandTypes.StartGame, new GetRoomCommandPayload());
+            sendCommand(command);
+        }
     }
 }

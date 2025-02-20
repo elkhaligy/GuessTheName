@@ -8,13 +8,16 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Presenters
 {
-    internal class GamePresenter
+    public class GamePresenter
     {
         Game myGame {  get; set; }
 
+        public string secretWord { get; set; }
 
-
-        private string secretWord;
+        public GamePresenter()
+        {
+            secretWord = string.Empty;
+        }
         public GamePresenter(int _category)
         {
             myGame = new Game((Category) _category);
@@ -22,9 +25,11 @@ namespace ClientApp.Presenters
 
         }
 
-        public GamePresenter( string secretWord)
+        public GamePresenter( string category)
         {
-            secretWord = myGame.StartGame();
+            //        secretWord = myGame.StartGame(); 
+            myGame = new Game(category.GetCategory());
+          //  secretWord = myGame.StartGame();
         }
       
         private HashSet<char> guessedLetters = new HashSet<char>();
@@ -52,9 +57,11 @@ namespace ClientApp.Presenters
             return revealedWord.ToString().Trim(); 
         }
 
-        public string Start()
+
+
+        public void Start()
         {
-            return myGame.StartGame(); // game when start return random word
+            secretWord = myGame.StartGame(); // game when start return random word
         }
     }
 }
