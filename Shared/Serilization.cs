@@ -14,6 +14,7 @@ namespace Shared
         //JoinedRoom,   // Server sends this command to the client to notify it that it has joined a room
         RoomCreated,
         StartGame,
+        GameStarted,
         RoomUpdated,
         Quit
     }

@@ -45,15 +45,15 @@
             refreshRoomsButton = new Button();
             createRoomButton = new Button();
             roomsListFlowLayout = new FlowLayoutPanel();
-            lobbyPanel = new Panel();
-            guestNameLabel = new Label();
-            ownerNameLabel = new Label();
-            label2 = new Label();
-            ReadyButton = new Button();
-            StartGameButton = new Button();
-            label6 = new Label();
-            label3 = new Label();
             label5 = new Label();
+            label3 = new Label();
+            label6 = new Label();
+            StartGameButton = new Button();
+            ReadyButton = new Button();
+            label2 = new Label();
+            ownerNameLabel = new Label();
+            guestNameLabel = new Label();
+            lobbyPanel = new Panel();
             loginPanel.SuspendLayout();
             roomCreationPanel.SuspendLayout();
             roomsListPanel.SuspendLayout();
@@ -79,7 +79,7 @@
             userNameTextBox.Location = new Point(304, 217);
             userNameTextBox.Name = "userNameTextBox";
             userNameTextBox.PlaceholderText = "Enter the username";
-            userNameTextBox.Size = new Size(188, 22);
+            userNameTextBox.Size = new Size(188, 25);
             userNameTextBox.TabIndex = 1;
             userNameTextBox.KeyDown += userNameTextBox_KeyDown;
             // 
@@ -99,7 +99,7 @@
             label8.Font = new Font("Lucida Fax", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label8.Location = new Point(248, 19);
             label8.Name = "label8";
-            label8.Size = new Size(321, 42);
+            label8.Size = new Size(405, 54);
             label8.TabIndex = 5;
             label8.Text = "Guess the Name";
             // 
@@ -131,7 +131,7 @@
             tryCategoriesComboBox.FormattingEnabled = true;
             tryCategoriesComboBox.Location = new Point(331, 245);
             tryCategoriesComboBox.Name = "tryCategoriesComboBox";
-            tryCategoriesComboBox.Size = new Size(121, 23);
+            tryCategoriesComboBox.Size = new Size(121, 28);
             tryCategoriesComboBox.TabIndex = 2;
             // 
             // tryRoomNameTextBox
@@ -139,7 +139,7 @@
             tryRoomNameTextBox.Location = new Point(331, 216);
             tryRoomNameTextBox.Name = "tryRoomNameTextBox";
             tryRoomNameTextBox.PlaceholderText = "Enter Room Name";
-            tryRoomNameTextBox.Size = new Size(121, 23);
+            tryRoomNameTextBox.Size = new Size(121, 27);
             tryRoomNameTextBox.TabIndex = 1;
             // 
             // label1
@@ -148,7 +148,7 @@
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.Location = new Point(287, 162);
             label1.Name = "label1";
-            label1.Size = new Size(230, 25);
+            label1.Size = new Size(291, 32);
             label1.TabIndex = 0;
             label1.Text = "Please Enter Room Details";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -179,7 +179,7 @@
             label4.Font = new Font("Lucida Fax", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label4.Location = new Point(20, 5);
             label4.Name = "label4";
-            label4.Size = new Size(287, 37);
+            label4.Size = new Size(354, 45);
             label4.TabIndex = 3;
             label4.Text = "Available Rooms";
             // 
@@ -216,6 +216,79 @@
             roomsListFlowLayout.Size = new Size(770, 400);
             roomsListFlowLayout.TabIndex = 0;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(20, 132);
+            label5.Name = "label5";
+            label5.Size = new Size(125, 20);
+            label5.TabIndex = 0;
+            label5.Text = "Player 1 (Owner) :";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(20, 61);
+            label3.Name = "label3";
+            label3.Size = new Size(0, 20);
+            label3.TabIndex = 1;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(22, 156);
+            label6.Name = "label6";
+            label6.Size = new Size(123, 20);
+            label6.TabIndex = 2;
+            label6.Text = "Player 2 (Guest) : ";
+            // 
+            // StartGameButton
+            // 
+            StartGameButton.Location = new Point(696, 412);
+            StartGameButton.Name = "StartGameButton";
+            StartGameButton.Size = new Size(91, 52);
+            StartGameButton.TabIndex = 3;
+            StartGameButton.Text = "Start Game";
+            StartGameButton.UseVisualStyleBackColor = true;
+            StartGameButton.Click += StartGameButton_Click;
+            // 
+            // ReadyButton
+            // 
+            ReadyButton.Location = new Point(599, 412);
+            ReadyButton.Name = "ReadyButton";
+            ReadyButton.Size = new Size(91, 52);
+            ReadyButton.TabIndex = 4;
+            ReadyButton.Text = "Ready";
+            ReadyButton.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Lucida Fax", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(275, 19);
+            label2.Name = "label2";
+            label2.Size = new Size(319, 54);
+            label2.TabIndex = 5;
+            label2.Text = "Lobby Room";
+            // 
+            // ownerNameLabel
+            // 
+            ownerNameLabel.AutoSize = true;
+            ownerNameLabel.Location = new Point(126, 132);
+            ownerNameLabel.Name = "ownerNameLabel";
+            ownerNameLabel.Size = new Size(96, 20);
+            ownerNameLabel.TabIndex = 6;
+            ownerNameLabel.Text = "Owner Name";
+            // 
+            // guestNameLabel
+            // 
+            guestNameLabel.AutoSize = true;
+            guestNameLabel.Location = new Point(126, 156);
+            guestNameLabel.Name = "guestNameLabel";
+            guestNameLabel.Size = new Size(90, 20);
+            guestNameLabel.TabIndex = 7;
+            guestNameLabel.Text = "Guest Name";
+            // 
             // lobbyPanel
             // 
             lobbyPanel.Controls.Add(guestNameLabel);
@@ -231,78 +304,6 @@
             lobbyPanel.Size = new Size(808, 494);
             lobbyPanel.TabIndex = 6;
             lobbyPanel.Visible = false;
-            // 
-            // guestNameLabel
-            // 
-            guestNameLabel.AutoSize = true;
-            guestNameLabel.Location = new Point(126, 156);
-            guestNameLabel.Name = "guestNameLabel";
-            guestNameLabel.Size = new Size(72, 15);
-            guestNameLabel.TabIndex = 7;
-            guestNameLabel.Text = "Guest Name";
-            // 
-            // ownerNameLabel
-            // 
-            ownerNameLabel.AutoSize = true;
-            ownerNameLabel.Location = new Point(126, 132);
-            ownerNameLabel.Name = "ownerNameLabel";
-            ownerNameLabel.Size = new Size(77, 15);
-            ownerNameLabel.TabIndex = 6;
-            ownerNameLabel.Text = "Owner Name";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Lucida Fax", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(275, 19);
-            label2.Name = "label2";
-            label2.Size = new Size(251, 42);
-            label2.TabIndex = 5;
-            label2.Text = "Lobby Room";
-            // 
-            // ReadyButton
-            // 
-            ReadyButton.Location = new Point(599, 412);
-            ReadyButton.Name = "ReadyButton";
-            ReadyButton.Size = new Size(91, 52);
-            ReadyButton.TabIndex = 4;
-            ReadyButton.Text = "Ready";
-            ReadyButton.UseVisualStyleBackColor = true;
-            // 
-            // StartGameButton
-            // 
-            StartGameButton.Location = new Point(696, 412);
-            StartGameButton.Name = "StartGameButton";
-            StartGameButton.Size = new Size(91, 52);
-            StartGameButton.TabIndex = 3;
-            StartGameButton.Text = "Start Game";
-            StartGameButton.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(22, 156);
-            label6.Name = "label6";
-            label6.Size = new Size(98, 15);
-            label6.TabIndex = 2;
-            label6.Text = "Player 2 (Guest) : ";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(20, 61);
-            label3.Name = "label3";
-            label3.Size = new Size(0, 15);
-            label3.TabIndex = 1;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(20, 132);
-            label5.Name = "label5";
-            label5.Size = new Size(100, 15);
-            label5.TabIndex = 0;
-            label5.Text = "Player 1 (Owner) :";
             // 
             // ClientForm
             // 
@@ -323,9 +324,6 @@
             lobbyPanel.ResumeLayout(false);
             lobbyPanel.PerformLayout();
             ResumeLayout(false);
-
-
-
         }
 
         #endregion
@@ -335,17 +333,7 @@
         private Panel loginPanel;
         private Panel roomsListPanel;
         private Button createRoomButton;
-        private FlowLayoutPanel roomsListFlowLayout;
         private Button refreshRoomsButton;
-        private Panel lobbyPanel;
-        private Label label6;
-        private Label label3;
-        private Label label5;
-        private Button StartGameButton;
-        private Button ReadyButton;
-        private Label guestNameLabel;
-        private Label ownerNameLabel;
-        private Label label2;
         private Label label4;
         private Label label8;
         private Panel roomCreationPanel;
@@ -354,5 +342,15 @@
         private ComboBox tryCategoriesComboBox;
         private Button confirmCreationButton;
         private Panel panel1;
+        private FlowLayoutPanel roomsListFlowLayout;
+        private Label label5;
+        private Label label3;
+        private Label label6;
+        private Button StartGameButton;
+        private Button ReadyButton;
+        private Label label2;
+        private Label ownerNameLabel;
+        private Label guestNameLabel;
+        private Panel lobbyPanel;
     }
 }
