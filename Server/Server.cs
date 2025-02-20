@@ -1,4 +1,5 @@
 ﻿using Shared;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -153,6 +154,9 @@ namespace ServerApp
                         break;
                     }
                 }
+                players.Remove(tcpPlayerMap[tcpClient]);
+                nameToClientMap.Remove(tcpPlayerMap[tcpClient].Name);
+                tcpPlayerMap.Remove(tcpClient);
                 OnLog?.Invoke($"Client disconnected: {tcpClient.Client.RemoteEndPoint}");
                 OnUpdate?.Invoke(); // Notify the subscribers
             }
