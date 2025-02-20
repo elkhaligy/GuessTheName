@@ -146,6 +146,21 @@ namespace ServerApp
 
             lock (players)
             {
+
+                // Remove the rooms created by the disconnected client
+                // We have the tcp client and we have the player by that using the dictionary
+                // room owner is the player name, so ez
+                string leftPlayerName = tcpPlayerMap[tcpClient].Name;
+                foreach (GameRoom room in roomsList)
+                {
+                    if (room.Owner == leftPlayerName)
+                    {
+                        roomsList.Remove(room);
+                        break;
+                    }
+                }
+
+
                 foreach (Player player in players)
                 {
                     if (player.tcpClient == tcpClient)
@@ -159,6 +174,7 @@ namespace ServerApp
                 tcpPlayerMap.Remove(tcpClient);
                 OnLog?.Invoke($"Client disconnected: {tcpClient.Client.RemoteEndPoint}");
                 OnUpdate?.Invoke(); // Notify the subscribers
+
             }
             tcpClient.Close();
         }
