@@ -1,50 +1,60 @@
 ﻿using ClientApp.Presenters;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ClientApp.Views
 {
     public partial class GameForm : Form
     {
         private GamePresenter presenter;
-      
+
         public GameForm()
         {
             InitializeComponent();
+            this.KeyPreview = true;
             lblSecretWord.Visible = false;
             this.KeyPress += keyPressed;
         }
 
         private void keyPressed(object? sender, KeyPressEventArgs e)
         {
-            char pressedLetter = e.KeyChar;
+            if (presenter == null) return;
+
+            char pressedLetter = char.ToUpper(e.KeyChar);
+            if (!char.IsLetter(pressedLetter)) return;
+            foreach (Control control in this.Controls)
+            {
+
+                if (control is Button btn && btn.Text == pressedLetter.ToString())
+                {
+
+                    if (btn.Enabled)
+                    {
+                        letterClicked(btn, EventArgs.Empty);
+                    }
+                    break;
+                }
+            }
+            e.Handled = true;
         }
 
-       
 
         private void letterClicked(object sender, EventArgs e)
         {
+
+            if (presenter == null) return;
             if (sender is Button b)
             {
 
-                char guessedLetter = b.Text[0]; 
+                char guessedLetter = b.Text[0];
                 bool correct = presenter.CHECK(guessedLetter);
                 if (correct)
                 {
                     lblSecretWord.Text = presenter.update();
                 }
-                
+
             }
         }
 
-       
+
         private void categoryItemChanged(object sender, EventArgs e)
         {
             if (sender is DomainUpDown b)
@@ -60,7 +70,7 @@ namespace ClientApp.Views
             if (sender is ComboBox c)
             {
                 presenter = new GamePresenter(c.SelectedIndex);
-                string selectedWord = presenter.Start(); 
+                string selectedWord = presenter.Start();
 
                 if (selectedWord != null)
                 {

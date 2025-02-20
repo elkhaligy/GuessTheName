@@ -12,24 +12,29 @@ namespace ClientApp.Presenters
     {
         Game myGame {  get; set; }
 
+
+
+        private string secretWord;
         public GamePresenter(int _category)
         {
             myGame = new Game((Category) _category);
-            
+            secretWord = myGame.StartGame();
+
         }
 
-
-        public string secretWord = "COMPUTER";
+        public GamePresenter( string secretWord)
+        {
+            secretWord = myGame.StartGame();
+        }
+      
         private HashSet<char> guessedLetters = new HashSet<char>();
 
         public bool CHECK(char letter)
         {
-
-            letter = char.ToUpper(letter);
-
+            letter = char.ToLower(letter);
+            guessedLetters.Add(letter);
             return secretWord.Contains(letter);
         }
-
         public string update()
         {
             StringBuilder revealedWord = new StringBuilder();
@@ -49,7 +54,7 @@ namespace ClientApp.Presenters
 
         public string Start()
         {
-            return myGame.StartGame(); 
+            return myGame.StartGame(); // game when start return random word
         }
     }
 }
