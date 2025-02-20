@@ -307,10 +307,10 @@
             // ClientForm
             // 
             ClientSize = new Size(832, 518);
+            Controls.Add(lobbyPanel);
             Controls.Add(roomsListPanel);
             Controls.Add(roomCreationPanel);
             Controls.Add(loginPanel);
-            Controls.Add(lobbyPanel);
             Name = "ClientForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Guess";
