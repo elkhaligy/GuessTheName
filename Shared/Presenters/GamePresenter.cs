@@ -14,6 +14,7 @@ namespace ClientApp.Presenters
 
         public string secretWord { get; set; }
 
+
         public GamePresenter()
         {
             secretWord = string.Empty;
@@ -48,6 +49,7 @@ namespace ClientApp.Presenters
                 if (guessedLetters.Contains(char.ToLower(letter)))
                 {
                     revealedWord.Append(letter + " ");
+
                 }
                 else
                 {
@@ -56,8 +58,23 @@ namespace ClientApp.Presenters
             }
             return revealedWord.ToString().Trim(); 
         }
+        public string update(List<char> revealedLetters)
+        {
+            StringBuilder revealedWord = new StringBuilder();
+            foreach (char letter in secretWord)
+            {
+                if (revealedLetters.Contains(char.ToLower(letter)))
+                {
+                    revealedWord.Append(letter + " ");
 
-
+                }
+                else
+                {
+                    revealedWord.Append("_ ");
+                }
+            }
+            return revealedWord.ToString().Trim();
+        }
 
         public void Start()
         {

@@ -16,6 +16,8 @@ namespace Shared
         StartGame,
         GameStarted,
         RoomUpdated,
+        GuessLetter,
+        CorrectGuess,
         Quit
     }
     public class Command

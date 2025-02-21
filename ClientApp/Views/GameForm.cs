@@ -8,8 +8,10 @@ namespace ClientApp.Views
     {
         private GamePresenter presenter;
         private string selectedWord;
+        public List<char> revealedLetters;
+        public event EventHandler<List<char>> OnReveal;
 
-        public GameForm(GamePresenter _presenter)
+        public GameForm(GamePresenter _presenter, string playerName)
         {
             InitializeComponent();
             this.KeyPreview = true;
@@ -18,35 +20,29 @@ namespace ClientApp.Views
             selectedWord = presenter.secretWord;
             lblSecretWord.Text = new string('_', selectedWord.Length).Replace("_", "\u2500  ");
             this.KeyPress += keyPressed;
+            label1.Text += playerName;
+            revealedLetters = new List<char>();
         }
-
+        public void viewRevealedLetters()
+        {
+            lblSecretWord.Text = presenter.update(revealedLetters);
+        }
         private void keyPressed(object? sender, KeyPressEventArgs e)
         {
             if (presenter == null) return;
 
-            char pressedLetter = char.ToUpper(e.KeyChar);
+            char pressedLetter = char.ToLower(e.KeyChar);
             if (!char.IsLetter(pressedLetter)) return;
-            foreach (Control control in this.Controls)
+            bool correct = presenter.CHECK(pressedLetter);
+            if (correct)
             {
-
-                if (control is Button btn && btn.Text == pressedLetter.ToString())
-                {
-
-                    if (btn.Enabled)
-                    {
-                        letterClicked(btn, EventArgs.Empty);
-                    }
-                    break;
-                }
+                lblSecretWord.Text = presenter.update(revealedLetters);
             }
-            e.Handled = true;
         }
 
 
         private void letterClicked(object sender, EventArgs e)
         {
-
-            if (presenter == null) return;
             if (sender is Button b)
             {
 
@@ -55,38 +51,26 @@ namespace ClientApp.Views
                 if (correct)
                 {
                     lblSecretWord.Text = presenter.update();
+                    AddToRevealed(lblSecretWord.Text); //_ te_ 
                 }
-
             }
+
         }
 
-
-        private void categoryItemChanged(object sender, EventArgs e)
+        private void AddToRevealed(string text)
         {
-            if (sender is DomainUpDown b)
+            foreach (char c in text)
             {
-
-                //presenter = new GamePresenter(b.SelectedIndex);
-                lblSecretWord.Text = presenter.update();
+                if(c != '_' && c != ' ')
+                {
+                    revealedLetters.Add(c); 
+                }
+            }
+            if(OnReveal != null)
+            {
+                OnReveal(this, revealedLetters);
             }
         }
 
-        private void comboBox1_DropDownClosed(object sender, EventArgs e)
-        {
-            if (sender is ComboBox c)
-            {
-                //presenter = new GamePresenter(c.SelectedIndex);
-
-                if (selectedWord != null)
-                {
-                    lblSecretWord.Visible = true;
-                    lblSecretWord.Text = new string('_', selectedWord.Length).Replace("_", "\u2500  ");
-                }
-                else
-                {
-                    MessageBox.Show("No word found for the selected category.");
-                }
-            }
-        }
     }
 }

@@ -163,11 +163,11 @@ namespace ServerApp
                                 Player p2 = Players.Find(p => p.Name == currentRoom.Guest);
                                 Command gameStarted = new Command(CommandTypes.GameStarted, presenter); 
                                 jsonMessage = JsonSerializer.Serialize<Command>(gameStarted);
-                                //writer?.WriteLine(jsonMessage);
                                 NetworkStream stream1 = p1.tcpClient.GetStream();
                                 NetworkStream stream2 = p2.tcpClient.GetStream();
                                 new StreamWriter(stream1) { AutoFlush= true}.WriteLineAsync(jsonMessage);
                                 new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(jsonMessage);
+                                currentRoom.State = GameState.InProgress;
                             }
                             else
                             {
@@ -176,6 +176,21 @@ namespace ServerApp
                                 await writer?.WriteLineAsync(jsonMessage);
 
                             }
+                            break;
+                        case CommandTypes.RoomUpdated:
+                            bool isOwner = false;
+                            GameRoom room = roomsList.Find((r) =>
+                            {
+                                if (r.Owner == tcpPlayerMap[tcpClient].Name)
+                                {
+                                    return (isOwner = true);
+                                }
+                                else
+                                {
+                                    return r.Guest == tcpPlayerMap[tcpClient].Name;
+                                }
+                            });
+                            notifyPlayer(room, isOwner, command.Payload);
                             break;
                         default:
                             break;
@@ -217,7 +232,23 @@ namespace ServerApp
             }
             tcpClient.Close();
         }
-
+        public void notifyPlayer(GameRoom room, bool isOwner, object payload)
+        {
+            Player otherPlayer;
+            NetworkStream nStream;
+            // if he's the owner of the game, notify the guest
+            if (isOwner)
+            {
+                otherPlayer = players.Find(p => p.Name == room.Guest);
+            }
+            else
+            {
+                otherPlayer = players.Find(p => p.Name == room.Owner);
+            }
+            nStream = otherPlayer.tcpClient.GetStream();
+            string jsonMsg = JsonSerializer.Serialize(new Command(CommandTypes.RoomUpdated, payload));
+            new StreamWriter(nStream) { AutoFlush = true }.WriteLine(jsonMsg);
+        }
 
         public void StopServer()
         {

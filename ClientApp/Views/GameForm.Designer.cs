@@ -54,9 +54,9 @@ namespace ClientApp.Views
             cBtn = new Button();
             nBtn = new Button();
             mBtn = new Button();
-            comboBox1 = new ComboBox();
             oBtn = new Button();
             lblSecretWord = new Label();
+            label1 = new Label();
             SuspendLayout();
             // 
             // pBtn
@@ -309,16 +309,6 @@ namespace ClientApp.Views
             mBtn.UseVisualStyleBackColor = true;
             mBtn.Click += letterClicked;
             // 
-            // comboBox1
-            // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Animals", "Food", "Celebrity" });
-            comboBox1.Location = new Point(0, 0);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(151, 28);
-            comboBox1.TabIndex = 76;
-            comboBox1.DropDownClosed += comboBox1_DropDownClosed;
-            // 
             // oBtn
             // 
             oBtn.Location = new Point(632, 256);
@@ -337,14 +327,24 @@ namespace ClientApp.Views
             lblSecretWord.Size = new Size(0, 20);
             lblSecretWord.TabIndex = 78;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F);
+            label1.Location = new Point(38, 34);
+            label1.Name = "label1";
+            label1.Size = new Size(70, 28);
+            label1.TabIndex = 79;
+            label1.Text = "Player ";
+            // 
             // GameForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
             Controls.Add(lblSecretWord);
             Controls.Add(oBtn);
-            Controls.Add(comboBox1);
             Controls.Add(pBtn);
             Controls.Add(eBtn);
             Controls.Add(rBtn);
@@ -402,8 +402,8 @@ namespace ClientApp.Views
         private Button cBtn;
         private Button nBtn;
         private Button mBtn;
-        private ComboBox comboBox1;
         private Button oBtn;
         private Label lblSecretWord;
+        private Label label1;
     }
 }
