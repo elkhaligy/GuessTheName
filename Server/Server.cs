@@ -70,7 +70,7 @@ namespace ServerApp
             }
         }
 
-        private void HandleClient(TcpClient tcpClient)
+        private async void HandleClient(TcpClient tcpClient)
         {
             OnLog?.Invoke($"Client connected: {tcpClient.Client.RemoteEndPoint}");
             NetworkStream stream = tcpClient.GetStream();
@@ -156,16 +156,25 @@ namespace ServerApp
                             break;
                         case CommandTypes.StartGame:
                             GameRoom currentRoom = roomsList.Find(room => room.Owner == tcpPlayerMap[tcpClient].Name || room.Guest == tcpPlayerMap[tcpClient].Name);
-                            if(currentRoom.Guest != null)
+                            if(currentRoom.Guest != null && currentRoom.Owner != null) //two players are present in the game
                             {
                                 presenter.Start();
+                                Player p1 = Players.Find(p => p.Name == currentRoom.Owner);
+                                Player p2 = Players.Find(p => p.Name == currentRoom.Guest);
                                 Command gameStarted = new Command(CommandTypes.GameStarted, presenter); 
                                 jsonMessage = JsonSerializer.Serialize<Command>(gameStarted);
-                                writer?.WriteLine(jsonMessage);
+                                //writer?.WriteLine(jsonMessage);
+                                NetworkStream stream1 = p1.tcpClient.GetStream();
+                                NetworkStream stream2 = p2.tcpClient.GetStream();
+                                new StreamWriter(stream1) { AutoFlush= true}.WriteLineAsync(jsonMessage);
+                                new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(jsonMessage);
                             }
                             else
                             {
-                                MessageBox.Show("Wait till another play join the room");
+                                Command notStarted = new Command(CommandTypes.GameStarted, null);
+                                jsonMessage = JsonSerializer.Serialize<Command>(notStarted);
+                                await writer?.WriteLineAsync(jsonMessage);
+
                             }
                             break;
                         default:

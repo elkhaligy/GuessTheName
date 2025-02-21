@@ -140,9 +140,16 @@ namespace ClientApp
                      */
                     break;
                 case CommandTypes.GameStarted:
-                    GamePresenter presenter = JsonSerializer.Deserialize<GamePresenter>(command.Payload.ToString());
-                    Thread gameThread = new Thread(()=> OnGameStart(presenter));
-                    gameThread.Start();
+                    if(command.Payload == null)
+                    {
+                        MessageBox.Show("Wait till another play join the room");
+                    }
+                    else
+                    {
+                        GamePresenter presenter = JsonSerializer.Deserialize<GamePresenter>(command.Payload.ToString());
+                        Thread gameThread = new Thread(() => OnGameStart(presenter));
+                        gameThread.Start();
+                    }
                     break;
                 default:
                     break;
