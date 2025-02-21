@@ -12,7 +12,7 @@ namespace Shared.Models
     {
         public Guid Id { get; private set; }
         public Category category { get; set; }
-        public bool isFinished { get; set; } = false;
+        public bool isFinished { get; set ; } = false;
 
         public Game(Category _category)
         {
