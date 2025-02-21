@@ -45,17 +45,52 @@ namespace ClientApp.Views
 
         private void letterClicked(object sender, EventArgs e)
         {
+            if (presenter.myGame.isFinished || presenter == null) return;
 
-            if (presenter == null) return;
+         
             if (sender is Button b)
             {
 
                 char guessedLetter = b.Text[0];
                 bool correct = presenter.CHECK(guessedLetter);
+                b.Enabled = false;
                 if (correct)
                 {
                     lblSecretWord.Text = presenter.update();
                 }
+
+                if (presenter.myGame.isFinished)
+                {
+                    string winner, loser; 
+                    if (presenter.Winner == GamePresenter.PlayerTurn.Player1)
+                    {
+                        winner = "Player 1" ;
+                        loser = "Player 2";
+                    }
+                    else
+                    {
+                        winner = "Player 2";
+                        loser = "Player 1";
+                    }
+                    
+                    
+                    DialogResult result = MessageBox.Show(
+                        $"{winner} wins! Congratulations!\n{loser} loses. Sorry!\n\nPlay again?",
+                        "Game Over",
+                        MessageBoxButtons.YesNo
+                    );
+
+                    if (result == DialogResult.Yes)
+                    {
+                       // presenter.RestartGame();
+                     
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
+                }
+
 
             }
         }
@@ -70,6 +105,9 @@ namespace ClientApp.Views
                 lblSecretWord.Text = presenter.update();
             }
         }
+
+
+
 
         private void comboBox1_DropDownClosed(object sender, EventArgs e)
         {
@@ -90,3 +128,6 @@ namespace ClientApp.Views
         }
     }
 }
+
+
+
