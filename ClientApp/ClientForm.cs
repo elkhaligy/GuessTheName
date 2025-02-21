@@ -3,14 +3,18 @@ using System.Data;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using ReaLTaiizor.Forms;
+using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 /*
  * Each request sent has a response back from server
  * This response is handled by resolveResponse() method
  */
 namespace ClientApp
 {
-    public partial class ClientForm : Form
+    public partial class ClientForm : LostForm
     {
         public Player Player { get; set; }
         private List<GameRoom> roomsListFromServerToDisplay = new List<GameRoom>();
@@ -23,9 +27,19 @@ namespace ClientApp
             StartGameButton.Enabled = false;
             guestNameLabel.Text = "";
             ownerNameLabel.Text = "";
+            this.Load += (s, e) => EnableRoundedCorners();
+
+        }
+        private void EnableRoundedCorners()
+        {
+            int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+            int DWMNCRP_ROUND = 2; // Rounded corners
+            DwmSetWindowAttribute(this.Handle, DWMWA_WINDOW_CORNER_PREFERENCE, ref DWMNCRP_ROUND, sizeof(int));
         }
 
-        private void loginButton_Click(object sender, EventArgs e)
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+        private async void loginButton_Click(object sender, EventArgs e)
         {
             /*
              * Create a tcp client
@@ -56,19 +70,31 @@ namespace ClientApp
              * Update the room list panel with the retrieved rooms
              */
 
-            TcpClient tcpClient = new TcpClient();
-            tcpClient.Connect("127.0.0.1", 50000);
-            new Thread(() => listenForMessages()) { IsBackground = true }.Start();
+            //TcpClient tcpClient = new TcpClient();
+            //tcpClient.Connect("127.0.0.1", 50000);
+            //new Thread(() => listenForMessages()) { IsBackground = true }.Start();
 
-            Player = new Player { tcpClient = tcpClient, Name = userNameTextBox.Text, Score = 0 };
+            //Player = new Player { tcpClient = tcpClient, Name = userNameTextBox.Text, Score = 0 };
 
-            Command loggingRequest = new Command(CommandTypes.Login, Player);
-            sendCommand(loggingRequest);
-            loginPanel.Hide();
-            this.Text = $"Guess the Name Game (Playing as {Player.Name})";
+            //Command loggingRequest = new Command(CommandTypes.Login, Player);
+            //sendCommand(loggingRequest);
+            //loginPanel.Hide();
+            //this.Text = $"Guess the Name Game (Playing as {Player.Name})";
 
-            Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
-            sendCommand(command); // Request sent, Response handling is done on resolveResponse() method
+            //Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
+            //sendCommand(command); // Request sent, Response handling is done on resolveResponse() method
+
+            using (TcpClient tcpCleint = new TcpClient("127.0.0.1", 50000))
+            using (NetworkStream stream = tcpCleint.GetStream())
+            using (StreamReader reader = new StreamReader(stream))
+            using (StreamWriter writer = new StreamWriter(stream) { AutoFlush = true })
+            {
+                string request = "{\"action\" : \"login\", \"name\": \"shehab\"}";
+                logTextBox.Text += $"Request sent to the server: {request}" + Environment.NewLine;
+                await writer.WriteLineAsync(request);
+                string response = await reader.ReadLineAsync();
+                logTextBox.Text += $"Response received from the server: {response}" + Environment.NewLine;
+            }
         }
 
         private void sendCommand(Command command)
@@ -238,7 +264,7 @@ namespace ClientApp
                 Size = new Size(250, 130),
                 BackColor = Color.GhostWhite,
 
-                BorderStyle = BorderStyle.FixedSingle
+                //BorderStyle = BorderStyle.FixedSingle
             };
 
             // Room Name Label
