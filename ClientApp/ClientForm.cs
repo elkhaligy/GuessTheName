@@ -3,6 +3,7 @@ using ClientApp.Views;
 using Shared;
 using System.Data;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
@@ -162,7 +163,7 @@ namespace ClientApp
 
         private void OnGameStart(GamePresenter presenter)
         {
-            frm = new GameForm(presenter, Player.Name);
+            frm = new GameForm(presenter, Player.Name, GamePresenter.PlayerTurn.Player1);
             frm.Size = this.Size;
             frm.Location = this.Location;
             frm.OnReveal += async (args, revealed) =>
