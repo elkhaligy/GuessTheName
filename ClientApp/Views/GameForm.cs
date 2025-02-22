@@ -6,10 +6,9 @@ namespace ClientApp.Views
 {
     public partial class GameForm : Form
     {
-        private GamePresenter presenter;
+        public GamePresenter presenter { private set; get; }
         private string selectedWord;
-        public List<char> revealedLetters;
-        public event EventHandler<List<char>> OnReveal;
+        public event EventHandler<HashSet<char>> OnReveal;
 
         public GameForm(GamePresenter _presenter, string playerName)
         {
@@ -21,11 +20,10 @@ namespace ClientApp.Views
             lblSecretWord.Text = new string('_', selectedWord.Length).Replace("_", "\u2500  ");
             this.KeyPress += keyPressed;
             label1.Text += playerName;
-            revealedLetters = new List<char>();
         }
         public void viewRevealedLetters()
         {
-            lblSecretWord.Text = presenter.update(revealedLetters);
+            lblSecretWord.Text = presenter.update();
         }
         private void keyPressed(object? sender, KeyPressEventArgs e)
         {
@@ -36,14 +34,18 @@ namespace ClientApp.Views
             bool correct = presenter.CHECK(pressedLetter);
             if (correct)
             {
-                lblSecretWord.Text = presenter.update(revealedLetters);
+                lblSecretWord.Text = presenter.update();
+                if (OnReveal != null)
+                {
+                    OnReveal(this, presenter.guessedLetters);
+                }
             }
         }
 
 
         private void letterClicked(object sender, EventArgs e)
         {
-            if (presenter.myGame.isFinished || presenter == null) return;
+            if (presenter.isFinished || presenter == null) return;
 
          
             if (sender is Button b)
@@ -55,10 +57,13 @@ namespace ClientApp.Views
                 if (correct)
                 {
                     lblSecretWord.Text = presenter.update();
-                    AddToRevealed(lblSecretWord.Text); //_ te_ 
+                    if (OnReveal != null)
+                    {
+                        OnReveal(this, presenter.guessedLetters);
+                    }
                 }
 
-                if (presenter.myGame.isFinished)
+                if (presenter.isFinished)
                 {
                     string winner, loser; 
                     if (presenter.Winner == GamePresenter.PlayerTurn.Player1)
@@ -105,20 +110,6 @@ namespace ClientApp.Views
             }
         }
 
-        private void AddToRevealed(string text)
-        {
-            foreach (char c in text)
-            {
-                if(c != '_' && c != ' ')
-                {
-                    revealedLetters.Add(c); 
-                }
-            }
-            if(OnReveal != null)
-            {
-                OnReveal(this, revealedLetters);
-            }
-        }
 
     }
 }

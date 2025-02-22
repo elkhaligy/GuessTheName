@@ -147,18 +147,14 @@ namespace ClientApp
                     break;
 
                 case CommandTypes.RoomUpdated:
-                    //gameForm
-                    //frm.revealedLetters = JsonSerializer.Deserialize<List<char>>(command.Payload.ToString());
-                    //frm.viewRevealedLetters();
-                    //frm.Update();
-                    //break;
-                    List<char> revealedLetters = JsonSerializer.Deserialize<List<char>>(command.Payload.ToString());
+                    HashSet<char> revealedLetters = JsonSerializer.Deserialize<HashSet<char>>(command.Payload.ToString());
                     if (frm != null)
                     {
-                        frm.revealedLetters = revealedLetters;
+                        frm.presenter.guessedLetters = revealedLetters;
                         frm.viewRevealedLetters(); // Update the UI with the revealed letters
                     }
                     break;
+
                 default:
                     break;
             }

@@ -15,11 +15,12 @@ namespace ClientApp.Presenters
         public string secretWord { get; set; }
 
         public enum PlayerTurn { Player1, Player2 }
+        public bool isFinished { get; set; } = false;
         public PlayerTurn CurrentPlayer { get; private set; } = PlayerTurn.Player1;
         public PlayerTurn Winner { get; private set; }
     
 
-        private HashSet<char> guessedLetters = new HashSet<char>();
+        public HashSet<char> guessedLetters = new HashSet<char>();
 
 
         public GamePresenter()
@@ -45,7 +46,7 @@ namespace ClientApp.Presenters
         public bool CHECK(char letter)
         {
 
-            if (myGame.isFinished) return false;
+            if (isFinished) return false;
             letter = char.ToLower(letter);
             bool isNewGuess = guessedLetters.Add(letter);
             bool isCorrect = secretWord.ToLower().Contains(letter);
@@ -66,7 +67,7 @@ namespace ClientApp.Presenters
                
                 if (secretWord.All(c => guessedLetters.Contains(char.ToLower(c))))
                 {
-                   myGame.isFinished = true;
+                    isFinished = true;
                     Winner = CurrentPlayer;
 
                    
@@ -92,7 +93,7 @@ namespace ClientApp.Presenters
             }
             return revealedWord.ToString().Trim(); 
         }
-        public string update(List<char> revealedLetters)
+        public string update(HashSet<char> revealedLetters)
         {
             StringBuilder revealedWord = new StringBuilder();
             foreach (char letter in secretWord)
