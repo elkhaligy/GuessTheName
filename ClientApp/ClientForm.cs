@@ -1,4 +1,5 @@
 using Shared;
+using Shared.Enums;
 using System.Data;
 using System.Net.Sockets;
 using System.Text;
@@ -23,7 +24,7 @@ namespace ClientApp
         private NetworkStream stream;
         private StreamReader reader;
         private StreamWriter writer;
-        string secretWord = "sky";
+        string secretWord;
 
         public ClientForm()
         {
@@ -33,7 +34,27 @@ namespace ClientApp
             guestNameLabel.Text = "";
             ownerNameLabel.Text = "";
         }
+        public string getSecretWord(string category)
+        {
+            // Get the base directory of execution
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
+            // Navigate up 3 levels and then to "Shared\Data\Animal.txt"
+            string relativePath = Path.Combine(basePath, @$"..\..\..\..\Shared\Data\{category}.txt");
+
+            // Get the absolute path
+            string fullPath = Path.GetFullPath(relativePath);
+
+            Random random = new Random();
+            // Check if file exists
+            if (File.Exists(fullPath))
+            {
+                List<string> randomNames = File.ReadAllLines(fullPath).ToList();
+                int randomIndex = random.Next(randomNames.Count);
+                return randomNames[randomIndex];
+            }
+            return null;
+        }
         private void loginButton_Click(object sender, EventArgs e)
         {
             /*
@@ -147,7 +168,9 @@ namespace ClientApp
                 case CommandTypes.JoinRoom:
                     GameRoom joinedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                     currentRoom = joinedRoom;
-                    //MessageBox.Show(command.Payload.ToString());
+                    secretWord = joinedRoom.secretWord;
+
+                    MessageBox.Show(currentRoom.secretWord);
                     GameRoom gameRoom = roomsListFromServerToDisplay.Find(room => room.RoomId == joinedRoom.RoomId);
                     gameRoom.Guest = joinedRoom.Guest;
                     Player.CurrentRoom = joinedRoom.RoomId;
@@ -160,12 +183,14 @@ namespace ClientApp
                     StartGameButton.Hide();
                     break;
                 case CommandTypes.StartGame:
+
                     /*
                      * 
                      * 
                      * 
                      */
                     currentRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    secretWord = currentRoom.secretWord;
                     // Generate the word
 
                     for (int i = 1; i <= secretWord.Length; i++)
@@ -220,7 +245,20 @@ namespace ClientApp
                         Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(playCommand.Symbol.ToString().ToLower()) + 1}"];
                         textBox.Text = playCommand.Symbol.ToString();
                     }
-
+                    bool winFlag = true;
+                    for (int i = 1; i <= secretWord.Length; i++)
+                    {
+                        Control textBox = gamePanel.Controls[$"txtBox{i}"];
+                        if (textBox.Text == "")
+                        {
+                            winFlag = false;
+                            break;
+                        }
+                    }
+                    if (winFlag)
+                    {
+                        MessageBox.Show($"{playCommand.UserName} Won, Sorry!");
+                    }
                     break;
 
                 default:
@@ -255,9 +293,8 @@ namespace ClientApp
         private void CreateRoomButton_Click(object sender, EventArgs e)
         {
             roomsListPanel.Hide();
+            tryCategoriesComboBox.Items.Add("Animals");
             tryCategoriesComboBox.Items.Add("Countries");
-            tryCategoriesComboBox.Items.Add("Banana");
-            tryCategoriesComboBox.Items.Add("Orange");
             tryCategoriesComboBox.SelectedIndex = 0;
             roomCreationPanel.Show();
         }
@@ -266,7 +303,7 @@ namespace ClientApp
         {
             string takenRoomName = tryRoomNameTextBox.Text;
             string takenRoomCat = tryCategoriesComboBox.Text;
-            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Guest = "", IsOwnerReady = false, IsGuestReady = false, Category = takenRoomCat, State = GameState.Waiting };
+            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Guest = "", IsOwnerReady = false, IsGuestReady = false, Category = takenRoomCat, State = GameState.Waiting, secretWord = getSecretWord(takenRoomCat) };
             Command createRoomRequest = new Command(CommandTypes.CreateRoom, gameRoom);
             sendCommand(createRoomRequest);
         }
@@ -402,6 +439,21 @@ namespace ClientApp
                 Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom.RoomId));
                 sendCommand(command);
                 Player.IsActive = false;
+                bool winFlag = true;
+                for (int i = 1; i <= secretWord.Length; i++)
+                {
+                    Control textBox = gamePanel.Controls[$"txtBox{i}"];
+                    if (textBox.Text == "")
+                    {
+                        winFlag = false;
+                        break;
+                    }
+                }
+                if (winFlag)
+                {
+                    MessageBox.Show($"You Won, Congatulations!");
+                }
+
 
             }
         }

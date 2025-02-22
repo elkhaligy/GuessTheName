@@ -18,7 +18,7 @@ namespace Shared
         public List<Player> Spectators { get; set; }
 
         public string Category { get; set; }
-
+        public string secretWord { get; set; }
         public GameState State { get; set; }
 
         public bool CanJoin() => Guest == null && State == GameState.Waiting;

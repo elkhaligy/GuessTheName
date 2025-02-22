@@ -111,7 +111,7 @@ namespace ServerApp
                             Command roomCreated = new Command(CommandTypes.RoomCreated, receivedRoomFromJson);
                             jsonMessage = JsonSerializer.Serialize(roomCreated);
                             writer?.WriteLine(jsonMessage);
-                            OnLog?.Invoke($"Created room: {receivedRoomFromJson.RoomId} with owner name {receivedRoomFromJson.Owner}  by {tcpClient.Client.RemoteEndPoint}");
+                            OnLog?.Invoke($"Created room: {receivedRoomFromJson.RoomId} with secret word: {receivedRoomFromJson.secretWord} with owner name {receivedRoomFromJson.Owner}  by {tcpClient.Client.RemoteEndPoint}");
                             break;
 
                         case CommandTypes.GetRooms:
@@ -142,7 +142,7 @@ namespace ServerApp
 
                             jsonMessage = JsonSerializer.Serialize(new Command(CommandTypes.JoinRoom, currentJoinedRoom));
                             writer?.WriteLine(jsonMessage);
-
+                            MessageBox.Show(currentJoinedRoom.secretWord);
                             // Send to the owner of the room an update with the guest name
                             Command roomUpdated = new Command(CommandTypes.RoomUpdated, currentJoinedRoom);
                             jsonMessage = JsonSerializer.Serialize(roomUpdated);
@@ -193,6 +193,7 @@ namespace ServerApp
                              break;
                         case CommandTypes.StartGame:
                             receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                            OnLog?.Invoke($"Game started in room {receivedRoom.secretWord}");
                             if (receivedRoom.IsOwnerReady && receivedRoom.IsGuestReady)
                             {
                                 currentRoom = roomsList.Find(room => room.RoomId == receivedRoom.RoomId);
