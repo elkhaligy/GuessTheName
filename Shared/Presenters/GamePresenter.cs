@@ -10,9 +10,18 @@ namespace ClientApp.Presenters
 {
     public class GamePresenter
     {
-        Game myGame {  get; set; }
+        public Game myGame {  get; private set ; }
 
         public string secretWord { get; set; }
+
+        public enum PlayerTurn { Player1, Player2 }
+        public bool isFinished { get; set; } = false;
+        public PlayerTurn CurrentPlayer { get; private set; } = PlayerTurn.Player1;
+        public PlayerTurn Winner { get; private set; }
+    
+
+        public HashSet<char> guessedLetters = new HashSet<char>();
+
 
         public GamePresenter()
         {
@@ -32,13 +41,40 @@ namespace ClientApp.Presenters
           //  secretWord = myGame.StartGame();
         }
       
-        private HashSet<char> guessedLetters = new HashSet<char>();
+       
 
         public bool CHECK(char letter)
         {
+
+            if (isFinished) return false;
             letter = char.ToLower(letter);
-            guessedLetters.Add(letter);
-            return secretWord.Contains(letter);
+            bool isNewGuess = guessedLetters.Add(letter);
+            bool isCorrect = secretWord.ToLower().Contains(letter);
+
+            if (!isCorrect)
+            {
+                if (CurrentPlayer == PlayerTurn.Player1)
+                {
+                    CurrentPlayer = PlayerTurn.Player2;
+                }
+                else
+                {
+                    CurrentPlayer = PlayerTurn.Player1;
+                }
+            }
+            else if (isNewGuess)
+            {
+               
+                if (secretWord.All(c => guessedLetters.Contains(char.ToLower(c))))
+                {
+                    isFinished = true;
+                    Winner = CurrentPlayer;
+
+                   
+                }
+            }
+
+            return isCorrect;
         }
         public string update()
         {
@@ -48,6 +84,7 @@ namespace ClientApp.Presenters
                 if (guessedLetters.Contains(char.ToLower(letter)))
                 {
                     revealedWord.Append(letter + " ");
+
                 }
                 else
                 {
@@ -56,12 +93,43 @@ namespace ClientApp.Presenters
             }
             return revealedWord.ToString().Trim(); 
         }
+        public string update(HashSet<char> revealedLetters)
+        {
+            StringBuilder revealedWord = new StringBuilder();
+            foreach (char letter in secretWord)
+            {
+                if (revealedLetters.Contains(char.ToLower(letter)))
+                {
+                    revealedWord.Append(letter + " ");
+
+                }
+                else
+                {
+                    revealedWord.Append("_ ");
+                }
+            }
+            return revealedWord.ToString().Trim();
+        }
+
+       // public void RestartGame()
+        //{
+       
+            //secretWord = myGame.StartGame();
+           // guessedLetters.Clear();
+           // myGame.isFinished = false;
+            //CurrentPlayer = PlayerTurn.Player1;
+      //  }
+
 
 
 
         public void Start()
         {
             secretWord = myGame.StartGame(); // game when start return random word
+            guessedLetters.Clear();
+            myGame.isFinished = false;
+            CurrentPlayer = PlayerTurn.Player1;
+            Winner = PlayerTurn.Player1;
         }
     }
 }

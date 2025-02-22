@@ -17,6 +17,7 @@ namespace ClientApp
     {
         public Player Player { get; set; }
         private List<GameRoom> roomsListFromServerToDisplay = new List<GameRoom>();
+        GameForm frm;
 
         public ClientForm()
         {
@@ -116,9 +117,6 @@ namespace ClientApp
                     updateRoomsListGUI();
                     break;
 
-                case CommandTypes.RoomUpdated:
-                    break;
-
                 case CommandTypes.JoinRoom:
                     GameRoom joinedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                     //MessageBox.Show(command.Payload.ToString());
@@ -133,17 +131,30 @@ namespace ClientApp
                     break;
                 case CommandTypes.StartGame:
                     Command startGame = new Command(CommandTypes.StartGame, null);
-                    /*
-                     * 
-                     * 
-                     * 
-                     */
                     break;
+
                 case CommandTypes.GameStarted:
-                    GamePresenter presenter = JsonSerializer.Deserialize<GamePresenter>(command.Payload.ToString());
-                    Thread gameThread = new Thread(()=> OnGameStart(presenter));
-                    gameThread.Start();
+                    if(command.Payload == null)
+                    {
+                        MessageBox.Show("Wait till another play join the room");
+                    }
+                    else
+                    {
+                        GamePresenter presenter = JsonSerializer.Deserialize<GamePresenter>(command.Payload.ToString());
+                        Thread gameThread = new Thread(() => OnGameStart(presenter));
+                        gameThread.Start();
+                    }
                     break;
+
+                case CommandTypes.RoomUpdated:
+                    HashSet<char> revealedLetters = JsonSerializer.Deserialize<HashSet<char>>(command.Payload.ToString());
+                    if (frm != null)
+                    {
+                        frm.presenter.guessedLetters = revealedLetters;
+                        frm.viewRevealedLetters(); // Update the UI with the revealed letters
+                    }
+                    break;
+
                 default:
                     break;
             }
@@ -151,9 +162,14 @@ namespace ClientApp
 
         private void OnGameStart(GamePresenter presenter)
         {
-            GameForm frm = new GameForm(presenter);
+            frm = new GameForm(presenter, Player.Name);
             frm.Size = this.Size;
             frm.Location = this.Location;
+            frm.OnReveal += async (args, revealed) =>
+            {
+                Command updateThePlayer = new Command(CommandTypes.RoomUpdated, revealed);
+                sendCommand(updateThePlayer);
+            };
             if (InvokeRequired)
             {
                 Invoke(() =>
@@ -164,8 +180,8 @@ namespace ClientApp
                 });
                 return;
             }
-
         }
+
 
         public void updateRoomsListGUI()
         {
