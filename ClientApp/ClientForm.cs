@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 /*
  * Each request sent has a response back from server
  * This response is handled by resolveResponse() method
@@ -15,6 +16,14 @@ namespace ClientApp
         public Player Player { get; set; }
         private List<GameRoom> roomsListFromServerToDisplay = new List<GameRoom>();
         private GameRoom currentRoom;
+
+
+        // Socket related fields
+        private TcpClient tcpClient;
+        private NetworkStream stream;
+        private StreamReader reader;
+        private StreamWriter writer;
+        string secretWord = "sky";
 
         public ClientForm()
         {
@@ -157,15 +166,63 @@ namespace ClientApp
                      * 
                      */
                     currentRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    // Generate the word
+
+                    for (int i = 1; i <= secretWord.Length; i++)
+                    {
+                        TextBox textBox = new TextBox
+                        {
+                            Name = $"txtBox{i}",   // Unique name
+                            Width = 30,            // Set width
+                            Location = new Point(i * 100, 200) // Positioning horizontally
+                        };
+
+                        gamePanel.Controls.Add(textBox); // Add to the panel
+                    }
                     if (Player.IsRoomOwner)
                     {
-                        MessageBox.Show($"Game Started Me {Player.Name} vs {currentRoom.Guest}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
+                        //MessageBox.Show($"Game Started Me {Player.Name} vs {currentRoom.Guest}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
+                        lobbyPanel.Hide();
+                        gamePanel.Show();
+                        label10.Text = Player.Name;
+                        label11.Text = currentRoom.Guest;
+                        label13.Text = currentRoom.Category;
+                        Player.IsActive = true;
                     }
                     else
                     {
-                        MessageBox.Show($"Game Started Me {currentRoom.Owner} vs {Player.Name}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
+                        //MessageBox.Show($"Game Started Me {currentRoom.Owner} vs {Player.Name}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
+                        lobbyPanel.Hide();
+                        gamePanel.Show();
+                        label10.Text = Player.Name;
+                        label11.Text = currentRoom.Owner;
+                        label13.Text = currentRoom.Category;
+                        Player.IsActive = false;
+
                     }
                     break;
+                case CommandTypes.Play:
+                    PlayCommandPayLoad playCommand = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
+                    //MessageBox.Show($"{playCommand.UserName} played {playCommand.Symbol} in room {playCommand.RoomId}");
+                    Player.IsActive = true;
+
+
+                    string controlName = playCommand.Symbol.ToString().ToLower() + "Btn";
+                    Control pressedControl = gamePanel.Controls[controlName];
+                    pressedControl.Enabled = false;
+                    //foreach (Control control in gamePanel.Controls)
+                    //{
+                    //    control.Enabled = true; // Disable each control
+                    //}
+
+                    if (secretWord.Contains(playCommand.Symbol.ToString().ToLower()))
+                    {
+                        Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(playCommand.Symbol.ToString().ToLower()) + 1}"];
+                        textBox.Text = playCommand.Symbol.ToString();
+                    }
+
+                    break;
+
                 default:
                     break;
             }
@@ -209,7 +266,7 @@ namespace ClientApp
         {
             string takenRoomName = tryRoomNameTextBox.Text;
             string takenRoomCat = tryCategoriesComboBox.Text;
-            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Guest = "", IsOwnerReady = false, IsGuestReady = false , Category = takenRoomCat, State = GameState.Waiting };
+            GameRoom gameRoom = new GameRoom { RoomId = takenRoomName, Owner = Player.Name, Guest = "", IsOwnerReady = false, IsGuestReady = false, Category = takenRoomCat, State = GameState.Waiting };
             Command createRoomRequest = new Command(CommandTypes.CreateRoom, gameRoom);
             sendCommand(createRoomRequest);
         }
@@ -318,6 +375,35 @@ namespace ClientApp
         {
             Command command = new Command(CommandTypes.StartGame, currentRoom);
             sendCommand(command);
+        }
+
+        private void keyClicked(object sender, EventArgs e)
+        {
+
+
+            if (Player.IsActive)
+            {
+                Button pushedButton = sender as Button;
+                string controlName = pushedButton.Text.ToLower() + "Btn";
+                Control pressedControl = gamePanel.Controls[controlName];
+                pressedControl.Enabled = false;
+                //foreach (Control control in gamePanel.Controls)
+                //{
+                //    control.Enabled = false; // Disable each control
+                //}
+                string pushedKey = pushedButton.Text;
+                if (secretWord.Contains(pushedKey.ToLower()))
+                {
+                    //MessageBox.Show("Hello");
+                    Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(pushedKey.ToLower()) + 1}"];
+                    textBox.Text = pushedKey;
+                }
+
+                Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom.RoomId));
+                sendCommand(command);
+                Player.IsActive = false;
+
+            }
         }
     }
 }

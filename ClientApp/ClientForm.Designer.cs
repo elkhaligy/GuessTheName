@@ -55,10 +55,44 @@
             label6 = new Label();
             label3 = new Label();
             label5 = new Label();
+            gamePanel = new Panel();
+            label13 = new Label();
+            label12 = new Label();
+            label11 = new Label();
+            label10 = new Label();
+            label9 = new Label();
+            label7 = new Label();
+            oBtn = new Button();
+            pBtn = new Button();
+            eBtn = new Button();
+            rBtn = new Button();
+            tBtn = new Button();
+            yBtn = new Button();
+            uBtn = new Button();
+            iBtn = new Button();
+            dBtn = new Button();
+            fBtn = new Button();
+            gBtn = new Button();
+            hBtn = new Button();
+            qBtn = new Button();
+            kBtn = new Button();
+            lBtn = new Button();
+            jBtn = new Button();
+            wBtn = new Button();
+            sBtn = new Button();
+            xBtn = new Button();
+            zBtn = new Button();
+            aBtn = new Button();
+            bBtn = new Button();
+            vBtn = new Button();
+            cBtn = new Button();
+            nBtn = new Button();
+            mBtn = new Button();
             loginPanel.SuspendLayout();
             roomCreationPanel.SuspendLayout();
             roomsListPanel.SuspendLayout();
             lobbyPanel.SuspendLayout();
+            gamePanel.SuspendLayout();
             SuspendLayout();
             // 
             // loginButton
@@ -89,9 +123,10 @@
             loginPanel.Controls.Add(label8);
             loginPanel.Controls.Add(userNameTextBox);
             loginPanel.Controls.Add(loginButton);
-            loginPanel.Location = new Point(12, 12);
+            loginPanel.Dock = DockStyle.Fill;
+            loginPanel.Location = new Point(0, 0);
             loginPanel.Name = "loginPanel";
-            loginPanel.Size = new Size(808, 494);
+            loginPanel.Size = new Size(832, 518);
             loginPanel.TabIndex = 5;
             // 
             // label8
@@ -111,9 +146,10 @@
             roomCreationPanel.Controls.Add(tryRoomNameTextBox);
             roomCreationPanel.Controls.Add(label1);
             roomCreationPanel.Controls.Add(panel1);
-            roomCreationPanel.Location = new Point(12, 12);
+            roomCreationPanel.Dock = DockStyle.Fill;
+            roomCreationPanel.Location = new Point(0, 0);
             roomCreationPanel.Name = "roomCreationPanel";
-            roomCreationPanel.Size = new Size(808, 494);
+            roomCreationPanel.Size = new Size(832, 518);
             roomCreationPanel.TabIndex = 6;
             roomCreationPanel.Visible = false;
             // 
@@ -168,9 +204,10 @@
             roomsListPanel.Controls.Add(refreshRoomsButton);
             roomsListPanel.Controls.Add(createRoomButton);
             roomsListPanel.Controls.Add(roomsListFlowLayout);
-            roomsListPanel.Location = new Point(15, 12);
+            roomsListPanel.Dock = DockStyle.Fill;
+            roomsListPanel.Location = new Point(0, 0);
             roomsListPanel.Name = "roomsListPanel";
-            roomsListPanel.Size = new Size(805, 494);
+            roomsListPanel.Size = new Size(832, 518);
             roomsListPanel.TabIndex = 5;
             roomsListPanel.Visible = false;
             // 
@@ -228,9 +265,10 @@
             lobbyPanel.Controls.Add(label6);
             lobbyPanel.Controls.Add(label3);
             lobbyPanel.Controls.Add(label5);
-            lobbyPanel.Location = new Point(12, 12);
+            lobbyPanel.Dock = DockStyle.Fill;
+            lobbyPanel.Location = new Point(0, 0);
             lobbyPanel.Name = "lobbyPanel";
-            lobbyPanel.Size = new Size(808, 494);
+            lobbyPanel.Size = new Size(832, 518);
             lobbyPanel.TabIndex = 6;
             lobbyPanel.Visible = false;
             // 
@@ -320,9 +358,391 @@
             label5.TabIndex = 0;
             label5.Text = "Player 1 (Owner) :";
             // 
+            // gamePanel
+            // 
+            gamePanel.Controls.Add(label13);
+            gamePanel.Controls.Add(label12);
+            gamePanel.Controls.Add(label11);
+            gamePanel.Controls.Add(label10);
+            gamePanel.Controls.Add(label9);
+            gamePanel.Controls.Add(label7);
+            gamePanel.Controls.Add(oBtn);
+            gamePanel.Controls.Add(pBtn);
+            gamePanel.Controls.Add(eBtn);
+            gamePanel.Controls.Add(rBtn);
+            gamePanel.Controls.Add(tBtn);
+            gamePanel.Controls.Add(yBtn);
+            gamePanel.Controls.Add(uBtn);
+            gamePanel.Controls.Add(iBtn);
+            gamePanel.Controls.Add(dBtn);
+            gamePanel.Controls.Add(fBtn);
+            gamePanel.Controls.Add(gBtn);
+            gamePanel.Controls.Add(hBtn);
+            gamePanel.Controls.Add(qBtn);
+            gamePanel.Controls.Add(kBtn);
+            gamePanel.Controls.Add(lBtn);
+            gamePanel.Controls.Add(jBtn);
+            gamePanel.Controls.Add(wBtn);
+            gamePanel.Controls.Add(sBtn);
+            gamePanel.Controls.Add(xBtn);
+            gamePanel.Controls.Add(zBtn);
+            gamePanel.Controls.Add(aBtn);
+            gamePanel.Controls.Add(bBtn);
+            gamePanel.Controls.Add(vBtn);
+            gamePanel.Controls.Add(cBtn);
+            gamePanel.Controls.Add(nBtn);
+            gamePanel.Controls.Add(mBtn);
+            gamePanel.Dock = DockStyle.Fill;
+            gamePanel.Location = new Point(0, 0);
+            gamePanel.Name = "gamePanel";
+            gamePanel.Size = new Size(832, 518);
+            gamePanel.TabIndex = 10;
+            gamePanel.Visible = false;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(417, 30);
+            label13.Name = "label13";
+            label13.Size = new Size(44, 15);
+            label13.TabIndex = 109;
+            label13.Text = "label13";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(319, 30);
+            label12.Name = "label12";
+            label12.Size = new Size(90, 15);
+            label12.TabIndex = 108;
+            label12.Text = "Room Category";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(58, 48);
+            label11.Name = "label11";
+            label11.Size = new Size(44, 15);
+            label11.TabIndex = 107;
+            label11.Text = "label11";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(58, 30);
+            label10.Name = "label10";
+            label10.Size = new Size(44, 15);
+            label10.TabIndex = 106;
+            label10.Text = "label10";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(22, 48);
+            label9.Name = "label9";
+            label9.Size = new Size(25, 15);
+            label9.TabIndex = 105;
+            label9.Text = "Vs: ";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(22, 27);
+            label7.Name = "label7";
+            label7.Size = new Size(30, 15);
+            label7.TabIndex = 104;
+            label7.Text = "Me: ";
+            // 
+            // oBtn
+            // 
+            oBtn.Location = new Point(616, 324);
+            oBtn.Margin = new Padding(3, 2, 3, 2);
+            oBtn.Name = "oBtn";
+            oBtn.Size = new Size(54, 34);
+            oBtn.TabIndex = 103;
+            oBtn.Text = "O";
+            oBtn.UseVisualStyleBackColor = true;
+            oBtn.Click += keyClicked;
+            // 
+            // pBtn
+            // 
+            pBtn.Location = new Point(683, 324);
+            pBtn.Margin = new Padding(3, 2, 3, 2);
+            pBtn.Name = "pBtn";
+            pBtn.Size = new Size(54, 34);
+            pBtn.TabIndex = 102;
+            pBtn.Text = "P";
+            pBtn.UseVisualStyleBackColor = true;
+            pBtn.Click += keyClicked;
+            // 
+            // eBtn
+            // 
+            eBtn.Location = new Point(217, 324);
+            eBtn.Margin = new Padding(3, 2, 3, 2);
+            eBtn.Name = "eBtn";
+            eBtn.Size = new Size(54, 34);
+            eBtn.TabIndex = 101;
+            eBtn.Text = "E";
+            eBtn.UseVisualStyleBackColor = true;
+            eBtn.Click += keyClicked;
+            // 
+            // rBtn
+            // 
+            rBtn.Location = new Point(283, 324);
+            rBtn.Margin = new Padding(3, 2, 3, 2);
+            rBtn.Name = "rBtn";
+            rBtn.Size = new Size(54, 34);
+            rBtn.TabIndex = 100;
+            rBtn.Text = "R";
+            rBtn.UseVisualStyleBackColor = true;
+            rBtn.Click += keyClicked;
+            // 
+            // tBtn
+            // 
+            tBtn.Location = new Point(350, 324);
+            tBtn.Margin = new Padding(3, 2, 3, 2);
+            tBtn.Name = "tBtn";
+            tBtn.Size = new Size(54, 34);
+            tBtn.TabIndex = 99;
+            tBtn.Text = "T";
+            tBtn.UseVisualStyleBackColor = true;
+            tBtn.Click += keyClicked;
+            // 
+            // yBtn
+            // 
+            yBtn.Location = new Point(417, 324);
+            yBtn.Margin = new Padding(3, 2, 3, 2);
+            yBtn.Name = "yBtn";
+            yBtn.Size = new Size(54, 34);
+            yBtn.TabIndex = 98;
+            yBtn.Text = "Y";
+            yBtn.UseVisualStyleBackColor = true;
+            yBtn.Click += keyClicked;
+            // 
+            // uBtn
+            // 
+            uBtn.Location = new Point(483, 324);
+            uBtn.Margin = new Padding(3, 2, 3, 2);
+            uBtn.Name = "uBtn";
+            uBtn.Size = new Size(54, 34);
+            uBtn.TabIndex = 97;
+            uBtn.Text = "U";
+            uBtn.UseVisualStyleBackColor = true;
+            uBtn.Click += keyClicked;
+            // 
+            // iBtn
+            // 
+            iBtn.Location = new Point(549, 324);
+            iBtn.Margin = new Padding(3, 2, 3, 2);
+            iBtn.Name = "iBtn";
+            iBtn.Size = new Size(54, 34);
+            iBtn.TabIndex = 96;
+            iBtn.Text = "I";
+            iBtn.UseVisualStyleBackColor = true;
+            iBtn.Click += keyClicked;
+            // 
+            // dBtn
+            // 
+            dBtn.Location = new Point(250, 360);
+            dBtn.Margin = new Padding(3, 2, 3, 2);
+            dBtn.Name = "dBtn";
+            dBtn.Size = new Size(54, 34);
+            dBtn.TabIndex = 95;
+            dBtn.Text = "D";
+            dBtn.UseVisualStyleBackColor = true;
+            dBtn.Click += keyClicked;
+            // 
+            // fBtn
+            // 
+            fBtn.Location = new Point(319, 360);
+            fBtn.Margin = new Padding(3, 2, 3, 2);
+            fBtn.Name = "fBtn";
+            fBtn.Size = new Size(54, 34);
+            fBtn.TabIndex = 94;
+            fBtn.Text = "F";
+            fBtn.UseVisualStyleBackColor = true;
+            fBtn.Click += keyClicked;
+            // 
+            // gBtn
+            // 
+            gBtn.Location = new Point(387, 360);
+            gBtn.Margin = new Padding(3, 2, 3, 2);
+            gBtn.Name = "gBtn";
+            gBtn.Size = new Size(54, 34);
+            gBtn.TabIndex = 93;
+            gBtn.Text = "G";
+            gBtn.UseVisualStyleBackColor = true;
+            gBtn.Click += keyClicked;
+            // 
+            // hBtn
+            // 
+            hBtn.Location = new Point(455, 360);
+            hBtn.Margin = new Padding(3, 2, 3, 2);
+            hBtn.Name = "hBtn";
+            hBtn.Size = new Size(54, 34);
+            hBtn.TabIndex = 92;
+            hBtn.Text = "H";
+            hBtn.UseVisualStyleBackColor = true;
+            hBtn.Click += keyClicked;
+            // 
+            // qBtn
+            // 
+            qBtn.Location = new Point(84, 324);
+            qBtn.Margin = new Padding(3, 2, 3, 2);
+            qBtn.Name = "qBtn";
+            qBtn.Size = new Size(54, 34);
+            qBtn.TabIndex = 91;
+            qBtn.Text = "Q";
+            qBtn.UseVisualStyleBackColor = true;
+            qBtn.Click += keyClicked;
+            // 
+            // kBtn
+            // 
+            kBtn.Location = new Point(591, 360);
+            kBtn.Margin = new Padding(3, 2, 3, 2);
+            kBtn.Name = "kBtn";
+            kBtn.Size = new Size(54, 34);
+            kBtn.TabIndex = 90;
+            kBtn.Text = "K";
+            kBtn.UseVisualStyleBackColor = true;
+            kBtn.Click += keyClicked;
+            // 
+            // lBtn
+            // 
+            lBtn.Location = new Point(660, 360);
+            lBtn.Margin = new Padding(3, 2, 3, 2);
+            lBtn.Name = "lBtn";
+            lBtn.Size = new Size(54, 34);
+            lBtn.TabIndex = 89;
+            lBtn.Text = "L";
+            lBtn.UseVisualStyleBackColor = true;
+            lBtn.Click += keyClicked;
+            // 
+            // jBtn
+            // 
+            jBtn.Location = new Point(523, 360);
+            jBtn.Margin = new Padding(3, 2, 3, 2);
+            jBtn.Name = "jBtn";
+            jBtn.Size = new Size(54, 34);
+            jBtn.TabIndex = 88;
+            jBtn.Text = "J";
+            jBtn.UseVisualStyleBackColor = true;
+            jBtn.Click += keyClicked;
+            // 
+            // wBtn
+            // 
+            wBtn.Location = new Point(151, 324);
+            wBtn.Margin = new Padding(3, 2, 3, 2);
+            wBtn.Name = "wBtn";
+            wBtn.Size = new Size(54, 34);
+            wBtn.TabIndex = 87;
+            wBtn.Text = "W";
+            wBtn.UseVisualStyleBackColor = true;
+            wBtn.Click += keyClicked;
+            // 
+            // sBtn
+            // 
+            sBtn.Location = new Point(182, 360);
+            sBtn.Margin = new Padding(3, 2, 3, 2);
+            sBtn.Name = "sBtn";
+            sBtn.Size = new Size(54, 34);
+            sBtn.TabIndex = 86;
+            sBtn.Text = "S";
+            sBtn.UseVisualStyleBackColor = true;
+            sBtn.Click += keyClicked;
+            // 
+            // xBtn
+            // 
+            xBtn.Location = new Point(241, 400);
+            xBtn.Margin = new Padding(3, 2, 3, 2);
+            xBtn.Name = "xBtn";
+            xBtn.Size = new Size(54, 34);
+            xBtn.TabIndex = 85;
+            xBtn.Text = "X";
+            xBtn.UseVisualStyleBackColor = true;
+            xBtn.Click += keyClicked;
+            // 
+            // zBtn
+            // 
+            zBtn.Location = new Point(165, 400);
+            zBtn.Margin = new Padding(3, 2, 3, 2);
+            zBtn.Name = "zBtn";
+            zBtn.Size = new Size(54, 34);
+            zBtn.TabIndex = 84;
+            zBtn.Text = "Z";
+            zBtn.UseVisualStyleBackColor = true;
+            zBtn.Click += keyClicked;
+            // 
+            // aBtn
+            // 
+            aBtn.Location = new Point(114, 360);
+            aBtn.Margin = new Padding(3, 2, 3, 2);
+            aBtn.Name = "aBtn";
+            aBtn.Size = new Size(54, 34);
+            aBtn.TabIndex = 83;
+            aBtn.Text = "A";
+            aBtn.UseVisualStyleBackColor = true;
+            aBtn.Click += keyClicked;
+            // 
+            // bBtn
+            // 
+            bBtn.Location = new Point(473, 400);
+            bBtn.Margin = new Padding(3, 2, 3, 2);
+            bBtn.Name = "bBtn";
+            bBtn.Size = new Size(54, 34);
+            bBtn.TabIndex = 82;
+            bBtn.Text = "B";
+            bBtn.UseVisualStyleBackColor = true;
+            bBtn.Click += keyClicked;
+            // 
+            // vBtn
+            // 
+            vBtn.Location = new Point(395, 400);
+            vBtn.Margin = new Padding(3, 2, 3, 2);
+            vBtn.Name = "vBtn";
+            vBtn.Size = new Size(54, 34);
+            vBtn.TabIndex = 81;
+            vBtn.Text = "V";
+            vBtn.UseVisualStyleBackColor = true;
+            vBtn.Click += keyClicked;
+            // 
+            // cBtn
+            // 
+            cBtn.Location = new Point(319, 400);
+            cBtn.Margin = new Padding(3, 2, 3, 2);
+            cBtn.Name = "cBtn";
+            cBtn.Size = new Size(54, 34);
+            cBtn.TabIndex = 80;
+            cBtn.Text = "C";
+            cBtn.UseVisualStyleBackColor = true;
+            cBtn.Click += keyClicked;
+            // 
+            // nBtn
+            // 
+            nBtn.Location = new Point(549, 400);
+            nBtn.Margin = new Padding(3, 2, 3, 2);
+            nBtn.Name = "nBtn";
+            nBtn.Size = new Size(54, 34);
+            nBtn.TabIndex = 79;
+            nBtn.Text = "N";
+            nBtn.UseVisualStyleBackColor = true;
+            nBtn.Click += keyClicked;
+            // 
+            // mBtn
+            // 
+            mBtn.Location = new Point(627, 400);
+            mBtn.Margin = new Padding(3, 2, 3, 2);
+            mBtn.Name = "mBtn";
+            mBtn.Size = new Size(54, 34);
+            mBtn.TabIndex = 78;
+            mBtn.Text = "M";
+            mBtn.UseVisualStyleBackColor = true;
+            mBtn.Click += keyClicked;
+            // 
             // ClientForm
             // 
             ClientSize = new Size(832, 518);
+            Controls.Add(gamePanel);
             Controls.Add(lobbyPanel);
             Controls.Add(roomsListPanel);
             Controls.Add(roomCreationPanel);
@@ -338,6 +758,8 @@
             roomsListPanel.PerformLayout();
             lobbyPanel.ResumeLayout(false);
             lobbyPanel.PerformLayout();
+            gamePanel.ResumeLayout(false);
+            gamePanel.PerformLayout();
             ResumeLayout(false);
 
 
@@ -371,5 +793,38 @@
         private Panel panel1;
         private CheckBox guestReadyCheckbox;
         private CheckBox ownerReadyCheckbox;
+        private Panel gamePanel;
+        private Button oBtn;
+        private Button pBtn;
+        private Button eBtn;
+        private Button rBtn;
+        private Button tBtn;
+        private Button yBtn;
+        private Button uBtn;
+        private Button iBtn;
+        private Button dBtn;
+        private Button fBtn;
+        private Button gBtn;
+        private Button hBtn;
+        private Button qBtn;
+        private Button kBtn;
+        private Button lBtn;
+        private Button jBtn;
+        private Button wBtn;
+        private Button sBtn;
+        private Button xBtn;
+        private Button zBtn;
+        private Button aBtn;
+        private Button bBtn;
+        private Button vBtn;
+        private Button cBtn;
+        private Button nBtn;
+        private Button mBtn;
+        private Label label11;
+        private Label label10;
+        private Label label9;
+        private Label label7;
+        private Label label13;
+        private Label label12;
     }
 }

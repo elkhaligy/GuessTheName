@@ -209,6 +209,30 @@ namespace ServerApp
                             }
 
                             break;
+                        case CommandTypes.Play:
+                            PlayCommandPayLoad playCommandPayLoad = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
+                            string playerThatPlayed = playCommandPayLoad.UserName;
+                            char keyPressed = playCommandPayLoad.Symbol;
+                            currentRoom = roomsList.Find(room => room.RoomId == playCommandPayLoad.RoomId);
+                            
+                            if (playerThatPlayed == currentRoom.Owner)
+                            {
+                                roomGuestTcp = nameToClientMap[currentRoom.Guest];
+                                roomGuestWriter = new StreamWriter(roomGuestTcp.GetStream()) { AutoFlush = true };
+                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad (currentRoom.Owner,keyPressed, currentRoom.RoomId));
+                                jsonMessage = JsonSerializer.Serialize(startGameCommand);
+                                roomGuestWriter?.WriteLine(jsonMessage);
+                            }
+                            else
+                            {
+                                roomOwnerTcpClient = nameToClientMap[currentRoom.Owner];
+                                roomOwnerWriter = new StreamWriter(roomOwnerTcpClient.GetStream()) { AutoFlush = true };
+                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad(currentRoom.Guest, keyPressed, currentRoom.RoomId));
+                                jsonMessage = JsonSerializer.Serialize(startGameCommand);
+                                roomOwnerWriter?.WriteLine(jsonMessage);
+
+                            }
+                            break;
                         default:
                             break;
                     }

@@ -60,10 +60,12 @@ namespace Shared
         public string UserName { get; set; }
         public char Symbol { get; set; }
 
-        public PlayCommandPayLoad(string username, char symbol)
+        public string RoomId { get; set; }
+        public PlayCommandPayLoad(string username, char symbol, string roomId)
         {
             UserName = username;
             Symbol = symbol;
+            RoomId = roomId;
         }
     }
 
@@ -95,7 +97,24 @@ namespace Shared
             RoomName = roomName;
             RoomCategory = roomCategory;
         }
+
+
     }
 
+    public class Request
+    {
+        public String RequestType { get; set; }
+        public Object RequestData { get; set; }
+    }
+    
+    public class LoginRequest
+    { 
+        public string Username { get; set; }
+    }
+
+    public class StatusResponse
+    {
+        public string Status { get; set; }
+    }
  
 }

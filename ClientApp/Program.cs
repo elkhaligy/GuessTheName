@@ -1,4 +1,4 @@
-namespace ClientApp
+    namespace ClientApp
 {
     internal static class Program
     {

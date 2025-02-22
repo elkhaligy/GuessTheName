@@ -6,6 +6,7 @@ namespace ServerApp
     public partial class ServerForm : Form
     {
         private Server server = new Server(IPAddress.Any, 50000); // Create a new server
+        private List<Player> playersList = new List<Player>(); 
         public ServerForm()
         {
             InitializeComponent();
