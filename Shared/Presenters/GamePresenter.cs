@@ -24,18 +24,10 @@ namespace ClientApp.Presenters
         {
             secretWord = string.Empty;
         }
-        public GamePresenter(int _category)
-        {
-            myGame = new Game((Category)_category);
-            secretWord = myGame.StartGame();
-
-        }
 
         public GamePresenter(string category)
         {
-            //        secretWord = myGame.StartGame(); 
             myGame = new Game(category.GetCategory());
-            //  secretWord = myGame.StartGame();
         }
 
         public bool CHECK(char letter)

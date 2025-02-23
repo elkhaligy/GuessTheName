@@ -10,29 +10,32 @@ namespace ClientApp.Views
         public GamePresenter presenter { get; private set; }
         private string selectedWord;
         private GamePresenter.PlayerTurn myPlayer;
-        private static List<GameForm> allGameForms = new List<GameForm>();
+        public string currentPlayer;
+        //private static List<GameForm> allGameForms = new List<GameForm>();
 
         public event EventHandler<HashSet<char>> OnReveal;
+        public event EventHandler<string> OnSwitchPlayer;
 
-        public GameForm(GamePresenter _presenter, string playerName, GamePresenter.PlayerTurn player)
+        public GameForm(GamePresenter _presenter, string playerName)
         {
             InitializeComponent();
             this.KeyPreview = true;
             presenter = _presenter;
-            myPlayer = player;
-            allGameForms.Add(this);
+           // myPlayer = player;
+            currentPlayer = playerName;
+            //allGameForms.Add(this);
 
             selectedWord = presenter.secretWord;
             lblSecretWord.Text = new string('_', selectedWord.Length).Replace("_", "\u2500  ");
             this.KeyPress += keyPressed;
             label1.Text = "Player: " + playerName;
 
-            UpdateAllButtonStates();
+            //UpdateAllButtonStates();
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            allGameForms.Remove(this);
+            //allGameForms.Remove(this);
             base.OnClosed(e);
         }
 
@@ -41,31 +44,31 @@ namespace ClientApp.Views
             lblSecretWord.Text = presenter.update();
         }
 
-        private void keyPressed(object? sender, KeyPressEventArgs e)
+        public void keyPressed(object? sender, KeyPressEventArgs e)
         {
             if (presenter == null) return;
 
             char pressedLetter = char.ToLower(e.KeyChar);
             if (!char.IsLetter(pressedLetter)) return;
 
-            if (myPlayer != presenter.CurrentPlayer)
-            {
-                MessageBox.Show("It is not your turn.");
-                return;
-            }
+            //if (myPlayer != presenter.CurrentPlayer)
+            //{
+            //    MessageBox.Show("It is not your turn.");
+            //    return;
+            //}
 
-            if (presenter.blockedPlayer == myPlayer)
-            {
-                MessageBox.Show("You are temporarily disabled. Wait for the other player to make a wrong guess.");
-                return;
-            }
+            //if (presenter.blockedPlayer == myPlayer)
+            //{
+            //    MessageBox.Show("You are temporarily disabled. Wait for the other player to make a wrong guess.");
+            //    return;
+            //}
 
             bool correct = presenter.CHECK(pressedLetter);
             DisableButton(pressedLetter);
             lblSecretWord.Text = presenter.update();
             OnReveal?.Invoke(this, presenter.guessedLetters);
 
-            UpdateAllButtonStates();
+            //UpdateAllButtonStates();
 
             if (presenter.isFinished)
             {
@@ -78,21 +81,34 @@ namespace ClientApp.Views
             if (presenter.isFinished || presenter == null) return;
             if (sender is Button b)
             {
-                if (myPlayer != presenter.CurrentPlayer)
-                {
-                    MessageBox.Show("It is not your turn.");
-                    return;
-                }
+                //if (myPlayer != presenter.CurrentPlayer)
+                //{
+                //    MessageBox.Show("It is not your turn.");
+                //    return;
+                //}
 
-                if (presenter.blockedPlayer == myPlayer)
-                {
-                    MessageBox.Show("You are temporarily disabled. Wait for the other player to make a wrong guess.");
-                    return;
-                }
+                //if (presenter.blockedPlayer == myPlayer)
+                //{
+                //    MessageBox.Show("You are temporarily disabled. Wait for the other player to make a wrong guess.");
+                //    return;
+                //}
 
                 char guessedLetter = char.ToLower(b.Text[0]);
                 bool correct = presenter.CHECK(guessedLetter);
-                b.Enabled = false;
+                if (!correct)
+                {
+                    foreach (Control c in this.Controls) //
+                    {
+                        c.Enabled = false;
+                    }
+                    this.KeyPress -= keyPressed;
+                    OnSwitchPlayer?.Invoke(this, currentPlayer);
+                }
+                else
+                {
+                    b.Enabled = false;
+                    this.KeyPress += keyPressed;
+                }
                 lblSecretWord.Text = presenter.update();
                 OnReveal?.Invoke(this, presenter.guessedLetters);
                 UpdateAllButtonStates();
@@ -117,57 +133,47 @@ namespace ClientApp.Views
 
         private void UpdateButtonStates()
         {
+            HashSet<char> revealLetters = presenter.guessedLetters;
             foreach (Control control in this.Controls)
             {
-                if (control is Button btn && btn.Tag?.ToString() == "letter")
+                if (control is Button btn && revealLetters.Contains(btn.Text[0]))
                 {
-                    char letter = char.ToLower(btn.Text[0]);
-                    if (presenter.guessedLetters.Contains(letter))
-                    {
                         btn.Enabled = false;
-                    }
-                    else
-                    {
-                        btn.Enabled = (myPlayer == presenter.CurrentPlayer && presenter.blockedPlayer != myPlayer);
-                    }
+                    //}
+                    //else
+                    //{
+                    //    btn.Enabled = (myPlayer == presenter.CurrentPlayer && presenter.blockedPlayer != myPlayer);
+                    //}
                 }
             }
         }
 
         private void UpdateAllButtonStates()
         {
-            foreach (GameForm form in allGameForms)
-            {
-                form.UpdateButtonStates();
-            }
+            UpdateButtonStates();
         }
 
         private void ShowGameOverMessages()
         {
-            foreach (GameForm form in allGameForms)
+            string message;
+            if (myPlayer == presenter.Winner)
             {
-                string message;
-                if (form.myPlayer == presenter.Winner)
-                {
-                    message = $"Congratulations, {form.label1.Text}, you are the winner!\nPlay again?";
-                }
-                else
-                {
-                    message = $"Sorry, {form.label1.Text}, you lost!\nPlay again?";
-                }
-                DialogResult result = MessageBox.Show(form, message, "Game Over", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    presenter.RestartGame();
-                    foreach (GameForm f in allGameForms)
-                    {
-                        f.ResetUI();
-                    }
-                }
-                else
-                {
-                    form.Close();
-                }
+                message = $"Congratulations, {label1.Text}, you are the winner!\nPlay again?";
+            }
+            else
+            {
+                message = $"Sorry, {label1.Text}, you lost!\nPlay again?";
+            }
+            DialogResult result = MessageBox.Show(this, message, "Game Over", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                presenter.RestartGame();
+
+                ResetUI();
+            }
+            else
+            {
+                this.Close();
             }
         }
 
@@ -190,22 +196,6 @@ namespace ClientApp.Views
             if (sender is DomainUpDown b)
             {
                 lblSecretWord.Text = presenter.update();
-            }
-        }
-
-        private void comboBox1_DropDownClosed(object sender, EventArgs e)
-        {
-            if (sender is ComboBox c)
-            {
-                if (selectedWord != null)
-                {
-                    lblSecretWord.Visible = true;
-                    lblSecretWord.Text = new string('_', selectedWord.Length).Replace("_", "\u2500  ");
-                }
-                else
-                {
-                    MessageBox.Show("No word found for the selected category.");
-                }
             }
         }
     }

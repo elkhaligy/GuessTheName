@@ -1,6 +1,7 @@
 using ClientApp.Presenters;
 using ClientApp.Views;
 using Shared;
+using Shared.Models;
 using System.Data;
 using System.Net.Sockets;
 using System.Numerics;
@@ -141,6 +142,7 @@ namespace ClientApp
                     }
                     else
                     {
+                        //JsonSerializerOptions.IncludeFields
                         GamePresenter presenter = JsonSerializer.Deserialize<GamePresenter>(command.Payload.ToString());
                         Thread gameThread = new Thread(() => OnGameStart(presenter));
                         gameThread.Start();
@@ -155,7 +157,17 @@ namespace ClientApp
                         frm.viewRevealedLetters(); // Update the UI with the revealed letters
                     }
                     break;
-
+                case CommandTypes.SwitchPlayer:
+                    if (frm != null)
+                    {
+                        foreach (Control c in frm.Controls)
+                        {
+                            c.Enabled = true;
+                        }
+                        frm.KeyPress += frm.keyPressed;
+                        frm.viewRevealedLetters(); // Update the UI with the revealed letters
+                    }
+                    break;
                 default:
                     break;
             }
@@ -163,12 +175,18 @@ namespace ClientApp
 
         private void OnGameStart(GamePresenter presenter)
         {
-            frm = new GameForm(presenter, Player.Name, GamePresenter.PlayerTurn.Player1);
+            frm = new GameForm(presenter, Player.Name);
             frm.Size = this.Size;
-            frm.Location = this.Location;
+            frm.DesktopLocation = this.DesktopLocation;
+            frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
             frm.OnReveal += async (args, revealed) =>
             {
                 Command updateThePlayer = new Command(CommandTypes.RoomUpdated, revealed);
+                sendCommand(updateThePlayer);
+            };
+            frm.OnSwitchPlayer += async (args, playerName) =>
+            {
+                Command updateThePlayer = new Command(CommandTypes.SwitchPlayer, this.Player); //switch to the other player
                 sendCommand(updateThePlayer);
             };
             if (InvokeRequired)

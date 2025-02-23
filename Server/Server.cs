@@ -192,6 +192,22 @@ namespace ServerApp
                             });
                             notifyPlayer(room, isOwner, command.Payload);
                             break;
+                        case CommandTypes.SwitchPlayer:
+                            Player otherPlayer, currentPlayer = JsonSerializer.Deserialize<Player>(command.Payload.ToString());
+                            if (currentPlayer.IsRoomOwner)
+                            {
+                                GameRoom activeRoom = roomsList.Find(r => r.Owner == currentPlayer.Name);
+                                otherPlayer = players.Find(p => p.Name == activeRoom.Guest); 
+                            }
+                            else
+                            {
+                                GameRoom activeRoom = roomsList.Find(r => r.Guest == currentPlayer.Name);
+                                otherPlayer = players.Find(p => p.Name == activeRoom.Owner);
+                            }
+                            jsonMessage = JsonSerializer.Serialize<Command>(new Command(CommandTypes.SwitchPlayer, null));
+                            NetworkStream nStream = otherPlayer.tcpClient.GetStream();
+                            new StreamWriter(nStream) { AutoFlush = true }.WriteLineAsync(jsonMessage);
+                            break;
                         default:
                             break;
                     }

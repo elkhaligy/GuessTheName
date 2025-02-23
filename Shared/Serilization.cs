@@ -18,6 +18,7 @@ namespace Shared
         RoomUpdated,
         GuessLetter,
         CorrectGuess,
+        SwitchPlayer,
         Quit
     }
     public class Command
