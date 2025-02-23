@@ -121,21 +121,6 @@ namespace ServerApp
                             break;
 
                         case CommandTypes.JoinRoom:
-
-                            // To join a room a player need to send the room name he wants  ONLY
-                            // You will use the room name to search for the required room in the list of rooms
-                            // When the required room is picked add the name of the player to the guest field
-                            // Now obtain the tcp client of the player that sent the request and prepare a message for him
-                            // In this message send him the room he joined with SuccessfulJoin command
-                            // The client then should act on this by creating a lobby
-                            // The client has the full details it needs, like who is the owner of the room and the room details
-                            //string joinedRoomName = JsonSerializer.Deserialize<string>(command.Payload.ToString());
-                            //MessageBox.Show("hello");
-                            //string joinedPlayerName = tcpPlayerMap[tcpClient].Name;
-                            //currentJoinedRoom.Guest = joinedPlayerName;
-                            //Command joinedRoomCommand = new Command(CommandTypes.JoinRoom, currentJoinedRoom);
-
-                            //MessageBox.Show($"{JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString()).RoomId}");
                             string receivedRoomName = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString()).RoomId;
                             GameRoom currentJoinedRoom = roomsList.Find(room => room.RoomId == receivedRoomName);
                             currentJoinedRoom.Guest = tcpPlayerMap[tcpClient].Name;
@@ -148,21 +133,8 @@ namespace ServerApp
                             TcpClient ownerTcpClient = nameToClientMap[currentJoinedRoom.Owner];
                             StreamWriter ownerWriter = new StreamWriter(ownerTcpClient.GetStream()) { AutoFlush = true };
                             ownerWriter?.WriteLine(jsonMessage);
-
-                            //string receivedRoomName = "dummy";
-                            //GameRoom neededRoom;
-                            //foreach (GameRoom room in roomsList)
-                            //{
-                            //    if (room.RoomId == receivedRoomName) 
-                            //    {
-                            //        neededRoom = room;
-                            //        break;
-                            //    }
-                            //}
-                            //neededRoom.Guest = tcpPlayerMap[tcpClient].Name;
-
-                            // After you handled this you need to notify both the owner and the guest
                             break;
+
                         case CommandTypes.RequestReady:
                             receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                             currentRoom = roomsList.Find(room => room.RoomId == receivedRoom.RoomId);
@@ -188,8 +160,8 @@ namespace ServerApp
                                  roomGuestWriter = new StreamWriter(roomGuestTcpClient.GetStream()) { AutoFlush = true };
                                 roomGuestWriter?.WriteLine(jsonMessage);
                             }
-
                              break;
+
                         case CommandTypes.StartGame:
                             receivedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                             OnLog?.Invoke($"Game started in room {receivedRoom.secretWord}");
@@ -207,8 +179,8 @@ namespace ServerApp
                                 roomGuestWriter = new StreamWriter(roomGuestTcp.GetStream()) { AutoFlush = true };
                                 roomGuestWriter?.WriteLine(jsonMessage);
                             }
-
                             break;
+
                         case CommandTypes.Play:
                             PlayCommandPayLoad playCommandPayLoad = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
                             string playerThatPlayed = playCommandPayLoad.UserName;
@@ -242,6 +214,7 @@ namespace ServerApp
                                 spectatorWriter?.WriteLine(jsonMessage);
                             }
                             break;
+
                         case CommandTypes.SpectateRoom:
                             GameRoom spectatedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                             string spectatedRoomName = spectatedRoom.RoomId;
