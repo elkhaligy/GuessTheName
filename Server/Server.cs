@@ -162,10 +162,19 @@ namespace ServerApp
                                 Player p1 = Players.Find(p => p.Name == currentRoom.Owner);
                                 Player p2 = Players.Find(p => p.Name == currentRoom.Guest);
                                 Command gameStarted = new Command(CommandTypes.GameStarted, presenter);
-                                jsonMessage = JsonSerializer.Serialize<Command>(gameStarted);
+                                Command initiallyDisabled = new Command(CommandTypes.InitiallyDisable, presenter);
                                 NetworkStream stream1 = p1.tcpClient.GetStream();
                                 NetworkStream stream2 = p2.tcpClient.GetStream();
+                                if (p1.Score >= p2.Score)
+                                {
+                                    jsonMessage = JsonSerializer.Serialize<Command>(gameStarted);
+                                }
+                                else
+                                {
+                                    jsonMessage = JsonSerializer.Serialize<Command>(initiallyDisabled);
+                                }
                                 new StreamWriter(stream1) { AutoFlush = true }.WriteLineAsync(jsonMessage);
+                                jsonMessage = JsonSerializer.Serialize<Command>(initiallyDisabled);
                                 new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(jsonMessage);
                                 currentRoom.State = GameState.InProgress;
                             }

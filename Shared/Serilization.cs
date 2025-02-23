@@ -19,6 +19,7 @@ namespace Shared
         GuessLetter,
         CorrectGuess,
         SwitchPlayer,
+        InitiallyDisable,
         Quit
     }
     public class Command
