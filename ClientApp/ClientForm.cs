@@ -211,7 +211,7 @@ namespace ClientApp
                         };
 
                         gamePanel.Controls.Add(textBox); // Add to the panel
-                        textBox.Enabled = false;
+                        //textBox.Enabled = false;
                     }
                     if (Player.IsRoomOwner)
                     {
@@ -277,6 +277,24 @@ namespace ClientApp
                 case CommandTypes.SpectateRoom:
                     GameRoom spectatedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                     currentRoom = spectatedRoom;
+                    secretWord = currentRoom.secretWord;
+
+                    for (int i = 1; i <= secretWord.Length; i++)
+                    {
+                        TextBox textBox = new TextBox
+                        {
+                            Name = $"txtBox{i}",   // Unique name
+                            Width = 50,            // Set width
+                            Height = 100,
+                            BackColor = Color.Black,
+                            ForeColor = Color.White,
+                            Font = new Font("Arial", 15),
+                            Location = new Point(i * 110, 200) // Positioning horizontally
+                        };
+
+                        gamePanel.Controls.Add(textBox); // Add to the panel
+                        //textBox.Enabled = false;
+                    }
 
                     // Hide other panels and show the spectating view
                     roomsListPanel.Hide();
@@ -287,10 +305,13 @@ namespace ClientApp
                     label11.Text = spectatedRoom.Guest; // Guest
                     label13.Text = spectatedRoom.Category; // Category
                     label16.Text = spectatedRoom.RoomId; // Room ID
-
+  
                     Player.IsActive = false; // Spectator should not be active
 
-                    MessageBox.Show("You are now spectating this game.");
+                    //MessageBox.Show("You are now spectating this game.");
+
+                    label7.Hide();
+                    label9.Hide();
                     break;
                 default:
                     break;

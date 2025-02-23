@@ -237,19 +237,9 @@ namespace ServerApp
                             {
                                 TcpClient spectatorTcp = nameToClientMap[spectator.Name];
                                 StreamWriter spectatorWriter = new StreamWriter(spectatorTcp.GetStream()) { AutoFlush = true };
-
-                                Command startGameACommand = new Command(CommandTypes.StartGame, currentRoom);
-                                jsonMessage = JsonSerializer.Serialize(startGameACommand);
-                                spectatorWriter?.WriteLine(jsonMessage);
-
-
-
                                 Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad(playerThatPlayed, keyPressed, currentRoom.RoomId));
                                 jsonMessage = JsonSerializer.Serialize(startGameCommand);
                                 spectatorWriter?.WriteLine(jsonMessage);
-
-
-
                             }
                             break;
                         case CommandTypes.SpectateRoom:
