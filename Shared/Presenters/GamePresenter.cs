@@ -15,7 +15,7 @@ namespace ClientApp.Presenters
         public enum PlayerTurn { Player1, Player2 }
         public bool isFinished { get; set; } = false;
         public PlayerTurn CurrentPlayer { get; set; } = PlayerTurn.Player1;
-        public PlayerTurn Winner { get; private set; }
+        public string WinnerName { get; private set; }
         public PlayerTurn? blockedPlayer { get; set; } = null;  // Changed to public setter
 
         public event EventHandler? TurnChanged;
@@ -30,7 +30,7 @@ namespace ClientApp.Presenters
             myGame = new Game(category.GetCategory());
         }
 
-        public bool CHECK(char letter)
+        public bool CHECK(char letter, string currentPlayer)
         {
             if (isFinished) return false;
 
@@ -49,7 +49,7 @@ namespace ClientApp.Presenters
                 if (secretWord.All(c => guessedLetters.Contains(char.ToLower(c))))
                 {
                     isFinished = true;
-                    Winner = CurrentPlayer;
+                    WinnerName = currentPlayer;
                 }
             }
 
@@ -72,7 +72,7 @@ namespace ClientApp.Presenters
             guessedLetters.Clear();
             isFinished = false;
             CurrentPlayer = PlayerTurn.Player1;
-            Winner = PlayerTurn.Player1;
+            //WinnerName = PlayerTurn.Player1;
             blockedPlayer = null;
             TurnChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -83,7 +83,7 @@ namespace ClientApp.Presenters
             guessedLetters.Clear();
             isFinished = false;
             CurrentPlayer = PlayerTurn.Player1;
-            Winner = PlayerTurn.Player1;
+            //Winner = PlayerTurn.Player1;
             blockedPlayer = null;
         }
     }

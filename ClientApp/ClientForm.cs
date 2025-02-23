@@ -162,7 +162,8 @@ namespace ClientApp
                     {
                         foreach (Control c in frm.Controls)
                         {
-                            c.Enabled = true;
+                            if(c is Button btn && !frm.presenter.guessedLetters.Contains(btn.Text[0]))
+                                c.Enabled = true;
                         }
                         frm.KeyPress += frm.keyPressed;
                         frm.viewRevealedLetters(); // Update the UI with the revealed letters

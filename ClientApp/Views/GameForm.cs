@@ -9,7 +9,7 @@ namespace ClientApp.Views
     {
         public GamePresenter presenter { get; private set; }
         private string selectedWord;
-        private GamePresenter.PlayerTurn myPlayer;
+        //private GamePresenter.PlayerTurn myPlayer;
         public string currentPlayer;
         //private static List<GameForm> allGameForms = new List<GameForm>();
 
@@ -63,7 +63,7 @@ namespace ClientApp.Views
             //    return;
             //}
 
-            bool correct = presenter.CHECK(pressedLetter);
+            bool correct = presenter.CHECK(pressedLetter, currentPlayer);
             DisableButton(pressedLetter);
             lblSecretWord.Text = presenter.update();
             OnReveal?.Invoke(this, presenter.guessedLetters);
@@ -94,7 +94,7 @@ namespace ClientApp.Views
                 //}
 
                 char guessedLetter = char.ToLower(b.Text[0]);
-                bool correct = presenter.CHECK(guessedLetter);
+                bool correct = presenter.CHECK(guessedLetter, currentPlayer);
                 if (!correct)
                 {
                     foreach (Control c in this.Controls) //
@@ -124,7 +124,7 @@ namespace ClientApp.Views
         {
             foreach (Control control in this.Controls)
             {
-                if (control is Button btn && btn.Tag?.ToString() == "letter" && char.ToLower(btn.Text[0]) == letter)
+                if (control is Button btn && char.ToLower(btn.Text[0]) == letter)
                 {
                     btn.Enabled = false;
                 }
@@ -156,7 +156,7 @@ namespace ClientApp.Views
         private void ShowGameOverMessages()
         {
             string message;
-            if (myPlayer == presenter.Winner)
+            if (currentPlayer == presenter.WinnerName)
             {
                 message = $"Congratulations, {label1.Text}, you are the winner!\nPlay again?";
             }
