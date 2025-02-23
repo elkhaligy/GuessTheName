@@ -265,12 +265,21 @@ namespace ClientApp
                             textBox.Text = secretWord[i].ToString();
                         }
                     }
+                    for (int i = 0; i < 26; i++)
+                    {
+                        if (currentRoom.revelaedLetter[i])
+                        {
+                            char pressedLetter = (char)('a' + i);
+                            Control btn = gamePanel.Controls[$"{pressedLetter}Btn"];
+                            btn.Enabled = false;
+                        }
+                    }
 
                     //for (int i = 0; i < secretWord.Length; i++)
                     //{
                     //    if (secretWord[i].ToString() == playCommand.Symbol.ToString().ToLower())
                     //    {
-  
+
                     //        Control textBox = gamePanel.Controls[$"txtBox{i + 1}"];
                     //        textBox.Text = playCommand.Symbol.ToString().ToLower();
 
