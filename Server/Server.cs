@@ -165,17 +165,20 @@ namespace ServerApp
                                 Command initiallyDisabled = new Command(CommandTypes.InitiallyDisable, presenter);
                                 NetworkStream stream1 = p1.tcpClient.GetStream();
                                 NetworkStream stream2 = p2.tcpClient.GetStream();
+                                string guestMsg;
                                 if (p1.Score >= p2.Score)
                                 {
                                     jsonMessage = JsonSerializer.Serialize<Command>(gameStarted);
+                                    guestMsg = JsonSerializer.Serialize<Command>(initiallyDisabled);
+                                    new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(guestMsg);
                                 }
                                 else
                                 {
                                     jsonMessage = JsonSerializer.Serialize<Command>(initiallyDisabled);
+                                    guestMsg = JsonSerializer.Serialize<Command>(gameStarted);
                                 }
                                 new StreamWriter(stream1) { AutoFlush = true }.WriteLineAsync(jsonMessage);
-                                jsonMessage = JsonSerializer.Serialize<Command>(initiallyDisabled);
-                                new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(jsonMessage);
+                                new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(guestMsg);
                                 currentRoom.State = GameState.InProgress;
                             }
                             else
