@@ -183,62 +183,65 @@ namespace ClientApp
                     break;
 
                 case CommandTypes.StartGame:
-                    currentRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
-                    secretWord = currentRoom.secretWord;
-                    int textBoxWidth = 50;
-                    int spacing = 10;
-                    int totalWidth = (secretWord.Length * (textBoxWidth + spacing)) - spacing;
-
-                    // Calculate starting X position to center align
-                    int startX = (gamePanel.Width - totalWidth) / 2;
-                    int startY = 200; // Keep Y position fixed
-
-                    for (int i = 0; i < secretWord.Length; i++)
                     {
-                        TextBox textBox = new TextBox
+                        currentRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                        secretWord = currentRoom.secretWord;
+                        int textBoxWidth = 50;
+                        int spacing = 10;
+                        int totalWidth = (secretWord.Length * (textBoxWidth + spacing)) - spacing;
+
+                        // Calculate starting X position to center align
+                        int startX = (gamePanel.Width - totalWidth) / 2;
+                        int startY = 200; // Keep Y position fixed
+
+                        for (int i = 0; i < secretWord.Length; i++)
                         {
-                            Name = $"txtBox{i + 1}",   // Unique name
-                            Width = textBoxWidth,
-                            Height = 100,
-                            BackColor = Color.Black,
-                            ForeColor = Color.White,
-                            Font = new Font("Arial", 15),
-                            Location = new Point(startX + i * (textBoxWidth + spacing), startY) // Adjusted positioning
-                        };
+                            TextBox textBox = new TextBox
+                            {
+                                Name = $"txtBox{i + 1}",   // Unique name
+                                Width = textBoxWidth,
+                                Height = 100,
+                                BackColor = Color.Black,
+                                ForeColor = Color.White,
+                                Font = new Font("Arial", 15),
+                                Location = new Point(startX + i * (textBoxWidth + spacing), startY) // Adjusted positioning
+                            };
 
-                        gamePanel.Controls.Add(textBox);
-                    }
+                            gamePanel.Controls.Add(textBox);
+                        }
 
-                    if (Player.IsRoomOwner)
-                    {
-                        //MessageBox.Show($"Game Started Me {Player.Name} vs {currentRoom.Guest}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
-                        lobbyPanel.Hide();
-                        gamePanel.Show();
-                        label10.Text = currentRoom.Guest;
-                        label11.Text = currentRoom.Owner;
+                        if (Player.IsRoomOwner)
+                        {
+                            //MessageBox.Show($"Game Started Me {Player.Name} vs {currentRoom.Guest}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
+                            lobbyPanel.Hide();
+                            gamePanel.Show();
+                            label10.Text = currentRoom.Guest;
+                            label11.Text = currentRoom.Owner;
+                            label13.Text = currentRoom.Category;
+                            Player.IsActive = true;
+                            turnLabel.Text = $"Your Turn";
+                            turnLabel.ForeColor = Color.Green;
+                        }
+                        else
+                        {
+                            //MessageBox.Show($"Game Started Me {currentRoom.Owner} vs {Player.Name}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
+                            lobbyPanel.Hide();
+                            gamePanel.Show();
+                            label10.Text = currentRoom.Owner;
+                            label11.Text = currentRoom.Guest;
+                            label13.Text = currentRoom.Category;
+                            Player.IsActive = false;
+                            turnLabel.Text = $"{currentRoom.Owner}'s Turn";
+                            turnLabel.ForeColor = Color.Red;
+                        }
+
+                        label16.Text = currentRoom.RoomId;
                         label13.Text = currentRoom.Category;
-                        Player.IsActive = true;
-                        turnLabel.Text = $"Your Turn";
-                        turnLabel.ForeColor = Color.Green;
+                        break;
                     }
-                    else
-                    {
-                        //MessageBox.Show($"Game Started Me {currentRoom.Owner} vs {Player.Name}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
-                        lobbyPanel.Hide();
-                        gamePanel.Show();
-                        label10.Text = currentRoom.Owner;
-                        label11.Text = currentRoom.Guest;
-                        label13.Text = currentRoom.Category;
-                        Player.IsActive = false;
-                        turnLabel.Text = $"{currentRoom.Owner}'s Turn";
-                        turnLabel.ForeColor = Color.Red;
-                    }
-
-                    label16.Text = currentRoom.RoomId;
-                    label13.Text = currentRoom.Category;
-                    break;
 
                 case CommandTypes.Play:
+                    bool isSpecator = !(Player.Name == currentRoom.Owner || Player.Name == currentRoom.Guest);
                     secretWord = currentRoom.secretWord;
                     JsonElement jsonPayload = (JsonElement)command.Payload;
                     PlayCommandPayLoad playCommand = jsonPayload.Deserialize<PlayCommandPayLoad>();
@@ -279,20 +282,26 @@ namespace ClientApp
                     }
                     if (winFlag)
                     {
-                        gamePanel.Hide();
-                        conrgatOrSorryLabel.Text = $"Sorry {Player.Name}!";
-                        winOrLoseLabel.Text = "You Lost!";
-                        winOrLoseLabel.ForeColor = Color.Red;
-                        winOrLosePanel.Show();
-                        //MessageBox.Show($"{playCommand.UserName} Won, Sorry!");
+                        if (isSpecator)
+                        {
+                            gamePanel.Hide();
+                            roomsListPanel.Show();
+                        }
+                        else
+                        {
+                            gamePanel.Hide();
+                            conrgatOrSorryLabel.Text = $"Sorry {Player.Name}!";
+                            winOrLoseLabel.Text = "You Lost!";
+                            winOrLoseLabel.ForeColor = Color.Red;
+                            winOrLosePanel.Show();
+                        }
                     }
 
 
 
 
-
                     // see if the current player is a spectator or not
-                    if (!(Player.Name == currentRoom.Owner || Player.Name == currentRoom.Guest))
+                    if (isSpecator)
                     {
                         if (turnLabel.Text == $"{currentRoom.Owner}'s Turn")
                         {
@@ -312,71 +321,80 @@ namespace ClientApp
                     break;
 
                 case CommandTypes.SpectateRoom:
-                    GameRoom spectatedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
-                    currentRoom = spectatedRoom;
-                    secretWord = currentRoom.secretWord;
-
-                    for (int i = 1; i <= secretWord.Length; i++)
                     {
-                        TextBox textBox = new TextBox
+                        GameRoom spectatedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                        currentRoom = spectatedRoom;
+                        secretWord = currentRoom.secretWord;
+
+                        int textBoxWidth = 50;
+                        int spacing = 10;
+                        int totalWidth = (secretWord.Length * (textBoxWidth + spacing)) - spacing;
+
+                        // Calculate starting X position to center align
+                        int startX = (gamePanel.Width - totalWidth) / 2;
+                        int startY = 200; // Keep Y position fixed
+
+                        for (int i = 0; i < secretWord.Length; i++)
                         {
-                            Name = $"txtBox{i}",   // Unique name
-                            Width = 50,            // Set width
-                            Height = 100,
-                            BackColor = Color.Black,
-                            ForeColor = Color.White,
-                            Font = new Font("Arial", 15),
-                            Location = new Point(i * 110, 200) // Positioning horizontally
-                        };
+                            TextBox textBox = new TextBox
+                            {
+                                Name = $"txtBox{i + 1}",   // Unique name
+                                Width = textBoxWidth,
+                                Height = 100,
+                                BackColor = Color.Black,
+                                ForeColor = Color.White,
+                                Font = new Font("Arial", 15),
+                                Location = new Point(startX + i * (textBoxWidth + spacing), startY) // Adjusted positioning
+                            };
 
-                        gamePanel.Controls.Add(textBox); // Add to the panel
-                        //textBox.Enabled = false;
-                    }
-
-                    string message = String.Join(", ", currentRoom.revelaedLetter.Select(b => b ? "1" : "0"));
-
-                    //MessageBox.Show(message);
-                    bool[] secretWordRevealed = new bool[secretWord.Length];
-                    for (int i = 0; i < secretWord.Length; i++)
-                    {
-                        secretWordRevealed[i] = currentRoom.revelaedLetter[secretWord[i] - 'a'];
-                    }
-
-                    for (int i = 1; i <= secretWord.Length; i++)
-                    {
-                        if (secretWordRevealed[i - 1])
-                        {
-                            gamePanel.Controls[$"txtBox{i}"].Text = secretWord[i - 1].ToString();
+                            gamePanel.Controls.Add(textBox);
                         }
-                    }
-                    // Hide other panels and show the spectating view
-                    roomsListPanel.Hide();
-                    lobbyPanel.Hide();
-                    gamePanel.Show();
+                        string message = String.Join(", ", currentRoom.revelaedLetter.Select(b => b ? "1" : "0"));
 
-                    label10.Text = spectatedRoom.Owner; // Owner
-                    label11.Text = spectatedRoom.Guest; // Guest
-                    label13.Text = spectatedRoom.Category; // Category
-                    label16.Text = spectatedRoom.RoomId; // Room ID
+                        //MessageBox.Show(message);
+                        bool[] secretWordRevealed = new bool[secretWord.Length];
+                        for (int i = 0; i < secretWord.Length; i++)
+                        {
+                            secretWordRevealed[i] = currentRoom.revelaedLetter[secretWord[i] - 'a'];
+                        }
 
-                    Player.IsActive = false; // Spectator should not be active
-                    if (turnLabel.Text == "Your Turn")
-                    {
-                        turnLabel.Text = $"{currentRoom.Owner}'s Turn";
-                    }
-                    else if (turnLabel.Text == $"{currentRoom.Owner}'s Turn")
-                    {
-                        turnLabel.Text = $"{currentRoom.Guest}'s Turn";
-                    }
-                    else if (turnLabel.Text == $"{currentRoom.Guest}'s Turn")
-                    {
-                        turnLabel.Text = $"{currentRoom.Owner}'s Turn";
-                    }
-                    //MessageBox.Show("You are now spectating this game.");
+                        for (int i = 1; i <= secretWord.Length; i++)
+                        {
+                            if (secretWordRevealed[i - 1])
+                            {
+                                gamePanel.Controls[$"txtBox{i}"].Text = secretWord[i - 1].ToString();
+                            }
+                        }
+                        // Hide other panels and show the spectating view
+                        roomsListPanel.Hide();
+                        lobbyPanel.Hide();
+                        gamePanel.Show();
 
-                    label7.Hide();
-                    label9.Hide();
+                        label10.Text = spectatedRoom.Owner; // Owner
+                        label11.Text = spectatedRoom.Guest; // Guest
+                        label13.Text = spectatedRoom.Category; // Category
+                        label16.Text = spectatedRoom.RoomId; // Room ID
+
+                        Player.IsActive = false; // Spectator should not be active
+                        if (turnLabel.Text == "Your Turn")
+                        {
+                            turnLabel.Text = $"{currentRoom.Owner}'s Turn";
+                        }
+                        else if (turnLabel.Text == $"{currentRoom.Owner}'s Turn")
+                        {
+                            turnLabel.Text = $"{currentRoom.Guest}'s Turn";
+                        }
+                        else if (turnLabel.Text == $"{currentRoom.Guest}'s Turn")
+                        {
+                            turnLabel.Text = $"{currentRoom.Owner}'s Turn";
+                        }
+                        //MessageBox.Show("You are now spectating this game.");
+
+                        label7.Hide();
+                        label9.Hide();
                     break;
+                    }
+
                 default:
                     break;
             }
