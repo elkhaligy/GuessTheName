@@ -47,7 +47,7 @@ namespace ClientApp
             {
                 List<string> randomNames = File.ReadAllLines(fullPath).ToList();
                 int randomIndex = random.Next(randomNames.Count);
-                return randomNames[randomIndex];
+                return randomNames[randomIndex].ToLower();
             }
             return null;
         }
@@ -256,15 +256,26 @@ namespace ClientApp
                     Control pressedControl = gamePanel.Controls[controlName];
                     pressedControl.Enabled = false;
 
-
+                    // Loop throw the current room revealed letters and update the ui based on it
                     for (int i = 0; i < secretWord.Length; i++)
                     {
-                        if (secretWord[i].ToString() == playCommand.Symbol.ToString().ToLower())
+                        if (currentRoom.revelaedLetter[secretWord[i] - 'a'])
                         {
                             Control textBox = gamePanel.Controls[$"txtBox{i + 1}"];
-                            textBox.Text = playCommand.Symbol.ToString().ToLower();
+                            textBox.Text = secretWord[i].ToString();
                         }
                     }
+
+                    //for (int i = 0; i < secretWord.Length; i++)
+                    //{
+                    //    if (secretWord[i].ToString() == playCommand.Symbol.ToString().ToLower())
+                    //    {
+  
+                    //        Control textBox = gamePanel.Controls[$"txtBox{i + 1}"];
+                    //        textBox.Text = playCommand.Symbol.ToString().ToLower();
+
+                    //    }
+                    //}
                     //if (secretWord.Contains(playCommand.Symbol.ToString().ToLower()))
                     //{
                     //    Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(playCommand.Symbol.ToString().ToLower()) + 1}"];
@@ -428,7 +439,9 @@ namespace ClientApp
         {
             roomsListPanel.Hide();
             tryCategoriesComboBox.Items.Add("Animals");
-            tryCategoriesComboBox.Items.Add("Countries");
+            tryCategoriesComboBox.Items.Add("Food");
+            tryCategoriesComboBox.Items.Add("Vehicles");
+
             tryCategoriesComboBox.SelectedIndex = 0;
             roomCreationPanel.Show();
         }
@@ -571,6 +584,7 @@ namespace ClientApp
         {
             if (Player.IsActive)
             {
+                bool isCorrectPlay = false;
                 Button pushedButton = sender as Button;
                 string controlName = pushedButton.Text.ToLower() + "Btn";
                 Control pressedControl = gamePanel.Controls[controlName];
@@ -580,26 +594,26 @@ namespace ClientApp
                 string pushedKey = pushedButton.Text;
 
                 for (int i = 0; i < secretWord.Length; i++)
-                {
+                {   
                     if (secretWord[i].ToString() == pushedKey.ToLower())
                     {
                         Control textBox = gamePanel.Controls[$"txtBox{i + 1}"];
                         textBox.Text = pushedKey.ToLower();
+                        isCorrectPlay = true;
                     }
                 }
-                //if (secretWord.Contains(pushedKey.ToLower()))
-                //{
-                //    //MessageBox.Show("Hello");
-                //    Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(pushedKey.ToLower()) + 1}"];
-                //    textBox.Text = pushedKey.ToLower();
-                //}
 
-                turnLabel.Text = $"{currentRoom.Guest}'s Turn";
-                turnLabel.ForeColor = Color.Red;
 
-                Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom));
-                sendCommand(command);
-                Player.IsActive = false;
+
+                if(!isCorrectPlay)
+                {
+                    turnLabel.Text = $"{currentRoom.Guest}'s Turn";
+                    turnLabel.ForeColor = Color.Red;
+                    Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom));
+                    sendCommand(command);
+                    Player.IsActive = false;
+                }
+
                 bool winFlag = true;
                 for (int i = 1; i <= secretWord.Length; i++)
                 {
@@ -616,6 +630,8 @@ namespace ClientApp
                     gamePanel.Hide();
                     conrgatOrSorryLabel.Text = $"Congratulations! {Player.Name}";
                     winOrLosePanel.Show();
+                    Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom));
+                    sendCommand(command);
                 }
             }
         }
