@@ -142,7 +142,6 @@ namespace ServerApp
 
                             jsonMessage = JsonSerializer.Serialize(new Command(CommandTypes.JoinRoom, currentJoinedRoom));
                             writer?.WriteLine(jsonMessage);
-                            MessageBox.Show(currentJoinedRoom.secretWord);
                             // Send to the owner of the room an update with the guest name
                             Command roomUpdated = new Command(CommandTypes.RoomUpdated, currentJoinedRoom);
                             jsonMessage = JsonSerializer.Serialize(roomUpdated);
@@ -233,6 +232,34 @@ namespace ServerApp
                                 roomOwnerWriter?.WriteLine(jsonMessage);
 
                             }
+
+                            foreach (var spectator in currentRoom.Spectators)
+                            {
+                                TcpClient spectatorTcp = nameToClientMap[spectator.Name];
+                                StreamWriter spectatorWriter = new StreamWriter(spectatorTcp.GetStream()) { AutoFlush = true };
+
+                                Command startGameACommand = new Command(CommandTypes.StartGame, currentRoom);
+                                jsonMessage = JsonSerializer.Serialize(startGameACommand);
+                                spectatorWriter?.WriteLine(jsonMessage);
+
+
+
+                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad(playerThatPlayed, keyPressed, currentRoom.RoomId));
+                                jsonMessage = JsonSerializer.Serialize(startGameCommand);
+                                spectatorWriter?.WriteLine(jsonMessage);
+
+
+
+                            }
+                            break;
+                        case CommandTypes.SpectateRoom:
+                            GameRoom spectatedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                            string spectatedRoomName = spectatedRoom.RoomId;
+                            GameRoom spectatedRoomDetails = roomsList.Find(room => room.RoomId == spectatedRoomName);
+                            spectatedRoomDetails.Spectators.Add(tcpPlayerMap[tcpClient]);
+                            Command spectateRoomCommand = new Command(CommandTypes.SpectateRoom, spectatedRoomDetails);
+                            jsonMessage = JsonSerializer.Serialize(spectateRoomCommand);
+                            writer?.WriteLine(jsonMessage);
                             break;
                         default:
                             break;

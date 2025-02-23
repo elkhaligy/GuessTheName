@@ -144,6 +144,8 @@ namespace ClientApp
                     lobbyPanel.Show();
                     guestReadyCheckbox.Enabled = false;
                     ownerNameLabel.Text = Player.Name + " (Me)";
+                    label16.Text = receivedRoom.RoomId;
+                    label13.Text = receivedRoom.Category;
                     break;
 
                 case CommandTypes.RoomsList:
@@ -170,7 +172,6 @@ namespace ClientApp
                     currentRoom = joinedRoom;
                     secretWord = joinedRoom.secretWord;
 
-                    MessageBox.Show(currentRoom.secretWord);
                     GameRoom gameRoom = roomsListFromServerToDisplay.Find(room => room.RoomId == joinedRoom.RoomId);
                     gameRoom.Guest = joinedRoom.Guest;
                     Player.CurrentRoom = joinedRoom.RoomId;
@@ -181,6 +182,8 @@ namespace ClientApp
                     guestNameLabel.Text = Player.Name + " (Me)";
                     ownerReadyCheckbox.Enabled = false;
                     StartGameButton.Hide();
+
+
                     break;
                 case CommandTypes.StartGame:
 
@@ -191,6 +194,7 @@ namespace ClientApp
                      */
                     currentRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                     secretWord = currentRoom.secretWord;
+
                     // Generate the word
 
                     for (int i = 1; i <= secretWord.Length; i++)
@@ -198,19 +202,24 @@ namespace ClientApp
                         TextBox textBox = new TextBox
                         {
                             Name = $"txtBox{i}",   // Unique name
-                            Width = 30,            // Set width
-                            Location = new Point(i * 100, 200) // Positioning horizontally
+                            Width = 50,            // Set width
+                            Height = 100,
+                            BackColor = Color.Black,
+                            ForeColor = Color.White,
+                            Font = new Font("Arial", 15),
+                            Location = new Point(i * 110, 200) // Positioning horizontally
                         };
 
                         gamePanel.Controls.Add(textBox); // Add to the panel
+                        textBox.Enabled = false;
                     }
                     if (Player.IsRoomOwner)
                     {
                         //MessageBox.Show($"Game Started Me {Player.Name} vs {currentRoom.Guest}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
                         lobbyPanel.Hide();
                         gamePanel.Show();
-                        label10.Text = Player.Name;
-                        label11.Text = currentRoom.Guest;
+                        label10.Text = currentRoom.Guest;
+                        label11.Text = currentRoom.Owner;
                         label13.Text = currentRoom.Category;
                         Player.IsActive = true;
                     }
@@ -219,17 +228,22 @@ namespace ClientApp
                         //MessageBox.Show($"Game Started Me {currentRoom.Owner} vs {Player.Name}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
                         lobbyPanel.Hide();
                         gamePanel.Show();
-                        label10.Text = Player.Name;
-                        label11.Text = currentRoom.Owner;
+                        label10.Text = currentRoom.Owner;
+                        label11.Text = currentRoom.Guest;
                         label13.Text = currentRoom.Category;
                         Player.IsActive = false;
 
                     }
+
+                    label16.Text = currentRoom.RoomId;
+                    label13.Text = currentRoom.Category;
                     break;
                 case CommandTypes.Play:
+                    secretWord = currentRoom.secretWord;
                     PlayCommandPayLoad playCommand = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
                     //MessageBox.Show($"{playCommand.UserName} played {playCommand.Symbol} in room {playCommand.RoomId}");
                     Player.IsActive = true;
+
 
 
                     string controlName = playCommand.Symbol.ToString().ToLower() + "Btn";
@@ -260,7 +274,24 @@ namespace ClientApp
                         MessageBox.Show($"{playCommand.UserName} Won, Sorry!");
                     }
                     break;
+                case CommandTypes.SpectateRoom:
+                    GameRoom spectatedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                    currentRoom = spectatedRoom;
 
+                    // Hide other panels and show the spectating view
+                    roomsListPanel.Hide();
+                    lobbyPanel.Hide();
+                    gamePanel.Show();
+
+                    label10.Text = spectatedRoom.Owner; // Owner
+                    label11.Text = spectatedRoom.Guest; // Guest
+                    label13.Text = spectatedRoom.Category; // Category
+                    label16.Text = spectatedRoom.RoomId; // Room ID
+
+                    Player.IsActive = false; // Spectator should not be active
+
+                    MessageBox.Show("You are now spectating this game.");
+                    break;
                 default:
                     break;
             }
@@ -329,18 +360,19 @@ namespace ClientApp
             // Create the panel
             Panel roomPanel = new Panel
             {
-                Size = new Size(250, 130),
-                BackColor = Color.GhostWhite,
-
+                Size = new Size(250, 150),
+                BackColor = Color.DarkGray,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
-            // Room Name Label
+            // Room Name Label (Larger and Bold)
             Label nameLabel = new Label
             {
                 Text = $"Room: {roomName}",
                 Location = new Point(10, 10),
-                AutoSize = true
+                AutoSize = true,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                ForeColor = Color.White
             };
             roomPanel.Controls.Add(nameLabel);
 
@@ -348,8 +380,10 @@ namespace ClientApp
             Label creatorLabel = new Label
             {
                 Text = $"Creator: {creator}",
-                Location = new Point(10, 30),
-                AutoSize = true
+                Location = new Point(10, 40),
+                AutoSize = true,
+                Font = new Font("Arial", 10, FontStyle.Regular),
+                ForeColor = Color.White
             };
             roomPanel.Controls.Add(creatorLabel);
 
@@ -357,8 +391,10 @@ namespace ClientApp
             Label playerLabel = new Label
             {
                 Text = $"Other Player: {otherPlayer}",
-                Location = new Point(10, 50),
-                AutoSize = true
+                Location = new Point(10, 60),
+                AutoSize = true,
+                Font = new Font("Arial", 10, FontStyle.Regular),
+                ForeColor = Color.White
             };
             roomPanel.Controls.Add(playerLabel);
 
@@ -366,8 +402,10 @@ namespace ClientApp
             Label statusLabel = new Label
             {
                 Text = $"Status: {status}",
-                Location = new Point(10, 70),
-                AutoSize = true
+                Location = new Point(10, 80),
+                AutoSize = true,
+                Font = new Font("Arial", 10, FontStyle.Regular),
+                ForeColor = Color.White
             };
             roomPanel.Controls.Add(statusLabel);
 
@@ -376,7 +414,10 @@ namespace ClientApp
             {
                 Text = "Join",
                 Size = new Size(100, 30),
-                Location = new Point(10, 90)
+                Location = new Point(10, 110),
+                BackColor = Color.Black,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
             };
             joinButton.Click += (s, e) => { joinRoomButton_Click(roomName); };
             roomPanel.Controls.Add(joinButton);
@@ -386,21 +427,31 @@ namespace ClientApp
             {
                 Text = "Spectate",
                 Size = new Size(100, 30),
-                Location = new Point(130, 90)
+                Location = new Point(130, 110),
+                BackColor = Color.Black,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
             };
-            spectateButton.Click += (s, e) => MessageBox.Show($"Spectating {roomName}...");
+            spectateButton.Click += (s, e) => { spectateRoomButton_Click(roomName); };
             roomPanel.Controls.Add(spectateButton);
 
-            // Add the panel to FlowLayoutPanel (Assuming you have one)
+            // Add the panel to FlowLayoutPanel
             roomsListFlowLayout.Controls.Add(roomPanel);
+
             otherPlayer = otherPlayer ?? "";
             if (creator.Length > 0 && otherPlayer.Length > 0)
             {
                 joinButton.Enabled = false;
             }
-            roomPanel.Controls.Add(joinButton);
         }
 
+
+        private void spectateRoomButton_Click(string roomName)
+        {
+            GameRoom gameRoom = new GameRoom { RoomId = roomName };
+            Command spectateRequest = new Command(CommandTypes.SpectateRoom, gameRoom);
+            sendCommand(spectateRequest);
+        }
         private void ReadyButton_Click(object sender, EventArgs e)
         {
             //MessageBox.Show($"{roomName}");

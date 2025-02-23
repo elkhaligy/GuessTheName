@@ -15,7 +15,7 @@ namespace Shared
         public bool IsOwnerReady { get; set; }
 
         public bool IsGuestReady { get; set; }
-        public List<Player> Spectators { get; set; }
+        public List<Player> Spectators { get; set; } = new List<Player>();
 
         public string Category { get; set; }
         public string secretWord { get; set; }
