@@ -184,14 +184,16 @@ namespace ServerApp
                         case CommandTypes.Play:
                             PlayCommandPayLoad playCommandPayLoad = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
                             string playerThatPlayed = playCommandPayLoad.UserName;
+                            GameRoom playedRoom = playCommandPayLoad.room;
                             char keyPressed = playCommandPayLoad.Symbol;
-                            currentRoom = roomsList.Find(room => room.RoomId == playCommandPayLoad.RoomId);
-                            
+                            currentRoom = roomsList.Find(room => room.RoomId == playCommandPayLoad.room.RoomId);
+                            currentRoom.revelaedLetter = playedRoom.revelaedLetter;
+
                             if (playerThatPlayed == currentRoom.Owner)
                             {
                                 roomGuestTcp = nameToClientMap[currentRoom.Guest];
                                 roomGuestWriter = new StreamWriter(roomGuestTcp.GetStream()) { AutoFlush = true };
-                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad (currentRoom.Owner,keyPressed, currentRoom.RoomId));
+                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad (currentRoom.Owner,keyPressed, currentRoom));
                                 jsonMessage = JsonSerializer.Serialize(startGameCommand);
                                 roomGuestWriter?.WriteLine(jsonMessage);
                             }
@@ -199,7 +201,7 @@ namespace ServerApp
                             {
                                 roomOwnerTcpClient = nameToClientMap[currentRoom.Owner];
                                 roomOwnerWriter = new StreamWriter(roomOwnerTcpClient.GetStream()) { AutoFlush = true };
-                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad(currentRoom.Guest, keyPressed, currentRoom.RoomId));
+                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad(currentRoom.Guest, keyPressed, currentRoom));
                                 jsonMessage = JsonSerializer.Serialize(startGameCommand);
                                 roomOwnerWriter?.WriteLine(jsonMessage);
 
@@ -209,12 +211,11 @@ namespace ServerApp
                             {
                                 TcpClient spectatorTcp = nameToClientMap[spectator.Name];
                                 StreamWriter spectatorWriter = new StreamWriter(spectatorTcp.GetStream()) { AutoFlush = true };
-                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad(playerThatPlayed, keyPressed, currentRoom.RoomId));
+                                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad(playerThatPlayed, keyPressed, currentRoom));
                                 jsonMessage = JsonSerializer.Serialize(startGameCommand);
                                 spectatorWriter?.WriteLine(jsonMessage);
                             }
                             break;
-
                         case CommandTypes.SpectateRoom:
                             GameRoom spectatedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                             string spectatedRoomName = spectatedRoom.RoomId;

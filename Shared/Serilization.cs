@@ -61,12 +61,12 @@ namespace Shared
         public string UserName { get; set; }
         public char Symbol { get; set; }
 
-        public string RoomId { get; set; }
-        public PlayCommandPayLoad(string username, char symbol, string roomId)
+        public GameRoom room { get; set; }
+        public PlayCommandPayLoad(string username, char symbol, GameRoom room)
         {
             UserName = username;
             Symbol = symbol;
-            RoomId = roomId;
+            this.room = room;
         }
     }
 

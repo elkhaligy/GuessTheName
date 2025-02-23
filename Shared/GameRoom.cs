@@ -17,6 +17,8 @@ namespace Shared
         public bool IsGuestReady { get; set; }
         public List<Player> Spectators { get; set; } = new List<Player>();
 
+        public bool[] revelaedLetter { get; set; } = new bool[26];
+
         public string Category { get; set; }
         public string secretWord { get; set; }
         public GameState State { get; set; }

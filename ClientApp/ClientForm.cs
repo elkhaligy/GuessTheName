@@ -1,11 +1,7 @@
 using Shared;
-using Shared.Enums;
-using System.Data;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 /*
  * Each request sent has a response back from server
  * This response is handled by resolveResponse() method
@@ -185,17 +181,13 @@ namespace ClientApp
 
 
                     break;
-                case CommandTypes.StartGame:
 
-                    /*
-                     * 
-                     * 
-                     * 
-                     */
+                case CommandTypes.StartGame:
                     currentRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                     secretWord = currentRoom.secretWord;
 
-                    // Generate the word
+
+
 
                     for (int i = 1; i <= secretWord.Length; i++)
                     {
@@ -213,6 +205,9 @@ namespace ClientApp
                         gamePanel.Controls.Add(textBox); // Add to the panel
                         //textBox.Enabled = false;
                     }
+
+  
+
                     if (Player.IsRoomOwner)
                     {
                         //MessageBox.Show($"Game Started Me {Player.Name} vs {currentRoom.Guest}\n in Room {currentRoom.RoomId} with category {currentRoom.Category}");
@@ -238,26 +233,26 @@ namespace ClientApp
                     label16.Text = currentRoom.RoomId;
                     label13.Text = currentRoom.Category;
                     break;
+
                 case CommandTypes.Play:
                     secretWord = currentRoom.secretWord;
-                    PlayCommandPayLoad playCommand = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
+                    JsonElement jsonPayload = (JsonElement)command.Payload;
+                    PlayCommandPayLoad playCommand = jsonPayload.Deserialize<PlayCommandPayLoad>();
+                    //PlayCommandPayLoad playCommand = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
+                    currentRoom = playCommand.room;
+                    //MessageBox.Show(command.Payload.ToString());
+                    //MessageBox.Show(playCommand.room.Category);
                     //MessageBox.Show($"{playCommand.UserName} played {playCommand.Symbol} in room {playCommand.RoomId}");
                     Player.IsActive = true;
-
-
 
                     string controlName = playCommand.Symbol.ToString().ToLower() + "Btn";
                     Control pressedControl = gamePanel.Controls[controlName];
                     pressedControl.Enabled = false;
-                    //foreach (Control control in gamePanel.Controls)
-                    //{
-                    //    control.Enabled = true; // Disable each control
-                    //}
 
                     if (secretWord.Contains(playCommand.Symbol.ToString().ToLower()))
                     {
                         Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(playCommand.Symbol.ToString().ToLower()) + 1}"];
-                        textBox.Text = playCommand.Symbol.ToString();
+                        textBox.Text = playCommand.Symbol.ToString().ToLower();
                     }
                     bool winFlag = true;
                     for (int i = 1; i <= secretWord.Length; i++)
@@ -274,6 +269,7 @@ namespace ClientApp
                         MessageBox.Show($"{playCommand.UserName} Won, Sorry!");
                     }
                     break;
+
                 case CommandTypes.SpectateRoom:
                     GameRoom spectatedRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
                     currentRoom = spectatedRoom;
@@ -296,6 +292,22 @@ namespace ClientApp
                         //textBox.Enabled = false;
                     }
 
+                    string message = String.Join(", ", currentRoom.revelaedLetter.Select(b => b ? "1" : "0"));
+
+                        //MessageBox.Show(message);
+                    bool[] secretWordRevealed = new bool[secretWord.Length];
+                    for (int i = 0; i < secretWord.Length; i++)
+                    {
+                        secretWordRevealed[i] = currentRoom.revelaedLetter[secretWord[i] - 'a'];
+                    }
+
+                    for (int i = 1; i <= secretWord.Length; i++)
+                    {
+                        if (secretWordRevealed[i - 1])
+                        {
+                            gamePanel.Controls[$"txtBox{i}"].Text = secretWord[i - 1].ToString();
+                        } 
+                    }
                     // Hide other panels and show the spectating view
                     roomsListPanel.Hide();
                     lobbyPanel.Hide();
@@ -305,7 +317,7 @@ namespace ClientApp
                     label11.Text = spectatedRoom.Guest; // Guest
                     label13.Text = spectatedRoom.Category; // Category
                     label16.Text = spectatedRoom.RoomId; // Room ID
-  
+
                     Player.IsActive = false; // Spectator should not be active
 
                     //MessageBox.Show("You are now spectating this game.");
@@ -369,7 +381,6 @@ namespace ClientApp
             roomsListPanel.Hide();
             lobbyPanel.Show();
         }
-
 
         private void readyButton_Click(string roomName)
         {
@@ -466,13 +477,13 @@ namespace ClientApp
             }
         }
 
-
         private void spectateRoomButton_Click(string roomName)
         {
             GameRoom gameRoom = new GameRoom { RoomId = roomName };
             Command spectateRequest = new Command(CommandTypes.SpectateRoom, gameRoom);
             sendCommand(spectateRequest);
         }
+
         private void ReadyButton_Click(object sender, EventArgs e)
         {
             //MessageBox.Show($"{roomName}");
@@ -488,18 +499,14 @@ namespace ClientApp
 
         private void keyClicked(object sender, EventArgs e)
         {
-
-
             if (Player.IsActive)
             {
                 Button pushedButton = sender as Button;
                 string controlName = pushedButton.Text.ToLower() + "Btn";
                 Control pressedControl = gamePanel.Controls[controlName];
+
+                currentRoom.revelaedLetter[pushedButton.Text[0].ToString().ToLower()[0] - 'a'] = true;
                 pressedControl.Enabled = false;
-                //foreach (Control control in gamePanel.Controls)
-                //{
-                //    control.Enabled = false; // Disable each control
-                //}
                 string pushedKey = pushedButton.Text;
                 if (secretWord.Contains(pushedKey.ToLower()))
                 {
@@ -508,7 +515,7 @@ namespace ClientApp
                     textBox.Text = pushedKey;
                 }
 
-                Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom.RoomId));
+                Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom));
                 sendCommand(command);
                 Player.IsActive = false;
                 bool winFlag = true;
@@ -525,8 +532,6 @@ namespace ClientApp
                 {
                     MessageBox.Show($"You Won, Congatulations!");
                 }
-
-
             }
         }
     }
