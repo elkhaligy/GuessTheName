@@ -4,132 +4,87 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.Presenters
 {
     public class GamePresenter
     {
-        public Game myGame {  get; private set ; }
-
+        public Game myGame { get; private set; }
         public string secretWord { get; set; }
 
         public enum PlayerTurn { Player1, Player2 }
         public bool isFinished { get; set; } = false;
-        public PlayerTurn CurrentPlayer { get; private set; } = PlayerTurn.Player1;
-        public PlayerTurn Winner { get; private set; }
-    
+        public PlayerTurn CurrentPlayer { get; set; } = PlayerTurn.Player1;
+        public string WinnerName { get; private set; }
+        public PlayerTurn? blockedPlayer { get; set; } = null;  // Changed to public setter
 
+        public event EventHandler? TurnChanged;
         public HashSet<char> guessedLetters = new HashSet<char>();
-
-
         public GamePresenter()
         {
             secretWord = string.Empty;
         }
-        public GamePresenter(int _category)
-        {
-            myGame = new Game((Category) _category);
-            secretWord = myGame.StartGame();
 
-        }
-
-        public GamePresenter( string category)
+        public GamePresenter(string category)
         {
-            //        secretWord = myGame.StartGame(); 
             myGame = new Game(category.GetCategory());
-          //  secretWord = myGame.StartGame();
         }
-      
-       
 
-        public bool CHECK(char letter)
+        public bool CHECK(char letter, string currentPlayer)
         {
-
             if (isFinished) return false;
+
             letter = char.ToLower(letter);
             bool isNewGuess = guessedLetters.Add(letter);
             bool isCorrect = secretWord.ToLower().Contains(letter);
 
             if (!isCorrect)
             {
-                if (CurrentPlayer == PlayerTurn.Player1)
-                {
-                    CurrentPlayer = PlayerTurn.Player2;
-                }
-                else
-                {
-                    CurrentPlayer = PlayerTurn.Player1;
-                }
+                blockedPlayer = CurrentPlayer;
+                CurrentPlayer = (CurrentPlayer == PlayerTurn.Player1) ? PlayerTurn.Player2 : PlayerTurn.Player1;
+                TurnChanged?.Invoke(this, EventArgs.Empty);
             }
             else if (isNewGuess)
             {
-               
                 if (secretWord.All(c => guessedLetters.Contains(char.ToLower(c))))
                 {
                     isFinished = true;
-                    Winner = CurrentPlayer;
-
-                   
+                    WinnerName = currentPlayer;
                 }
             }
 
             return isCorrect;
         }
+
         public string update()
         {
             StringBuilder revealedWord = new StringBuilder();
             foreach (char letter in secretWord)
             {
-                if (guessedLetters.Contains(char.ToLower(letter)))
-                {
-                    revealedWord.Append(letter + " ");
-
-                }
-                else
-                {
-                    revealedWord.Append("_ "); 
-                }
-            }
-            return revealedWord.ToString().Trim(); 
-        }
-        public string update(HashSet<char> revealedLetters)
-        {
-            StringBuilder revealedWord = new StringBuilder();
-            foreach (char letter in secretWord)
-            {
-                if (revealedLetters.Contains(char.ToLower(letter)))
-                {
-                    revealedWord.Append(letter + " ");
-
-                }
-                else
-                {
-                    revealedWord.Append("_ ");
-                }
+                revealedWord.Append(guessedLetters.Contains(char.ToLower(letter)) ? $"{letter} " : "_ ");
             }
             return revealedWord.ToString().Trim();
         }
 
-       // public void RestartGame()
-        //{
-       
-            //secretWord = myGame.StartGame();
-           // guessedLetters.Clear();
-           // myGame.isFinished = false;
-            //CurrentPlayer = PlayerTurn.Player1;
-      //  }
-
-
-
+        public void RestartGame()
+        {
+            secretWord = myGame.StartGame();
+            guessedLetters.Clear();
+            isFinished = false;
+            CurrentPlayer = PlayerTurn.Player1;
+            //WinnerName = PlayerTurn.Player1;
+            blockedPlayer = null;
+            TurnChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         public void Start()
         {
-            secretWord = myGame.StartGame(); // game when start return random word
+            secretWord = myGame.StartGame();
             guessedLetters.Clear();
-            myGame.isFinished = false;
+            isFinished = false;
             CurrentPlayer = PlayerTurn.Player1;
-            Winner = PlayerTurn.Player1;
+            //Winner = PlayerTurn.Player1;
+            blockedPlayer = null;
         }
     }
 }
