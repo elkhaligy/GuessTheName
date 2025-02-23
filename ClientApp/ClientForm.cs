@@ -275,7 +275,12 @@ namespace ClientApp
                     }
                     if (winFlag)
                     {
-                        MessageBox.Show($"{playCommand.UserName} Won, Sorry!");
+                        gamePanel.Hide();
+                        conrgatOrSorryLabel.Text = $"Sorry {Player.Name}!";
+                        winOrLoseLabel.Text = "You Lost!";
+                        winOrLoseLabel.ForeColor = Color.Red;
+                        winOrLosePanel.Show();
+                        //MessageBox.Show($"{playCommand.UserName} Won, Sorry!");
                     }
                     break;
 
@@ -548,7 +553,10 @@ namespace ClientApp
                 }
                 if (winFlag)
                 {
-                    MessageBox.Show($"You Won, Congatulations!");
+                    //MessageBox.Show($"You Won, Congatulations!");
+                    gamePanel.Hide();
+                    conrgatOrSorryLabel.Text = $"Congratulations! {Player.Name}";
+                    winOrLosePanel.Show();
                 }
             }
         }

@@ -91,18 +91,25 @@
             cBtn = new Button();
             nBtn = new Button();
             mBtn = new Button();
+            winOrLosePanel = new Panel();
+            button2 = new Button();
+            button1 = new Button();
+            playAgainLabel = new Label();
+            winOrLoseLabel = new Label();
+            conrgatOrSorryLabel = new Label();
             loginPanel.SuspendLayout();
             roomCreationPanel.SuspendLayout();
             panel1.SuspendLayout();
             roomsListPanel.SuspendLayout();
             lobbyPanel.SuspendLayout();
             gamePanel.SuspendLayout();
+            winOrLosePanel.SuspendLayout();
             SuspendLayout();
             // 
             // loginButton
             // 
             loginButton.BackColor = SystemColors.ActiveCaptionText;
-            loginButton.Font = new Font("Lucida Sans", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            loginButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             loginButton.ForeColor = SystemColors.ButtonFace;
             loginButton.Location = new Point(538, 274);
             loginButton.Name = "loginButton";
@@ -115,12 +122,12 @@
             // userNameTextBox
             // 
             userNameTextBox.BackColor = SystemColors.InfoText;
-            userNameTextBox.Font = new Font("Lucida Sans", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            userNameTextBox.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             userNameTextBox.ForeColor = SystemColors.Menu;
             userNameTextBox.Location = new Point(538, 235);
             userNameTextBox.Name = "userNameTextBox";
             userNameTextBox.PlaceholderText = "Enter the username";
-            userNameTextBox.Size = new Size(188, 26);
+            userNameTextBox.Size = new Size(188, 35);
             userNameTextBox.TabIndex = 1;
             userNameTextBox.KeyDown += userNameTextBox_KeyDown;
             // 
@@ -143,11 +150,11 @@
             // 
             label15.AutoSize = true;
             label15.BackColor = Color.Transparent;
-            label15.Font = new Font("Lucida Handwriting", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label15.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label15.ForeColor = SystemColors.ActiveCaptionText;
             label15.Location = new Point(118, 76);
             label15.Name = "label15";
-            label15.Size = new Size(231, 48);
+            label15.Size = new Size(287, 64);
             label15.TabIndex = 6;
             label15.Text = "Play Now!";
             // 
@@ -155,11 +162,11 @@
             // 
             label8.AutoSize = true;
             label8.BackColor = Color.Transparent;
-            label8.Font = new Font("Lucida Handwriting", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label8.ForeColor = SystemColors.ActiveCaptionText;
             label8.Location = new Point(12, 5);
             label8.Name = "label8";
-            label8.Size = new Size(457, 83);
+            label8.Size = new Size(527, 108);
             label8.TabIndex = 5;
             label8.Text = "Word Ninja";
             // 
@@ -194,7 +201,7 @@
             tryCategoriesComboBox.FormattingEnabled = true;
             tryCategoriesComboBox.Location = new Point(71, 111);
             tryCategoriesComboBox.Name = "tryCategoriesComboBox";
-            tryCategoriesComboBox.Size = new Size(190, 28);
+            tryCategoriesComboBox.Size = new Size(190, 39);
             tryCategoriesComboBox.TabIndex = 2;
             // 
             // confirmCreationButton
@@ -218,18 +225,18 @@
             tryRoomNameTextBox.Location = new Point(71, 74);
             tryRoomNameTextBox.Name = "tryRoomNameTextBox";
             tryRoomNameTextBox.PlaceholderText = "Enter Room Name";
-            tryRoomNameTextBox.Size = new Size(190, 27);
+            tryRoomNameTextBox.Size = new Size(190, 37);
             tryRoomNameTextBox.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Lucida Calligraphy", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ControlLight;
             label1.Location = new Point(8, 13);
             label1.Name = "label1";
-            label1.Size = new Size(323, 37);
+            label1.Size = new Size(401, 52);
             label1.TabIndex = 0;
             label1.Text = "Enter Room Details";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -251,18 +258,18 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Lucida Handwriting", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Font = new Font("Microsoft Sans Serif", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label4.ForeColor = SystemColors.ButtonHighlight;
             label4.Location = new Point(32, 5);
             label4.Name = "label4";
-            label4.Size = new Size(317, 41);
+            label4.Size = new Size(384, 55);
             label4.TabIndex = 3;
             label4.Text = "Available Rooms";
             // 
             // refreshRoomsButton
             // 
             refreshRoomsButton.BackColor = SystemColors.ActiveCaptionText;
-            refreshRoomsButton.Font = new Font("Lucida Handwriting", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            refreshRoomsButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             refreshRoomsButton.ForeColor = SystemColors.ControlLightLight;
             refreshRoomsButton.Location = new Point(528, 405);
             refreshRoomsButton.Name = "refreshRoomsButton";
@@ -275,7 +282,7 @@
             // createRoomButton
             // 
             createRoomButton.BackColor = SystemColors.ActiveCaptionText;
-            createRoomButton.Font = new Font("Lucida Handwriting", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            createRoomButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             createRoomButton.ForeColor = SystemColors.Control;
             createRoomButton.Location = new Point(645, 405);
             createRoomButton.Name = "createRoomButton";
@@ -321,7 +328,7 @@
             guestReadyCheckbox.ForeColor = SystemColors.ButtonFace;
             guestReadyCheckbox.Location = new Point(547, 235);
             guestReadyCheckbox.Name = "guestReadyCheckbox";
-            guestReadyCheckbox.Size = new Size(97, 36);
+            guestReadyCheckbox.Size = new Size(142, 52);
             guestReadyCheckbox.TabIndex = 9;
             guestReadyCheckbox.Text = "Ready";
             guestReadyCheckbox.UseVisualStyleBackColor = false;
@@ -335,7 +342,7 @@
             ownerReadyCheckbox.ForeColor = SystemColors.ButtonFace;
             ownerReadyCheckbox.Location = new Point(547, 159);
             ownerReadyCheckbox.Name = "ownerReadyCheckbox";
-            ownerReadyCheckbox.Size = new Size(97, 36);
+            ownerReadyCheckbox.Size = new Size(142, 52);
             ownerReadyCheckbox.TabIndex = 8;
             ownerReadyCheckbox.Text = "Ready";
             ownerReadyCheckbox.UseVisualStyleBackColor = false;
@@ -348,7 +355,7 @@
             guestNameLabel.ForeColor = Color.Gold;
             guestNameLabel.Location = new Point(351, 234);
             guestNameLabel.Name = "guestNameLabel";
-            guestNameLabel.Size = new Size(157, 32);
+            guestNameLabel.Size = new Size(232, 48);
             guestNameLabel.TabIndex = 7;
             guestNameLabel.Text = "Not Available";
             // 
@@ -359,25 +366,25 @@
             ownerNameLabel.ForeColor = Color.Gold;
             ownerNameLabel.Location = new Point(351, 160);
             ownerNameLabel.Name = "ownerNameLabel";
-            ownerNameLabel.Size = new Size(157, 32);
+            ownerNameLabel.Size = new Size(232, 48);
             ownerNameLabel.TabIndex = 6;
             ownerNameLabel.Text = "Not Available";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Lucida Handwriting", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.ForeColor = SystemColors.Control;
             label2.Location = new Point(248, 19);
             label2.Name = "label2";
-            label2.Size = new Size(269, 48);
+            label2.Size = new Size(343, 64);
             label2.TabIndex = 5;
             label2.Text = "Lobby Room";
             // 
             // StartGameButton
             // 
             StartGameButton.BackColor = SystemColors.ActiveCaptionText;
-            StartGameButton.Font = new Font("Lucida Calligraphy", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            StartGameButton.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             StartGameButton.ForeColor = SystemColors.ButtonFace;
             StartGameButton.Location = new Point(299, 303);
             StartGameButton.Name = "StartGameButton";
@@ -394,7 +401,7 @@
             label6.ForeColor = SystemColors.ButtonFace;
             label6.Location = new Point(143, 234);
             label6.Name = "label6";
-            label6.Size = new Size(199, 32);
+            label6.Size = new Size(296, 48);
             label6.TabIndex = 2;
             label6.Text = "Player 2 (Guest) : ";
             // 
@@ -403,7 +410,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(20, 61);
             label3.Name = "label3";
-            label3.Size = new Size(0, 15);
+            label3.Size = new Size(0, 25);
             label3.TabIndex = 1;
             // 
             // label5
@@ -413,7 +420,7 @@
             label5.ForeColor = SystemColors.ButtonFace;
             label5.Location = new Point(141, 159);
             label5.Name = "label5";
-            label5.Size = new Size(201, 32);
+            label5.Size = new Size(300, 48);
             label5.TabIndex = 0;
             label5.Text = "Player 1 (Owner) :";
             // 
@@ -471,7 +478,7 @@
             label16.ForeColor = Color.Chocolate;
             label16.Location = new Point(235, 33);
             label16.Name = "label16";
-            label16.Size = new Size(73, 25);
+            label16.Size = new Size(110, 40);
             label16.TabIndex = 112;
             label16.Text = "label16";
             // 
@@ -479,11 +486,11 @@
             // 
             label14.AutoSize = true;
             label14.BackColor = Color.Black;
-            label14.Font = new Font("Lucida Calligraphy", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label14.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label14.ForeColor = SystemColors.Control;
             label14.Location = new Point(109, 25);
             label14.Name = "label14";
-            label14.Size = new Size(112, 37);
+            label14.Size = new Size(139, 52);
             label14.TabIndex = 110;
             label14.Text = "Name";
             // 
@@ -495,7 +502,7 @@
             label13.ForeColor = Color.Chocolate;
             label13.Location = new Point(558, 33);
             label13.Name = "label13";
-            label13.Size = new Size(73, 25);
+            label13.Size = new Size(110, 40);
             label13.TabIndex = 109;
             label13.Text = "label13";
             // 
@@ -503,11 +510,11 @@
             // 
             label12.AutoSize = true;
             label12.BackColor = Color.Black;
-            label12.Font = new Font("Lucida Calligraphy", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label12.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label12.ForeColor = SystemColors.ButtonFace;
             label12.Location = new Point(396, 25);
             label12.Name = "label12";
-            label12.Size = new Size(156, 37);
+            label12.Size = new Size(199, 52);
             label12.TabIndex = 108;
             label12.Text = "Category";
             // 
@@ -519,7 +526,7 @@
             label11.ForeColor = Color.LimeGreen;
             label11.Location = new Point(118, 110);
             label11.Name = "label11";
-            label11.Size = new Size(117, 40);
+            label11.Size = new Size(176, 60);
             label11.TabIndex = 107;
             label11.Text = "label11";
             // 
@@ -531,7 +538,7 @@
             label10.ForeColor = Color.Red;
             label10.Location = new Point(591, 110);
             label10.Name = "label10";
-            label10.Size = new Size(117, 40);
+            label10.Size = new Size(176, 60);
             label10.TabIndex = 106;
             label10.Text = "label10";
             // 
@@ -543,7 +550,7 @@
             label9.ForeColor = SystemColors.ButtonFace;
             label9.Location = new Point(538, 110);
             label9.Name = "label9";
-            label9.Size = new Size(60, 40);
+            label9.Size = new Size(92, 60);
             label9.TabIndex = 105;
             label9.Text = "Vs: ";
             // 
@@ -555,7 +562,7 @@
             label7.ForeColor = SystemColors.ButtonFace;
             label7.Location = new Point(60, 110);
             label7.Name = "label7";
-            label7.Size = new Size(72, 40);
+            label7.Size = new Size(110, 60);
             label7.TabIndex = 104;
             label7.Text = "Me: ";
             // 
@@ -897,10 +904,77 @@
             mBtn.UseVisualStyleBackColor = false;
             mBtn.Click += keyClicked;
             // 
+            // winOrLosePanel
+            // 
+            winOrLosePanel.BackColor = SystemColors.ActiveCaptionText;
+            winOrLosePanel.Controls.Add(conrgatOrSorryLabel);
+            winOrLosePanel.Controls.Add(button2);
+            winOrLosePanel.Controls.Add(button1);
+            winOrLosePanel.Controls.Add(playAgainLabel);
+            winOrLosePanel.Controls.Add(winOrLoseLabel);
+            winOrLosePanel.Dock = DockStyle.Fill;
+            winOrLosePanel.Location = new Point(0, 0);
+            winOrLosePanel.Name = "winOrLosePanel";
+            winOrLosePanel.Size = new Size(788, 474);
+            winOrLosePanel.TabIndex = 113;
+            winOrLosePanel.Visible = false;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(413, 384);
+            button2.Name = "button2";
+            button2.Size = new Size(54, 34);
+            button2.TabIndex = 3;
+            button2.Text = "No";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(342, 384);
+            button1.Name = "button1";
+            button1.Size = new Size(52, 34);
+            button1.TabIndex = 2;
+            button1.Text = "Yes";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // playAgainLabel
+            // 
+            playAgainLabel.AutoSize = true;
+            playAgainLabel.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            playAgainLabel.ForeColor = SystemColors.ButtonHighlight;
+            playAgainLabel.Location = new Point(237, 329);
+            playAgainLabel.Name = "playAgainLabel";
+            playAgainLabel.Size = new Size(354, 38);
+            playAgainLabel.TabIndex = 1;
+            playAgainLabel.Text = "Do you want to play again?";
+            // 
+            // winOrLoseLabel
+            // 
+            winOrLoseLabel.AutoSize = true;
+            winOrLoseLabel.Font = new Font("Lucida Sans Unicode", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            winOrLoseLabel.ForeColor = Color.Green;
+            winOrLoseLabel.Location = new Point(176, 141);
+            winOrLoseLabel.Name = "winOrLoseLabel";
+            winOrLoseLabel.Size = new Size(466, 116);
+            winOrLoseLabel.TabIndex = 0;
+            winOrLoseLabel.Text = "You Won";
+            // 
+            // conrgatOrSorryLabel
+            // 
+            conrgatOrSorryLabel.AutoSize = true;
+            conrgatOrSorryLabel.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            conrgatOrSorryLabel.ForeColor = SystemColors.Control;
+            conrgatOrSorryLabel.Location = new Point(221, 97);
+            conrgatOrSorryLabel.Name = "conrgatOrSorryLabel";
+            conrgatOrSorryLabel.Size = new Size(370, 38);
+            conrgatOrSorryLabel.TabIndex = 4;
+            conrgatOrSorryLabel.Text = "Congratulations PlayerName";
+            // 
             // ClientForm
             // 
             BackColor = SystemColors.ControlDarkDark;
             ClientSize = new Size(788, 474);
+            Controls.Add(winOrLosePanel);
             Controls.Add(gamePanel);
             Controls.Add(roomsListPanel);
             Controls.Add(lobbyPanel);
@@ -920,6 +994,8 @@
             lobbyPanel.PerformLayout();
             gamePanel.ResumeLayout(false);
             gamePanel.PerformLayout();
+            winOrLosePanel.ResumeLayout(false);
+            winOrLosePanel.PerformLayout();
             ResumeLayout(false);
 
 
@@ -989,5 +1065,11 @@
         private Label label14;
         private Label label16;
         private Label label15;
+        private Panel winOrLosePanel;
+        private Label winOrLoseLabel;
+        private Button button2;
+        private Button button1;
+        private Label playAgainLabel;
+        private Label conrgatOrSorryLabel;
     }
 }
