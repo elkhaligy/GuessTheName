@@ -249,11 +249,20 @@ namespace ClientApp
                     Control pressedControl = gamePanel.Controls[controlName];
                     pressedControl.Enabled = false;
 
-                    if (secretWord.Contains(playCommand.Symbol.ToString().ToLower()))
+
+                    for (int i = 0; i < secretWord.Length; i++)
                     {
-                        Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(playCommand.Symbol.ToString().ToLower()) + 1}"];
-                        textBox.Text = playCommand.Symbol.ToString().ToLower();
+                        if (secretWord[i].ToString() == playCommand.Symbol.ToString().ToLower())
+                        {
+                            Control textBox = gamePanel.Controls[$"txtBox{i + 1}"];
+                            textBox.Text = playCommand.Symbol.ToString().ToLower();
+                        }
                     }
+                    //if (secretWord.Contains(playCommand.Symbol.ToString().ToLower()))
+                    //{
+                    //    Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(playCommand.Symbol.ToString().ToLower()) + 1}"];
+                    //    textBox.Text = playCommand.Symbol.ToString().ToLower();
+                    //}
                     bool winFlag = true;
                     for (int i = 1; i <= secretWord.Length; i++)
                     {
@@ -508,12 +517,21 @@ namespace ClientApp
                 currentRoom.revelaedLetter[pushedButton.Text[0].ToString().ToLower()[0] - 'a'] = true;
                 pressedControl.Enabled = false;
                 string pushedKey = pushedButton.Text;
-                if (secretWord.Contains(pushedKey.ToLower()))
+
+                for (int i = 0; i< secretWord.Length; i++)
                 {
-                    //MessageBox.Show("Hello");
-                    Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(pushedKey.ToLower()) + 1}"];
-                    textBox.Text = pushedKey;
+                    if (secretWord[i].ToString() == pushedKey.ToLower() )
+                    {
+                        Control textBox = gamePanel.Controls[$"txtBox{i + 1}"];
+                        textBox.Text = pushedKey.ToLower();
+                    }
                 }
+                //if (secretWord.Contains(pushedKey.ToLower()))
+                //{
+                //    //MessageBox.Show("Hello");
+                //    Control textBox = gamePanel.Controls[$"txtBox{secretWord.IndexOf(pushedKey.ToLower()) + 1}"];
+                //    textBox.Text = pushedKey.ToLower();
+                //}
 
                 Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom));
                 sendCommand(command);
