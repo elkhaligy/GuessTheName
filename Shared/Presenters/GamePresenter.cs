@@ -20,6 +20,10 @@ namespace ClientApp.Presenters
 
         public event EventHandler? TurnChanged;
         public HashSet<char> guessedLetters = new HashSet<char>();
+
+        public event EventHandler<string>? GameOver;
+
+
         public GamePresenter()
         {
             secretWord = string.Empty;
@@ -44,14 +48,19 @@ namespace ClientApp.Presenters
                 CurrentPlayer = (CurrentPlayer == PlayerTurn.Player1) ? PlayerTurn.Player2 : PlayerTurn.Player1;
                 TurnChanged?.Invoke(this, EventArgs.Empty);
             }
-            else if (isNewGuess)
-            {
-                if (secretWord.All(c => guessedLetters.Contains(char.ToLower(c))))
-                {
-                    isFinished = true;
-                    WinnerName = currentPlayer;
-                }
-            }
+         else if (isNewGuess)
+{
+    if (secretWord.All(c => guessedLetters.Contains(char.ToLower(c))))
+    {
+        isFinished = true;
+        WinnerName = currentPlayer;
+        string message = $"Game Over! Winner: {WinnerName}";
+
+       
+        GameOver?.Invoke(this, WinnerName);
+    }
+}
+
 
             return isCorrect;
         }
@@ -68,15 +77,15 @@ namespace ClientApp.Presenters
 
         public void RestartGame()
         {
-            secretWord = myGame.StartGame();
-            guessedLetters.Clear();
-            isFinished = false;
-            CurrentPlayer = PlayerTurn.Player1;
-            //WinnerName = PlayerTurn.Player1;
-            blockedPlayer = null;
-            TurnChanged?.Invoke(this, EventArgs.Empty);
+            //secretWord = myGame.StartGame();
+            //guessedLetters.Clear();
+            //isFinished = false;
+            //CurrentPlayer = PlayerTurn.Player1;
+            ////WinnerName = PlayerTurn.Player1;
+            //blockedPlayer = null;
+            //TurnChanged?.Invoke(this, EventArgs.Empty);
         }
-
+       
         public void Start()
         {
             secretWord = myGame.StartGame();

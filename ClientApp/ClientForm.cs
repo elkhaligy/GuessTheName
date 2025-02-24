@@ -160,13 +160,32 @@ namespace ClientApp
                 case CommandTypes.SwitchPlayer:
                     if (frm != null)
                     {
-                        foreach (Control c in frm.Controls)
-                        {
-                            if(c is Button btn && !frm.presenter.guessedLetters.Contains(btn.Text[0]))
+                        foreach(Control c in frm.Controls)
+{
+                            if (c is Button btn)
+                            {
+                                char letter = char.ToLower(btn.Text[0]);
+                                if (frm.presenter.guessedLetters.Contains(letter) && frm.presenter.secretWord.Contains(letter))
+                                    c.Enabled = false;
+                                else
+                                    c.Enabled = true;
+                            }
+                            else
+                            {
                                 c.Enabled = true;
+                            }
                         }
                         frm.KeyPress += frm.keyPressed;
                         frm.viewRevealedLetters(); // Update the UI with the revealed letters
+                    }
+                    break;
+                case CommandTypes.GameOver:
+                    string winnerName = command.Payload.ToString();
+                    MessageBox.Show($"Game Over! Winner: {winnerName}");
+                    this.Show();  // Bring back main menu
+                    if (frm != null)
+                    {
+                        frm.Close();  // Ensure game form is closed
                     }
                     break;
                 default:
@@ -190,6 +209,15 @@ namespace ClientApp
                 Command updateThePlayer = new Command(CommandTypes.SwitchPlayer, this.Player); //switch to the other player
                 sendCommand(updateThePlayer);
             };
+            frm.OnGameOver += (winnerName) =>
+{
+    Command gameOverCommand = new Command(CommandTypes.GameOver, winnerName);
+    sendCommand(gameOverCommand);
+    MessageBox.Show($"Game Over! Winner: {winnerName}");
+    this.Show();  // Show the main form again
+    frm.Close();  // Close the game form
+};
+
             if (InvokeRequired)
             {
                 Invoke(() =>
