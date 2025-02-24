@@ -216,9 +216,16 @@ namespace ServerApp
                                 GameRoom activeRoom = roomsList.Find(r => r.Guest == currentPlayer.Name);
                                 otherPlayer = players.Find(p => p.Name == activeRoom.Owner);
                             }
+                            Player p = Players.Find(p => p.Name == currentPlayer.Name);
+                            p.IsActive = currentPlayer.IsActive;
                             jsonMessage = JsonSerializer.Serialize<Command>(new Command(CommandTypes.SwitchPlayer, null));
                             NetworkStream nStream = otherPlayer.tcpClient.GetStream();
                             new StreamWriter(nStream) { AutoFlush = true }.WriteLineAsync(jsonMessage);
+                            break;
+                        case CommandTypes.RestartGame:
+                            Player player = JsonSerializer.Deserialize<Player>(command.Payload.ToString());
+                            Player exisitingPlayer = players.Find(p => p.Name == player.Name);
+                            exisitingPlayer.Score = player.Score;
                             break;
                         default:
                             break;

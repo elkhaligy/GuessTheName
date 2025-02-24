@@ -15,6 +15,7 @@ namespace ClientApp.Views
 
         public event EventHandler<HashSet<char>> OnReveal;
         public event EventHandler<string> OnSwitchPlayer;
+        public event EventHandler<string> OnWin;
 
         public GameForm(GamePresenter _presenter, string playerName)
         {
@@ -78,6 +79,7 @@ namespace ClientApp.Views
             if (presenter.isFinished)
             {
                 ShowGameOverMessages();
+                OnWin?.Invoke(this, currentPlayer);
             }
         }
 

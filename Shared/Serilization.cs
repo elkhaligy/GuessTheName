@@ -20,6 +20,7 @@ namespace Shared
         CorrectGuess,
         SwitchPlayer,
         InitiallyDisable,
+        RestartGame,
         Quit
     }
     public class Command

@@ -203,7 +203,15 @@ namespace ClientApp
             };
             frm.OnSwitchPlayer += async (args, playerName) =>
             {
+                this.Player.IsActive = false;
                 Command updateThePlayer = new Command(CommandTypes.SwitchPlayer, this.Player); //switch to the other player
+                sendCommand(updateThePlayer);
+            };
+            frm.OnWin += (args, PlayerName) =>
+            {
+                if (presenter.WinnerName == this.Player.Name)
+                    this.Player.Score++;
+                Command updateThePlayer = new Command(CommandTypes.RestartGame, this.Player); //switch to the other player
                 sendCommand(updateThePlayer);
             };
             if (InvokeRequired)
@@ -225,7 +233,7 @@ namespace ClientApp
                     }
                     else
                     {
-                        frm.KeyPress -= frm.keyPressed;
+                        frm.KeyPress += frm.keyPressed;
                     }
                     frm.FormClosed += (args, e) => this.Close();
                 });
