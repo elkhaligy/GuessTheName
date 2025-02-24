@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace ServerApp
@@ -178,6 +179,8 @@ namespace ServerApp
                             }
                             break;
                         case CommandTypes.RoomUpdated:
+                            PlayCommandPayLoad payLoad = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
+                            GameRoom crntRoom =  roomsList.Find(r => r.RoomId == payLoad.GameRoom.RoomId);
                             bool isOwner = false;
                             GameRoom room = roomsList.Find((r) =>
                             {
@@ -191,6 +194,7 @@ namespace ServerApp
                                 }
                             });
                             notifyPlayer(room, isOwner, command.Payload);
+                            NotifySpectators(crntRoom, payLoad, payLoad.Symbol, payLoad.UserName);
                             break;
                         case CommandTypes.SwitchPlayer:
                             Player otherPlayer, currentPlayer = JsonSerializer.Deserialize<Player>(command.Payload.ToString());
@@ -208,11 +212,24 @@ namespace ServerApp
                             NetworkStream nStream = otherPlayer.tcpClient.GetStream();
                             new StreamWriter(nStream) { AutoFlush = true }.WriteLineAsync(jsonMessage);
                             break;
+
+                        case CommandTypes.SpectateRoom:
+                            GameRoom spectatorRoom = JsonSerializer.Deserialize<GameRoom>(command.Payload.ToString());
+                            string spectatorRoomName = spectatorRoom.RoomId;
+                            GameRoom spectatorRoomDetails = roomsList.Find(room => room.RoomId == spectatorRoomName);
+                            spectatorRoomDetails.Spectators.Add(tcpPlayerMap[tcpClient]);
+                            Command spectateCommand = new Command(CommandTypes.SpectateRoom, spectatorRoomDetails);
+                            jsonMessage = JsonSerializer.Serialize(spectateCommand);
+                            writer?.WriteLine(jsonMessage);
+                            break;
                         default:
                             break;
                     }
                 }
-                catch (Exception) { break; }
+                catch (Exception ex) 
+                { 
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
             lock (players)
@@ -264,6 +281,19 @@ namespace ServerApp
             nStream = otherPlayer.tcpClient.GetStream();
             string jsonMsg = JsonSerializer.Serialize(new Command(CommandTypes.RoomUpdated, payload));
             new StreamWriter(nStream) { AutoFlush = true }.WriteLine(jsonMsg);
+        }
+
+        public void NotifySpectators(GameRoom currentRoom, object payload, char keyPressed, string player)
+        {
+            NetworkStream nStream ;
+            foreach (var spectator in currentRoom.Spectators)
+            {
+                TcpClient spectatorTcp = nameToClientMap[spectator.Name];
+                StreamWriter spectatorWriter = new StreamWriter(spectatorTcp.GetStream()) { AutoFlush = true };
+                Command startGameCommand = new Command(CommandTypes.Play, new PlayCommandPayLoad(player, keyPressed, currentRoom));
+                string jsonMsg = JsonSerializer.Serialize(startGameCommand);
+                spectatorWriter?.WriteLine(jsonMsg);
+            }
         }
 
         public void StopServer()

@@ -17,6 +17,7 @@ namespace Shared
         public string Category { get; set; }
 
         public GameState State { get; set; }
+        public string secretWord { get; set; }
 
         public bool CanJoin() => Guest == null && State == GameState.Waiting;
         public bool CanSpectate() => State == GameState.InProgress;

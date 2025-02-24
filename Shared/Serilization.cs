@@ -11,6 +11,7 @@ namespace Shared
         RoomsList,  // Server sends this command to the client to send the list of rooms
         CreateRoom, // Client sends this command to the server to create a room
         JoinRoom,   // Client sends this command to the server to join a room
+        SpectateRoom,
         //JoinedRoom,   // Server sends this command to the client to notify it that it has joined a room
         RoomCreated,
         StartGame,
@@ -62,11 +63,13 @@ namespace Shared
     {
         public string UserName { get; set; }
         public char Symbol { get; set; }
+        public GameRoom GameRoom { get; set; }
 
-        public PlayCommandPayLoad(string username, char symbol)
+        public PlayCommandPayLoad(string username, char symbol, GameRoom gameRoom)
         {
             UserName = username;
             Symbol = symbol;
+            GameRoom = gameRoom;
         }
     }
 
