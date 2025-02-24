@@ -162,11 +162,23 @@ namespace ServerApp
                                 Player p1 = Players.Find(p => p.Name == currentRoom.Owner);
                                 Player p2 = Players.Find(p => p.Name == currentRoom.Guest);
                                 Command gameStarted = new Command(CommandTypes.GameStarted, presenter);
-                                jsonMessage = JsonSerializer.Serialize<Command>(gameStarted);
+                                Command initiallyDisabled = new Command(CommandTypes.InitiallyDisable, presenter);
                                 NetworkStream stream1 = p1.tcpClient.GetStream();
                                 NetworkStream stream2 = p2.tcpClient.GetStream();
+                                string guestMsg;
+                                if (p1.Score >= p2.Score)
+                                {
+                                    jsonMessage = JsonSerializer.Serialize<Command>(gameStarted);
+                                    guestMsg = JsonSerializer.Serialize<Command>(initiallyDisabled);
+                                    new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(guestMsg);
+                                }
+                                else
+                                {
+                                    jsonMessage = JsonSerializer.Serialize<Command>(initiallyDisabled);
+                                    guestMsg = JsonSerializer.Serialize<Command>(gameStarted);
+                                }
                                 new StreamWriter(stream1) { AutoFlush = true }.WriteLineAsync(jsonMessage);
-                                new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(jsonMessage);
+                                new StreamWriter(stream2) { AutoFlush = true }.WriteLineAsync(guestMsg);
                                 currentRoom.State = GameState.InProgress;
                             }
                             else
@@ -204,9 +216,16 @@ namespace ServerApp
                                 GameRoom activeRoom = roomsList.Find(r => r.Guest == currentPlayer.Name);
                                 otherPlayer = players.Find(p => p.Name == activeRoom.Owner);
                             }
+                            Player p = Players.Find(p => p.Name == currentPlayer.Name);
+                            p.IsActive = currentPlayer.IsActive;
                             jsonMessage = JsonSerializer.Serialize<Command>(new Command(CommandTypes.SwitchPlayer, null));
                             NetworkStream nStream = otherPlayer.tcpClient.GetStream();
                             new StreamWriter(nStream) { AutoFlush = true }.WriteLineAsync(jsonMessage);
+                            break;
+                        case CommandTypes.RestartGame:
+                            Player player = JsonSerializer.Deserialize<Player>(command.Payload.ToString());
+                            Player exisitingPlayer = players.Find(p => p.Name == player.Name);
+                            exisitingPlayer.Score = player.Score;
                             break;
                         default:
                             break;

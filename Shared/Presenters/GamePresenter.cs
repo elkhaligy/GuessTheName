@@ -68,7 +68,7 @@ namespace ClientApp.Presenters
 
         public void RestartGame()
         {
-            secretWord = myGame.StartGame();
+            //secretWord = myGame.StartGame();
             guessedLetters.Clear();
             isFinished = false;
             CurrentPlayer = PlayerTurn.Player1;
