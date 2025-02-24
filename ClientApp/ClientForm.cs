@@ -135,6 +135,11 @@ namespace ClientApp
                     Command startGame = new Command(CommandTypes.StartGame, null);
                     break;
 
+                case CommandTypes.InitiallyDisable:
+                    GamePresenter gamePresenter = JsonSerializer.Deserialize<GamePresenter>(command.Payload.ToString());
+                    Thread gameThread = new Thread(() => OnGameStart(gamePresenter, CommandTypes.InitiallyDisable));
+                    gameThread.Start();
+                    break;
                 case CommandTypes.GameStarted:
                     if(command.Payload == null)
                     {
@@ -144,10 +149,11 @@ namespace ClientApp
                     {
                         //JsonSerializerOptions.IncludeFields
                         GamePresenter presenter = JsonSerializer.Deserialize<GamePresenter>(command.Payload.ToString());
-                        Thread gameThread = new Thread(() => OnGameStart(presenter));
-                        gameThread.Start();
+                        Thread newThread = new Thread(() => OnGameStart(presenter));
+                        newThread.Start();
                     }
                     break;
+
 
                 case CommandTypes.RoomUpdated:
                     HashSet<char> revealedLetters = JsonSerializer.Deserialize<HashSet<char>>(command.Payload.ToString());
@@ -162,8 +168,18 @@ namespace ClientApp
                     {
                         foreach (Control c in frm.Controls)
                         {
-                            if(c is Button btn && !frm.presenter.guessedLetters.Contains(btn.Text[0]))
+                            if(c is Button btn)
+                            {
+                                char letter = char.ToLower(btn.Text[0]);
+                                if (frm.presenter.guessedLetters.Contains(letter) && frm.presenter.secretWord.Contains(letter))
+                                    c.Enabled = false;
+                                else
+                                    c.Enabled = true;
+                            }
+                            else
+                            {
                                 c.Enabled = true;
+                            }
                         }
                         frm.KeyPress += frm.keyPressed;
                         frm.viewRevealedLetters(); // Update the UI with the revealed letters
@@ -174,7 +190,7 @@ namespace ClientApp
             }
         }
 
-        private void OnGameStart(GamePresenter presenter)
+        private void OnGameStart(GamePresenter presenter, CommandTypes command = CommandTypes.GameStarted)
         {
             frm = new GameForm(presenter, Player.Name);
             frm.Size = this.Size;
@@ -187,7 +203,15 @@ namespace ClientApp
             };
             frm.OnSwitchPlayer += async (args, playerName) =>
             {
+                this.Player.IsActive = false;
                 Command updateThePlayer = new Command(CommandTypes.SwitchPlayer, this.Player); //switch to the other player
+                sendCommand(updateThePlayer);
+            };
+            frm.OnWin += (args, PlayerName) =>
+            {
+                if (presenter.WinnerName == this.Player.Name)
+                    this.Player.Score++;
+                Command updateThePlayer = new Command(CommandTypes.RestartGame, this.Player); //switch to the other player
                 sendCommand(updateThePlayer);
             };
             if (InvokeRequired)
@@ -196,6 +220,21 @@ namespace ClientApp
                 {
                     this.Hide();
                     frm.Show();
+                    if(command == CommandTypes.InitiallyDisable)
+                    {
+                        foreach(Control c in frm.Controls)
+                        {
+                            if(c is Button btn)
+                            {
+                                btn.Enabled = false;
+                            }
+                        }
+                        frm.KeyPress -= frm.keyPressed;
+                    }
+                    else
+                    {
+                        frm.KeyPress += frm.keyPressed;
+                    }
                     frm.FormClosed += (args, e) => this.Close();
                 });
                 return;

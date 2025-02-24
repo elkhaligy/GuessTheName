@@ -15,6 +15,7 @@ namespace ClientApp.Views
 
         public event EventHandler<HashSet<char>> OnReveal;
         public event EventHandler<string> OnSwitchPlayer;
+        public event EventHandler<string> OnWin;
 
         public GameForm(GamePresenter _presenter, string playerName)
         {
@@ -64,7 +65,12 @@ namespace ClientApp.Views
             //}
 
             bool correct = presenter.CHECK(pressedLetter, currentPlayer);
-            DisableButton(pressedLetter);
+            if(correct)
+                DisableButton(pressedLetter);
+            else
+            {
+                DisablePlayer();
+            }
             lblSecretWord.Text = presenter.update();
             OnReveal?.Invoke(this, presenter.guessedLetters);
 
@@ -73,7 +79,18 @@ namespace ClientApp.Views
             if (presenter.isFinished)
             {
                 ShowGameOverMessages();
+                OnWin?.Invoke(this, currentPlayer);
             }
+        }
+
+        private void DisablePlayer()
+        {
+            foreach (Control c in this.Controls) //
+            {
+                c.Enabled = false;
+            }
+            this.KeyPress -= keyPressed;
+            OnSwitchPlayer?.Invoke(this, currentPlayer);
         }
 
         private void letterClicked(object sender, EventArgs e)
@@ -97,12 +114,7 @@ namespace ClientApp.Views
                 bool correct = presenter.CHECK(guessedLetter, currentPlayer);
                 if (!correct)
                 {
-                    foreach (Control c in this.Controls) //
-                    {
-                        c.Enabled = false;
-                    }
-                    this.KeyPress -= keyPressed;
-                    OnSwitchPlayer?.Invoke(this, currentPlayer);
+                    DisablePlayer();
                 }
                 else
                 {
@@ -139,11 +151,6 @@ namespace ClientApp.Views
                 if (control is Button btn && revealLetters.Contains(btn.Text[0]))
                 {
                         btn.Enabled = false;
-                    //}
-                    //else
-                    //{
-                    //    btn.Enabled = (myPlayer == presenter.CurrentPlayer && presenter.blockedPlayer != myPlayer);
-                    //}
                 }
             }
         }
