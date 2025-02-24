@@ -241,6 +241,7 @@ namespace ClientApp
                     }
 
                 case CommandTypes.Play:
+                    keysPanel.Enabled = true;
                     bool isSpecator = !(Player.Name == currentRoom.Owner || Player.Name == currentRoom.Guest);
                     secretWord = currentRoom.secretWord;
                     JsonElement jsonPayload = (JsonElement)command.Payload;
@@ -253,7 +254,7 @@ namespace ClientApp
                     Player.IsActive = true;
 
                     string controlName = playCommand.Symbol.ToString().ToLower() + "Btn";
-                    Control pressedControl = gamePanel.Controls[controlName];
+                    Control pressedControl = keysPanel.Controls[controlName];
                     pressedControl.Enabled = false;
 
                     // Loop throw the current room revealed letters and update the ui based on it
@@ -270,8 +271,11 @@ namespace ClientApp
                         if (currentRoom.revelaedLetter[i])
                         {
                             char pressedLetter = (char)('a' + i);
-                            Control btn = gamePanel.Controls[$"{pressedLetter}Btn"];
+                            Control btn = keysPanel.Controls[$"{pressedLetter}Btn"];
                             btn.Enabled = false;
+                            Button button = btn as Button;
+                            button.FlatStyle = FlatStyle.Flat;
+                            button.BackColor = Color.Gray;
                         }
                     }
 
@@ -364,6 +368,8 @@ namespace ClientApp
                                 BackColor = Color.Black,
                                 ForeColor = Color.White,
                                 Font = new Font("Arial", 15),
+                                TextAlign = HorizontalAlignment.Center,
+                                ReadOnly = true,
                                 Location = new Point(startX + i * (textBoxWidth + spacing), startY) // Adjusted positioning
                             };
 
@@ -596,10 +602,13 @@ namespace ClientApp
                 bool isCorrectPlay = false;
                 Button pushedButton = sender as Button;
                 string controlName = pushedButton.Text.ToLower() + "Btn";
-                Control pressedControl = gamePanel.Controls[controlName];
+                Control pressedControl = keysPanel.Controls[controlName];
 
                 currentRoom.revelaedLetter[pushedButton.Text[0].ToString().ToLower()[0] - 'a'] = true;
                 pressedControl.Enabled = false;
+                Button button = pressedControl as Button;
+                button.FlatStyle = FlatStyle.Flat;
+                button.BackColor = Color.Gray;
                 string pushedKey = pushedButton.Text;
 
                 for (int i = 0; i < secretWord.Length; i++)
@@ -621,9 +630,12 @@ namespace ClientApp
                     Command command = new Command(CommandTypes.Play, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom));
                     sendCommand(command);
                     Player.IsActive = false;
+                    // loop through all buttons and disable them
+                    keysPanel.Enabled = false;
                 }
+      
 
-                bool winFlag = true;
+                    bool winFlag = true;
                 for (int i = 1; i <= secretWord.Length; i++)
                 {
                     Control textBox = gamePanel.Controls[$"txtBox{i}"];

@@ -96,6 +96,7 @@
             button1 = new Button();
             playAgainLabel = new Label();
             winOrLoseLabel = new Label();
+            keysPanel = new Panel();
             loginPanel.SuspendLayout();
             roomCreationPanel.SuspendLayout();
             panel1.SuspendLayout();
@@ -103,6 +104,7 @@
             lobbyPanel.SuspendLayout();
             gamePanel.SuspendLayout();
             winOrLosePanel.SuspendLayout();
+            keysPanel.SuspendLayout();
             SuspendLayout();
             // 
             // loginButton
@@ -126,7 +128,7 @@
             userNameTextBox.Location = new Point(508, 235);
             userNameTextBox.Name = "userNameTextBox";
             userNameTextBox.PlaceholderText = "Enter the username";
-            userNameTextBox.Size = new Size(238, 35);
+            userNameTextBox.Size = new Size(238, 26);
             userNameTextBox.TabIndex = 1;
             userNameTextBox.KeyDown += userNameTextBox_KeyDown;
             // 
@@ -153,7 +155,7 @@
             label15.ForeColor = SystemColors.ActiveCaptionText;
             label15.Location = new Point(69, 132);
             label15.Name = "label15";
-            label15.Size = new Size(287, 64);
+            label15.Size = new Size(195, 42);
             label15.TabIndex = 6;
             label15.Text = "Play Now!";
             // 
@@ -165,7 +167,7 @@
             label8.ForeColor = SystemColors.ActiveCaptionText;
             label8.Location = new Point(-5, 9);
             label8.Name = "label8";
-            label8.Size = new Size(527, 108);
+            label8.Size = new Size(358, 73);
             label8.TabIndex = 5;
             label8.Text = "Word Ninja";
             // 
@@ -201,7 +203,7 @@
             tryCategoriesComboBox.FormattingEnabled = true;
             tryCategoriesComboBox.Location = new Point(88, 156);
             tryCategoriesComboBox.Name = "tryCategoriesComboBox";
-            tryCategoriesComboBox.Size = new Size(315, 39);
+            tryCategoriesComboBox.Size = new Size(315, 28);
             tryCategoriesComboBox.TabIndex = 2;
             // 
             // confirmCreationButton
@@ -225,7 +227,7 @@
             tryRoomNameTextBox.Location = new Point(88, 97);
             tryRoomNameTextBox.Name = "tryRoomNameTextBox";
             tryRoomNameTextBox.PlaceholderText = "Enter Room Name";
-            tryRoomNameTextBox.Size = new Size(315, 37);
+            tryRoomNameTextBox.Size = new Size(315, 27);
             tryRoomNameTextBox.TabIndex = 1;
             // 
             // label1
@@ -236,7 +238,7 @@
             label1.ForeColor = SystemColors.ControlLight;
             label1.Location = new Point(27, 20);
             label1.Name = "label1";
-            label1.Size = new Size(431, 52);
+            label1.Size = new Size(289, 33);
             label1.TabIndex = 0;
             label1.Text = "Enter Room's Details";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -263,7 +265,7 @@
             label4.ForeColor = SystemColors.ButtonHighlight;
             label4.Location = new Point(313, 9);
             label4.Name = "label4";
-            label4.Size = new Size(177, 55);
+            label4.Size = new Size(118, 37);
             label4.TabIndex = 3;
             label4.Text = "Rooms";
             // 
@@ -329,7 +331,7 @@
             guestReadyCheckbox.ForeColor = SystemColors.ButtonFace;
             guestReadyCheckbox.Location = new Point(570, 233);
             guestReadyCheckbox.Name = "guestReadyCheckbox";
-            guestReadyCheckbox.Size = new Size(142, 52);
+            guestReadyCheckbox.Size = new Size(97, 36);
             guestReadyCheckbox.TabIndex = 9;
             guestReadyCheckbox.Text = "Ready";
             guestReadyCheckbox.UseVisualStyleBackColor = false;
@@ -343,7 +345,7 @@
             ownerReadyCheckbox.ForeColor = SystemColors.ButtonFace;
             ownerReadyCheckbox.Location = new Point(570, 159);
             ownerReadyCheckbox.Name = "ownerReadyCheckbox";
-            ownerReadyCheckbox.Size = new Size(142, 52);
+            ownerReadyCheckbox.Size = new Size(97, 36);
             ownerReadyCheckbox.TabIndex = 8;
             ownerReadyCheckbox.Text = "Ready";
             ownerReadyCheckbox.UseVisualStyleBackColor = false;
@@ -356,7 +358,7 @@
             guestNameLabel.ForeColor = Color.Gold;
             guestNameLabel.Location = new Point(313, 233);
             guestNameLabel.Name = "guestNameLabel";
-            guestNameLabel.Size = new Size(232, 48);
+            guestNameLabel.Size = new Size(157, 32);
             guestNameLabel.TabIndex = 7;
             guestNameLabel.Text = "Not Available";
             // 
@@ -367,7 +369,7 @@
             ownerNameLabel.ForeColor = Color.Gold;
             ownerNameLabel.Location = new Point(309, 160);
             ownerNameLabel.Name = "ownerNameLabel";
-            ownerNameLabel.Size = new Size(232, 48);
+            ownerNameLabel.Size = new Size(157, 32);
             ownerNameLabel.TabIndex = 6;
             ownerNameLabel.Text = "Not Available";
             // 
@@ -378,7 +380,7 @@
             label2.ForeColor = SystemColors.Control;
             label2.Location = new Point(219, 29);
             label2.Name = "label2";
-            label2.Size = new Size(343, 64);
+            label2.Size = new Size(230, 42);
             label2.TabIndex = 5;
             label2.Text = "Lobby Room";
             // 
@@ -402,7 +404,7 @@
             label6.ForeColor = SystemColors.ButtonFace;
             label6.Location = new Point(20, 233);
             label6.Name = "label6";
-            label6.Size = new Size(306, 48);
+            label6.Size = new Size(206, 32);
             label6.TabIndex = 2;
             label6.Text = "Player 2 (Guest)  : ";
             // 
@@ -411,7 +413,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(20, 61);
             label3.Name = "label3";
-            label3.Size = new Size(0, 25);
+            label3.Size = new Size(0, 15);
             label3.TabIndex = 1;
             // 
             // label5
@@ -421,7 +423,7 @@
             label5.ForeColor = SystemColors.ButtonFace;
             label5.Location = new Point(20, 159);
             label5.Name = "label5";
-            label5.Size = new Size(300, 48);
+            label5.Size = new Size(201, 32);
             label5.TabIndex = 0;
             label5.Text = "Player 1 (Owner) :";
             // 
@@ -429,6 +431,7 @@
             // 
             gamePanel.BackColor = SystemColors.ActiveCaptionText;
             gamePanel.BackgroundImageLayout = ImageLayout.Stretch;
+            gamePanel.Controls.Add(keysPanel);
             gamePanel.Controls.Add(turnLabel);
             gamePanel.Controls.Add(label16);
             gamePanel.Controls.Add(label13);
@@ -436,32 +439,6 @@
             gamePanel.Controls.Add(label10);
             gamePanel.Controls.Add(label9);
             gamePanel.Controls.Add(label7);
-            gamePanel.Controls.Add(oBtn);
-            gamePanel.Controls.Add(pBtn);
-            gamePanel.Controls.Add(eBtn);
-            gamePanel.Controls.Add(rBtn);
-            gamePanel.Controls.Add(tBtn);
-            gamePanel.Controls.Add(yBtn);
-            gamePanel.Controls.Add(uBtn);
-            gamePanel.Controls.Add(iBtn);
-            gamePanel.Controls.Add(dBtn);
-            gamePanel.Controls.Add(fBtn);
-            gamePanel.Controls.Add(gBtn);
-            gamePanel.Controls.Add(hBtn);
-            gamePanel.Controls.Add(qBtn);
-            gamePanel.Controls.Add(kBtn);
-            gamePanel.Controls.Add(lBtn);
-            gamePanel.Controls.Add(jBtn);
-            gamePanel.Controls.Add(wBtn);
-            gamePanel.Controls.Add(sBtn);
-            gamePanel.Controls.Add(xBtn);
-            gamePanel.Controls.Add(zBtn);
-            gamePanel.Controls.Add(aBtn);
-            gamePanel.Controls.Add(bBtn);
-            gamePanel.Controls.Add(vBtn);
-            gamePanel.Controls.Add(cBtn);
-            gamePanel.Controls.Add(nBtn);
-            gamePanel.Controls.Add(mBtn);
             gamePanel.Dock = DockStyle.Fill;
             gamePanel.Location = new Point(0, 0);
             gamePanel.Name = "gamePanel";
@@ -476,7 +453,7 @@
             turnLabel.ForeColor = SystemColors.Control;
             turnLabel.Location = new Point(468, 64);
             turnLabel.Name = "turnLabel";
-            turnLabel.Size = new Size(244, 60);
+            turnLabel.Size = new Size(166, 41);
             turnLabel.TabIndex = 113;
             turnLabel.Text = "Your Turn";
             // 
@@ -488,7 +465,7 @@
             label16.ForeColor = Color.Chocolate;
             label16.Location = new Point(442, 9);
             label16.Name = "label16";
-            label16.Size = new Size(110, 40);
+            label16.Size = new Size(73, 25);
             label16.TabIndex = 112;
             label16.Text = "label16";
             label16.Visible = false;
@@ -501,7 +478,7 @@
             label13.ForeColor = Color.Chocolate;
             label13.Location = new Point(556, 9);
             label13.Name = "label13";
-            label13.Size = new Size(110, 40);
+            label13.Size = new Size(73, 25);
             label13.TabIndex = 109;
             label13.Text = "label13";
             label13.Visible = false;
@@ -514,7 +491,7 @@
             label11.ForeColor = Color.LimeGreen;
             label11.Location = new Point(118, 33);
             label11.Name = "label11";
-            label11.Size = new Size(176, 60);
+            label11.Size = new Size(117, 40);
             label11.TabIndex = 107;
             label11.Text = "label11";
             // 
@@ -526,7 +503,7 @@
             label10.ForeColor = Color.Red;
             label10.Location = new Point(118, 97);
             label10.Name = "label10";
-            label10.Size = new Size(176, 60);
+            label10.Size = new Size(117, 40);
             label10.TabIndex = 106;
             label10.Text = "label10";
             // 
@@ -538,7 +515,7 @@
             label9.ForeColor = SystemColors.ButtonFace;
             label9.Location = new Point(50, 93);
             label9.Name = "label9";
-            label9.Size = new Size(92, 60);
+            label9.Size = new Size(60, 40);
             label9.TabIndex = 105;
             label9.Text = "Vs: ";
             // 
@@ -550,15 +527,16 @@
             label7.ForeColor = SystemColors.ButtonFace;
             label7.Location = new Point(32, 33);
             label7.Name = "label7";
-            label7.Size = new Size(110, 60);
+            label7.Size = new Size(72, 40);
             label7.TabIndex = 104;
             label7.Text = "Me: ";
             // 
             // oBtn
             // 
-            oBtn.BackColor = SystemColors.ActiveCaptionText;
-            oBtn.ForeColor = SystemColors.ControlLightLight;
-            oBtn.Location = new Point(601, 294);
+            oBtn.BackColor = SystemColors.ButtonHighlight;
+            oBtn.FlatStyle = FlatStyle.System;
+            oBtn.ForeColor = SystemColors.ActiveCaptionText;
+            oBtn.Location = new Point(534, 20);
             oBtn.Margin = new Padding(3, 2, 3, 2);
             oBtn.Name = "oBtn";
             oBtn.Size = new Size(54, 34);
@@ -569,9 +547,10 @@
             // 
             // pBtn
             // 
-            pBtn.BackColor = SystemColors.ActiveCaptionText;
-            pBtn.ForeColor = SystemColors.ControlLightLight;
-            pBtn.Location = new Point(668, 294);
+            pBtn.BackColor = SystemColors.ButtonHighlight;
+            pBtn.FlatStyle = FlatStyle.System;
+            pBtn.ForeColor = SystemColors.ActiveCaptionText;
+            pBtn.Location = new Point(601, 20);
             pBtn.Margin = new Padding(3, 2, 3, 2);
             pBtn.Name = "pBtn";
             pBtn.Size = new Size(54, 34);
@@ -582,9 +561,10 @@
             // 
             // eBtn
             // 
-            eBtn.BackColor = SystemColors.ActiveCaptionText;
-            eBtn.ForeColor = SystemColors.ControlLightLight;
-            eBtn.Location = new Point(202, 294);
+            eBtn.BackColor = SystemColors.ButtonHighlight;
+            eBtn.FlatStyle = FlatStyle.System;
+            eBtn.ForeColor = SystemColors.ActiveCaptionText;
+            eBtn.Location = new Point(135, 20);
             eBtn.Margin = new Padding(3, 2, 3, 2);
             eBtn.Name = "eBtn";
             eBtn.Size = new Size(54, 34);
@@ -595,9 +575,10 @@
             // 
             // rBtn
             // 
-            rBtn.BackColor = SystemColors.ActiveCaptionText;
-            rBtn.ForeColor = SystemColors.ControlLightLight;
-            rBtn.Location = new Point(268, 294);
+            rBtn.BackColor = SystemColors.ButtonHighlight;
+            rBtn.FlatStyle = FlatStyle.System;
+            rBtn.ForeColor = SystemColors.ActiveCaptionText;
+            rBtn.Location = new Point(201, 20);
             rBtn.Margin = new Padding(3, 2, 3, 2);
             rBtn.Name = "rBtn";
             rBtn.Size = new Size(54, 34);
@@ -608,9 +589,10 @@
             // 
             // tBtn
             // 
-            tBtn.BackColor = SystemColors.ActiveCaptionText;
-            tBtn.ForeColor = SystemColors.ControlLightLight;
-            tBtn.Location = new Point(335, 294);
+            tBtn.BackColor = SystemColors.ButtonHighlight;
+            tBtn.FlatStyle = FlatStyle.System;
+            tBtn.ForeColor = SystemColors.ActiveCaptionText;
+            tBtn.Location = new Point(268, 20);
             tBtn.Margin = new Padding(3, 2, 3, 2);
             tBtn.Name = "tBtn";
             tBtn.Size = new Size(54, 34);
@@ -621,9 +603,10 @@
             // 
             // yBtn
             // 
-            yBtn.BackColor = SystemColors.ActiveCaptionText;
-            yBtn.ForeColor = SystemColors.ControlLightLight;
-            yBtn.Location = new Point(402, 294);
+            yBtn.BackColor = SystemColors.ButtonHighlight;
+            yBtn.FlatStyle = FlatStyle.System;
+            yBtn.ForeColor = SystemColors.ActiveCaptionText;
+            yBtn.Location = new Point(335, 20);
             yBtn.Margin = new Padding(3, 2, 3, 2);
             yBtn.Name = "yBtn";
             yBtn.Size = new Size(54, 34);
@@ -634,9 +617,10 @@
             // 
             // uBtn
             // 
-            uBtn.BackColor = SystemColors.ActiveCaptionText;
-            uBtn.ForeColor = SystemColors.ControlLightLight;
-            uBtn.Location = new Point(468, 294);
+            uBtn.BackColor = SystemColors.ButtonHighlight;
+            uBtn.FlatStyle = FlatStyle.System;
+            uBtn.ForeColor = SystemColors.ActiveCaptionText;
+            uBtn.Location = new Point(401, 20);
             uBtn.Margin = new Padding(3, 2, 3, 2);
             uBtn.Name = "uBtn";
             uBtn.Size = new Size(54, 34);
@@ -647,9 +631,10 @@
             // 
             // iBtn
             // 
-            iBtn.BackColor = SystemColors.ActiveCaptionText;
-            iBtn.ForeColor = SystemColors.ControlLightLight;
-            iBtn.Location = new Point(534, 294);
+            iBtn.BackColor = SystemColors.ButtonHighlight;
+            iBtn.FlatStyle = FlatStyle.System;
+            iBtn.ForeColor = SystemColors.ActiveCaptionText;
+            iBtn.Location = new Point(467, 20);
             iBtn.Margin = new Padding(3, 2, 3, 2);
             iBtn.Name = "iBtn";
             iBtn.Size = new Size(54, 34);
@@ -660,9 +645,10 @@
             // 
             // dBtn
             // 
-            dBtn.BackColor = SystemColors.ActiveCaptionText;
-            dBtn.ForeColor = SystemColors.ControlLightLight;
-            dBtn.Location = new Point(235, 346);
+            dBtn.BackColor = SystemColors.ButtonHighlight;
+            dBtn.FlatStyle = FlatStyle.System;
+            dBtn.ForeColor = SystemColors.ActiveCaptionText;
+            dBtn.Location = new Point(168, 72);
             dBtn.Margin = new Padding(3, 2, 3, 2);
             dBtn.Name = "dBtn";
             dBtn.Size = new Size(54, 34);
@@ -673,9 +659,10 @@
             // 
             // fBtn
             // 
-            fBtn.BackColor = SystemColors.ActiveCaptionText;
-            fBtn.ForeColor = SystemColors.ControlLightLight;
-            fBtn.Location = new Point(304, 346);
+            fBtn.BackColor = SystemColors.ButtonHighlight;
+            fBtn.FlatStyle = FlatStyle.System;
+            fBtn.ForeColor = SystemColors.ActiveCaptionText;
+            fBtn.Location = new Point(237, 72);
             fBtn.Margin = new Padding(3, 2, 3, 2);
             fBtn.Name = "fBtn";
             fBtn.Size = new Size(54, 34);
@@ -686,9 +673,10 @@
             // 
             // gBtn
             // 
-            gBtn.BackColor = SystemColors.ActiveCaptionText;
-            gBtn.ForeColor = SystemColors.ControlLightLight;
-            gBtn.Location = new Point(372, 346);
+            gBtn.BackColor = SystemColors.ButtonHighlight;
+            gBtn.FlatStyle = FlatStyle.System;
+            gBtn.ForeColor = SystemColors.ActiveCaptionText;
+            gBtn.Location = new Point(305, 72);
             gBtn.Margin = new Padding(3, 2, 3, 2);
             gBtn.Name = "gBtn";
             gBtn.Size = new Size(54, 34);
@@ -699,9 +687,10 @@
             // 
             // hBtn
             // 
-            hBtn.BackColor = SystemColors.ActiveCaptionText;
-            hBtn.ForeColor = SystemColors.ControlLightLight;
-            hBtn.Location = new Point(440, 346);
+            hBtn.BackColor = SystemColors.ButtonHighlight;
+            hBtn.FlatStyle = FlatStyle.System;
+            hBtn.ForeColor = SystemColors.ActiveCaptionText;
+            hBtn.Location = new Point(373, 72);
             hBtn.Margin = new Padding(3, 2, 3, 2);
             hBtn.Name = "hBtn";
             hBtn.Size = new Size(54, 34);
@@ -712,9 +701,10 @@
             // 
             // qBtn
             // 
-            qBtn.BackColor = SystemColors.ActiveCaptionText;
-            qBtn.ForeColor = SystemColors.ControlLightLight;
-            qBtn.Location = new Point(69, 294);
+            qBtn.BackColor = SystemColors.ButtonHighlight;
+            qBtn.FlatStyle = FlatStyle.System;
+            qBtn.ForeColor = SystemColors.ActiveCaptionText;
+            qBtn.Location = new Point(2, 20);
             qBtn.Margin = new Padding(3, 2, 3, 2);
             qBtn.Name = "qBtn";
             qBtn.Size = new Size(54, 34);
@@ -725,9 +715,10 @@
             // 
             // kBtn
             // 
-            kBtn.BackColor = SystemColors.ActiveCaptionText;
-            kBtn.ForeColor = SystemColors.ControlLightLight;
-            kBtn.Location = new Point(576, 346);
+            kBtn.BackColor = SystemColors.ButtonHighlight;
+            kBtn.FlatStyle = FlatStyle.System;
+            kBtn.ForeColor = SystemColors.ActiveCaptionText;
+            kBtn.Location = new Point(509, 72);
             kBtn.Margin = new Padding(3, 2, 3, 2);
             kBtn.Name = "kBtn";
             kBtn.Size = new Size(54, 34);
@@ -738,9 +729,10 @@
             // 
             // lBtn
             // 
-            lBtn.BackColor = SystemColors.ActiveCaptionText;
-            lBtn.ForeColor = SystemColors.ControlLightLight;
-            lBtn.Location = new Point(645, 346);
+            lBtn.BackColor = SystemColors.ButtonHighlight;
+            lBtn.FlatStyle = FlatStyle.System;
+            lBtn.ForeColor = SystemColors.ActiveCaptionText;
+            lBtn.Location = new Point(578, 72);
             lBtn.Margin = new Padding(3, 2, 3, 2);
             lBtn.Name = "lBtn";
             lBtn.Size = new Size(54, 34);
@@ -751,9 +743,10 @@
             // 
             // jBtn
             // 
-            jBtn.BackColor = SystemColors.ActiveCaptionText;
-            jBtn.ForeColor = SystemColors.ControlLightLight;
-            jBtn.Location = new Point(508, 346);
+            jBtn.BackColor = SystemColors.ButtonHighlight;
+            jBtn.FlatStyle = FlatStyle.System;
+            jBtn.ForeColor = SystemColors.ActiveCaptionText;
+            jBtn.Location = new Point(441, 72);
             jBtn.Margin = new Padding(3, 2, 3, 2);
             jBtn.Name = "jBtn";
             jBtn.Size = new Size(54, 34);
@@ -764,9 +757,10 @@
             // 
             // wBtn
             // 
-            wBtn.BackColor = SystemColors.ActiveCaptionText;
-            wBtn.ForeColor = SystemColors.ControlLightLight;
-            wBtn.Location = new Point(136, 294);
+            wBtn.BackColor = SystemColors.ButtonHighlight;
+            wBtn.FlatStyle = FlatStyle.System;
+            wBtn.ForeColor = SystemColors.ActiveCaptionText;
+            wBtn.Location = new Point(69, 20);
             wBtn.Margin = new Padding(3, 2, 3, 2);
             wBtn.Name = "wBtn";
             wBtn.Size = new Size(54, 34);
@@ -777,9 +771,10 @@
             // 
             // sBtn
             // 
-            sBtn.BackColor = SystemColors.ActiveCaptionText;
-            sBtn.ForeColor = SystemColors.ControlLightLight;
-            sBtn.Location = new Point(167, 346);
+            sBtn.BackColor = SystemColors.ButtonHighlight;
+            sBtn.FlatStyle = FlatStyle.System;
+            sBtn.ForeColor = SystemColors.ActiveCaptionText;
+            sBtn.Location = new Point(100, 72);
             sBtn.Margin = new Padding(3, 2, 3, 2);
             sBtn.Name = "sBtn";
             sBtn.Size = new Size(54, 34);
@@ -790,9 +785,10 @@
             // 
             // xBtn
             // 
-            xBtn.BackColor = SystemColors.ActiveCaptionText;
-            xBtn.ForeColor = SystemColors.ControlLightLight;
-            xBtn.Location = new Point(219, 400);
+            xBtn.BackColor = SystemColors.ButtonHighlight;
+            xBtn.FlatStyle = FlatStyle.System;
+            xBtn.ForeColor = SystemColors.ActiveCaptionText;
+            xBtn.Location = new Point(152, 126);
             xBtn.Margin = new Padding(3, 2, 3, 2);
             xBtn.Name = "xBtn";
             xBtn.Size = new Size(54, 34);
@@ -803,9 +799,10 @@
             // 
             // zBtn
             // 
-            zBtn.BackColor = SystemColors.ActiveCaptionText;
-            zBtn.ForeColor = SystemColors.ControlLightLight;
-            zBtn.Location = new Point(143, 400);
+            zBtn.BackColor = SystemColors.ButtonHighlight;
+            zBtn.FlatStyle = FlatStyle.System;
+            zBtn.ForeColor = SystemColors.ActiveCaptionText;
+            zBtn.Location = new Point(76, 126);
             zBtn.Margin = new Padding(3, 2, 3, 2);
             zBtn.Name = "zBtn";
             zBtn.Size = new Size(54, 34);
@@ -816,9 +813,10 @@
             // 
             // aBtn
             // 
-            aBtn.BackColor = SystemColors.ActiveCaptionText;
-            aBtn.ForeColor = SystemColors.ControlLightLight;
-            aBtn.Location = new Point(99, 346);
+            aBtn.BackColor = SystemColors.ButtonHighlight;
+            aBtn.FlatStyle = FlatStyle.System;
+            aBtn.ForeColor = SystemColors.ActiveCaptionText;
+            aBtn.Location = new Point(32, 72);
             aBtn.Margin = new Padding(3, 2, 3, 2);
             aBtn.Name = "aBtn";
             aBtn.Size = new Size(54, 34);
@@ -829,9 +827,10 @@
             // 
             // bBtn
             // 
-            bBtn.BackColor = SystemColors.ActiveCaptionText;
-            bBtn.ForeColor = SystemColors.ControlLightLight;
-            bBtn.Location = new Point(451, 400);
+            bBtn.BackColor = SystemColors.ButtonHighlight;
+            bBtn.FlatStyle = FlatStyle.System;
+            bBtn.ForeColor = SystemColors.ActiveCaptionText;
+            bBtn.Location = new Point(384, 126);
             bBtn.Margin = new Padding(3, 2, 3, 2);
             bBtn.Name = "bBtn";
             bBtn.Size = new Size(54, 34);
@@ -842,9 +841,10 @@
             // 
             // vBtn
             // 
-            vBtn.BackColor = SystemColors.ActiveCaptionText;
-            vBtn.ForeColor = SystemColors.ControlLightLight;
-            vBtn.Location = new Point(373, 400);
+            vBtn.BackColor = SystemColors.ButtonHighlight;
+            vBtn.FlatStyle = FlatStyle.System;
+            vBtn.ForeColor = SystemColors.ActiveCaptionText;
+            vBtn.Location = new Point(306, 126);
             vBtn.Margin = new Padding(3, 2, 3, 2);
             vBtn.Name = "vBtn";
             vBtn.Size = new Size(54, 34);
@@ -855,9 +855,10 @@
             // 
             // cBtn
             // 
-            cBtn.BackColor = SystemColors.ActiveCaptionText;
-            cBtn.ForeColor = SystemColors.ControlLightLight;
-            cBtn.Location = new Point(297, 400);
+            cBtn.BackColor = SystemColors.ButtonHighlight;
+            cBtn.FlatStyle = FlatStyle.System;
+            cBtn.ForeColor = SystemColors.ActiveCaptionText;
+            cBtn.Location = new Point(230, 126);
             cBtn.Margin = new Padding(3, 2, 3, 2);
             cBtn.Name = "cBtn";
             cBtn.Size = new Size(54, 34);
@@ -868,9 +869,10 @@
             // 
             // nBtn
             // 
-            nBtn.BackColor = SystemColors.ActiveCaptionText;
-            nBtn.ForeColor = SystemColors.ControlLightLight;
-            nBtn.Location = new Point(527, 400);
+            nBtn.BackColor = SystemColors.ButtonHighlight;
+            nBtn.FlatStyle = FlatStyle.System;
+            nBtn.ForeColor = SystemColors.ActiveCaptionText;
+            nBtn.Location = new Point(460, 126);
             nBtn.Margin = new Padding(3, 2, 3, 2);
             nBtn.Name = "nBtn";
             nBtn.Size = new Size(54, 34);
@@ -881,9 +883,10 @@
             // 
             // mBtn
             // 
-            mBtn.BackColor = SystemColors.ActiveCaptionText;
-            mBtn.ForeColor = SystemColors.ControlLightLight;
-            mBtn.Location = new Point(605, 400);
+            mBtn.BackColor = SystemColors.ButtonHighlight;
+            mBtn.FlatStyle = FlatStyle.System;
+            mBtn.ForeColor = SystemColors.ActiveCaptionText;
+            mBtn.Location = new Point(538, 126);
             mBtn.Margin = new Padding(3, 2, 3, 2);
             mBtn.Name = "mBtn";
             mBtn.Size = new Size(54, 34);
@@ -914,7 +917,7 @@
             conrgatOrSorryLabel.ForeColor = SystemColors.Control;
             conrgatOrSorryLabel.Location = new Point(212, 94);
             conrgatOrSorryLabel.Name = "conrgatOrSorryLabel";
-            conrgatOrSorryLabel.Size = new Size(370, 38);
+            conrgatOrSorryLabel.Size = new Size(254, 25);
             conrgatOrSorryLabel.TabIndex = 4;
             conrgatOrSorryLabel.Text = "Congratulations PlayerName";
             // 
@@ -943,7 +946,7 @@
             playAgainLabel.ForeColor = SystemColors.ButtonHighlight;
             playAgainLabel.Location = new Point(228, 326);
             playAgainLabel.Name = "playAgainLabel";
-            playAgainLabel.Size = new Size(354, 38);
+            playAgainLabel.Size = new Size(241, 25);
             playAgainLabel.TabIndex = 1;
             playAgainLabel.Text = "Do you want to play again?";
             // 
@@ -954,9 +957,42 @@
             winOrLoseLabel.ForeColor = Color.Green;
             winOrLoseLabel.Location = new Point(167, 138);
             winOrLoseLabel.Name = "winOrLoseLabel";
-            winOrLoseLabel.Size = new Size(466, 116);
+            winOrLoseLabel.Size = new Size(313, 78);
             winOrLoseLabel.TabIndex = 0;
             winOrLoseLabel.Text = "You Won";
+            // 
+            // keysPanel
+            // 
+            keysPanel.Controls.Add(jBtn);
+            keysPanel.Controls.Add(mBtn);
+            keysPanel.Controls.Add(nBtn);
+            keysPanel.Controls.Add(cBtn);
+            keysPanel.Controls.Add(vBtn);
+            keysPanel.Controls.Add(bBtn);
+            keysPanel.Controls.Add(aBtn);
+            keysPanel.Controls.Add(zBtn);
+            keysPanel.Controls.Add(oBtn);
+            keysPanel.Controls.Add(xBtn);
+            keysPanel.Controls.Add(pBtn);
+            keysPanel.Controls.Add(sBtn);
+            keysPanel.Controls.Add(eBtn);
+            keysPanel.Controls.Add(wBtn);
+            keysPanel.Controls.Add(rBtn);
+            keysPanel.Controls.Add(lBtn);
+            keysPanel.Controls.Add(tBtn);
+            keysPanel.Controls.Add(kBtn);
+            keysPanel.Controls.Add(yBtn);
+            keysPanel.Controls.Add(qBtn);
+            keysPanel.Controls.Add(uBtn);
+            keysPanel.Controls.Add(hBtn);
+            keysPanel.Controls.Add(iBtn);
+            keysPanel.Controls.Add(gBtn);
+            keysPanel.Controls.Add(dBtn);
+            keysPanel.Controls.Add(fBtn);
+            keysPanel.Location = new Point(56, 235);
+            keysPanel.Name = "keysPanel";
+            keysPanel.Size = new Size(670, 209);
+            keysPanel.TabIndex = 114;
             // 
             // ClientForm
             // 
@@ -984,6 +1020,7 @@
             gamePanel.PerformLayout();
             winOrLosePanel.ResumeLayout(false);
             winOrLosePanel.PerformLayout();
+            keysPanel.ResumeLayout(false);
             ResumeLayout(false);
 
 
@@ -1058,5 +1095,6 @@
         private Label playAgainLabel;
         private Label conrgatOrSorryLabel;
         private Label turnLabel;
+        private Panel keysPanel;
     }
 }
