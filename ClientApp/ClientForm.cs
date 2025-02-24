@@ -82,19 +82,26 @@ namespace ClientApp
              * Update the room list panel with the retrieved rooms
              */
 
-            TcpClient tcpClient = new TcpClient();
-            tcpClient.Connect("127.0.0.1", 50000);
-            new Thread(() => listenForMessages()) { IsBackground = true }.Start();
+            try
+            {
+                TcpClient tcpClient = new TcpClient();
+                tcpClient.Connect("127.0.0.1", 50000);
+                new Thread(() => listenForMessages()) { IsBackground = true }.Start();
 
-            Player = new Player { tcpClient = tcpClient, Name = userNameTextBox.Text, Score = 0 };
+                Player = new Player { tcpClient = tcpClient, Name = userNameTextBox.Text, Score = 0 };
 
-            Command loggingRequest = new Command(CommandTypes.Login, Player);
-            sendCommand(loggingRequest);
-            loginPanel.Hide();
-            this.Text = $"Guess the Name Game (Playing as {Player.Name})";
+                Command loggingRequest = new Command(CommandTypes.Login, Player);
+                sendCommand(loggingRequest);
+                loginPanel.Hide();
+                this.Text = $"Guess the Name Game (Playing as {Player.Name})";
 
-            Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
-            sendCommand(command); // Request sent, Response handling is done on resolveResponse() method
+                Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
+                sendCommand(command); // Request sent, Response handling is done on resolveResponse() method
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void sendCommand(Command command)
@@ -420,7 +427,31 @@ namespace ClientApp
                         label9.Hide();
                     break;
                     }
+                case CommandTypes.UpdatePlayed:
+                    secretWord = currentRoom.secretWord;
+                    JsonElement jsonPayload2 = (JsonElement)command.Payload;
+                    PlayCommandPayLoad playCommand2 = jsonPayload2.Deserialize<PlayCommandPayLoad>();
+                    //PlayCommandPayLoad playCommand = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
+                    currentRoom = playCommand2.room;
+                    //MessageBox.Show(command.Payload.ToString());
+                    //MessageBox.Show(playCommand.room.Category);
+                    //MessageBox.Show($"{playCommand.UserName} played {playCommand.Symbol} in room {playCommand.RoomId}");
+                    Player.IsActive = true;
 
+                    string controlName2 = playCommand2.Symbol.ToString().ToLower() + "Btn";
+                    Control pressedControl2 = keysPanel.Controls[controlName2];
+                    pressedControl2.Enabled = false;
+                    for (int i = 0; i < secretWord.Length; i++)
+                    {
+                        if (secretWord[i].ToString() == playCommand2.Symbol.ToString().ToLower())
+                        {
+
+                            Control textBox = gamePanel.Controls[$"txtBox{i + 1}"];
+                            textBox.Text = playCommand2.Symbol.ToString().ToLower();
+
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
@@ -562,7 +593,7 @@ namespace ClientApp
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat
             };
-            spectateButton.Click += (s, e) => { spectateRoomButton_Click(roomName); };
+            spectateButton.Click += (s, e) => { spectateRoomButton_Click(roomName, status); };
             roomPanel.Controls.Add(spectateButton);
 
             // Add the panel to FlowLayoutPanel
@@ -575,11 +606,20 @@ namespace ClientApp
             }
         }
 
-        private void spectateRoomButton_Click(string roomName)
+        private void spectateRoomButton_Click(string roomName, string status)
         {
-            GameRoom gameRoom = new GameRoom { RoomId = roomName };
-            Command spectateRequest = new Command(CommandTypes.SpectateRoom, gameRoom);
-            sendCommand(spectateRequest);
+            if (status == "InProgress")
+            {
+                GameRoom gameRoom = new GameRoom { RoomId = roomName };
+                Command spectateRequest = new Command(CommandTypes.SpectateRoom, gameRoom);
+                sendCommand(spectateRequest);
+
+            }
+            else
+            {
+                MessageBox.Show("You can't spectate!");
+            }
+
         }
 
         private void ReadyButton_Click(object sender, EventArgs e)
@@ -633,7 +673,12 @@ namespace ClientApp
                     // loop through all buttons and disable them
                     keysPanel.Enabled = false;
                 }
-      
+                else
+                {
+                    Command command = new Command(CommandTypes.UpdatePlayed, new PlayCommandPayLoad(Player.Name, pushedKey[0], currentRoom));
+                    sendCommand(command);
+                }
+
 
                     bool winFlag = true;
                 for (int i = 1; i <= secretWord.Length; i++)

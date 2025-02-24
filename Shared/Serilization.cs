@@ -17,6 +17,7 @@ namespace Shared
         RoomUpdated,
         RequestReady,
         SpectateRoom,
+        UpdatePlayed,
         Quit
     }
     public class Command

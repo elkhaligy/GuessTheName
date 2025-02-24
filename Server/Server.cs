@@ -1,5 +1,6 @@
 ﻿using Shared;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -225,8 +226,45 @@ namespace ServerApp
                             jsonMessage = JsonSerializer.Serialize(spectateRoomCommand);
                             writer?.WriteLine(jsonMessage);
                             break;
+
+                        case CommandTypes.UpdatePlayed:
+                            PlayCommandPayLoad playCommandPayLoad2 = JsonSerializer.Deserialize<PlayCommandPayLoad>(command.Payload.ToString());
+                            string playerThatPlayed2 = playCommandPayLoad2.UserName;
+                            GameRoom playedRoom2 = playCommandPayLoad2.room;
+                            char keyPressed2 = playCommandPayLoad2.Symbol;
+                            currentRoom = roomsList.Find(room => room.RoomId == playCommandPayLoad2.room.RoomId);
+                            currentRoom.revelaedLetter = playedRoom2.revelaedLetter;
+
+                            if (playerThatPlayed2 == currentRoom.Owner)
+                            {
+                                roomGuestTcp = nameToClientMap[currentRoom.Guest];
+                                roomGuestWriter = new StreamWriter(roomGuestTcp.GetStream()) { AutoFlush = true };
+                                Command startGameCommand = new Command(CommandTypes.UpdatePlayed, new PlayCommandPayLoad(currentRoom.Owner, keyPressed2, currentRoom));
+                                jsonMessage = JsonSerializer.Serialize(startGameCommand);
+                                roomGuestWriter?.WriteLine(jsonMessage);
+                            }
+                            else
+                            {
+                                roomOwnerTcpClient = nameToClientMap[currentRoom.Owner];
+                                roomOwnerWriter = new StreamWriter(roomOwnerTcpClient.GetStream()) { AutoFlush = true };
+                                Command startGameCommand = new Command(CommandTypes.UpdatePlayed, new PlayCommandPayLoad(currentRoom.Guest, keyPressed2, currentRoom));
+                                jsonMessage = JsonSerializer.Serialize(startGameCommand);
+                                roomOwnerWriter?.WriteLine(jsonMessage);
+
+                            }
+
+                            foreach (var spectator in currentRoom.Spectators)
+                            {
+                                TcpClient spectatorTcp = nameToClientMap[spectator.Name];
+                                StreamWriter spectatorWriter = new StreamWriter(spectatorTcp.GetStream()) { AutoFlush = true };
+                                Command startGameCommand = new Command(CommandTypes.UpdatePlayed, new PlayCommandPayLoad(playerThatPlayed2, keyPressed2, currentRoom));
+                                jsonMessage = JsonSerializer.Serialize(startGameCommand);
+                                spectatorWriter?.WriteLine(jsonMessage);
+                            }
+                            break;
                         default:
                             break;
+                            
                     }
                 }
                 catch (Exception) { break; }
