@@ -36,7 +36,7 @@ namespace ClientApp
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
             // Navigate up 3 levels and then to "Shared\Data\Animal.txt"
-            string relativePath = Path.Combine(basePath, @$"..\..\..\..\Shared\Data\{category}.txt");
+            string relativePath = Path.Combine(basePath, @$"Data\{category}.txt");
 
             // Get the absolute path
             string fullPath = Path.GetFullPath(relativePath);
@@ -93,7 +93,7 @@ namespace ClientApp
                 Command loggingRequest = new Command(CommandTypes.Login, Player);
                 sendCommand(loggingRequest);
                 loginPanel.Hide();
-                this.Text = $"Guess the Name Game (Playing as {Player.Name})";
+                this.Text = $"Word Ninja (Playing as {Player.Name})";
 
                 Command command = new Command(CommandTypes.GetRooms, new GetRoomCommandPayload());
                 sendCommand(command); // Request sent, Response handling is done on resolveResponse() method

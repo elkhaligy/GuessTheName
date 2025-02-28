@@ -109,9 +109,9 @@
             loginButton.BackColor = SystemColors.ActiveCaptionText;
             loginButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             loginButton.ForeColor = SystemColors.ButtonFace;
-            loginButton.Location = new Point(552, 283);
+            loginButton.Location = new Point(508, 267);
             loginButton.Name = "loginButton";
-            loginButton.Size = new Size(147, 54);
+            loginButton.Size = new Size(238, 35);
             loginButton.TabIndex = 0;
             loginButton.Text = "Login";
             loginButton.UseVisualStyleBackColor = false;
@@ -150,7 +150,7 @@
             label15.BackColor = Color.Transparent;
             label15.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label15.ForeColor = SystemColors.ActiveCaptionText;
-            label15.Location = new Point(69, 132);
+            label15.Location = new Point(106, 88);
             label15.Name = "label15";
             label15.Size = new Size(195, 42);
             label15.TabIndex = 6;
@@ -160,11 +160,11 @@
             // 
             label8.AutoSize = true;
             label8.BackColor = Color.Transparent;
-            label8.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Font = new Font("Lucida Calligraphy", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label8.ForeColor = SystemColors.ActiveCaptionText;
             label8.Location = new Point(-5, 9);
             label8.Name = "label8";
-            label8.Size = new Size(358, 73);
+            label8.Size = new Size(456, 83);
             label8.TabIndex = 5;
             label8.Text = "Word Ninja";
             // 
@@ -326,7 +326,7 @@
             guestReadyCheckbox.BackColor = Color.Transparent;
             guestReadyCheckbox.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guestReadyCheckbox.ForeColor = SystemColors.ButtonFace;
-            guestReadyCheckbox.Location = new Point(570, 233);
+            guestReadyCheckbox.Location = new Point(581, 232);
             guestReadyCheckbox.Name = "guestReadyCheckbox";
             guestReadyCheckbox.Size = new Size(97, 36);
             guestReadyCheckbox.TabIndex = 9;
@@ -340,7 +340,7 @@
             ownerReadyCheckbox.BackColor = Color.Transparent;
             ownerReadyCheckbox.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ownerReadyCheckbox.ForeColor = SystemColors.ButtonFace;
-            ownerReadyCheckbox.Location = new Point(570, 159);
+            ownerReadyCheckbox.Location = new Point(581, 158);
             ownerReadyCheckbox.Name = "ownerReadyCheckbox";
             ownerReadyCheckbox.Size = new Size(97, 36);
             ownerReadyCheckbox.TabIndex = 8;
@@ -353,7 +353,7 @@
             guestNameLabel.AutoSize = true;
             guestNameLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guestNameLabel.ForeColor = Color.Gold;
-            guestNameLabel.Location = new Point(313, 233);
+            guestNameLabel.Location = new Point(324, 232);
             guestNameLabel.Name = "guestNameLabel";
             guestNameLabel.Size = new Size(157, 32);
             guestNameLabel.TabIndex = 7;
@@ -364,7 +364,7 @@
             ownerNameLabel.AutoSize = true;
             ownerNameLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ownerNameLabel.ForeColor = Color.Gold;
-            ownerNameLabel.Location = new Point(309, 160);
+            ownerNameLabel.Location = new Point(326, 162);
             ownerNameLabel.Name = "ownerNameLabel";
             ownerNameLabel.Size = new Size(157, 32);
             ownerNameLabel.TabIndex = 6;
@@ -375,7 +375,7 @@
             label2.AutoSize = true;
             label2.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.ForeColor = SystemColors.Control;
-            label2.Location = new Point(219, 29);
+            label2.Location = new Point(293, 36);
             label2.Name = "label2";
             label2.Size = new Size(230, 42);
             label2.TabIndex = 5;
@@ -386,7 +386,7 @@
             StartGameButton.BackColor = SystemColors.ActiveCaptionText;
             StartGameButton.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             StartGameButton.ForeColor = SystemColors.ButtonFace;
-            StartGameButton.Location = new Point(313, 317);
+            StartGameButton.Location = new Point(324, 316);
             StartGameButton.Name = "StartGameButton";
             StartGameButton.Size = new Size(153, 117);
             StartGameButton.TabIndex = 3;
@@ -399,7 +399,7 @@
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label6.ForeColor = SystemColors.ButtonFace;
-            label6.Location = new Point(20, 233);
+            label6.Location = new Point(56, 232);
             label6.Name = "label6";
             label6.Size = new Size(206, 32);
             label6.TabIndex = 2;
@@ -418,7 +418,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label5.ForeColor = SystemColors.ButtonFace;
-            label5.Location = new Point(20, 159);
+            label5.Location = new Point(56, 158);
             label5.Name = "label5";
             label5.Size = new Size(201, 32);
             label5.TabIndex = 0;
@@ -963,15 +963,15 @@
             // 
             BackColor = SystemColors.ControlDarkDark;
             ClientSize = new Size(788, 474);
-            Controls.Add(winOrLosePanel);
-            Controls.Add(roomsListPanel);
             Controls.Add(gamePanel);
-            Controls.Add(loginPanel);
+            Controls.Add(roomsListPanel);
+            Controls.Add(winOrLosePanel);
             Controls.Add(lobbyPanel);
+            Controls.Add(loginPanel);
             Controls.Add(roomCreationPanel);
             Name = "ClientForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Guess";
+            Text = "Word Ninja";
             loginPanel.ResumeLayout(false);
             loginPanel.PerformLayout();
             roomCreationPanel.ResumeLayout(false);
