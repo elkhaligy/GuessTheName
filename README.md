@@ -3,6 +3,8 @@
 
 **Word Ninja** is an online multiplayer "Guess the Word" game developed in C# using WinForms. Players can create or join rooms, select categories, and guess words in real-time. The game also offers a spectator mode for users to watch ongoing matches.
 
+[Video Demo](https://www.linkedin.com/posts/shehabelkhaligy_csharp-gamedevelopment-winforms-activity-7301254189530107906-TdEa?utm_source=share&utm_medium=member_desktop&rcm=ACoAACt-txABvFRTTZOldg5fdCMLQHUVZAHG5Do)
+
 ![Game Screenshot](https://i.imgur.com/Oy2a7qg.png)
 ![Game Screenshot](https://i.imgur.com/5mbfV3l.png)
 
